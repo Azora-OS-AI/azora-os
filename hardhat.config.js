@@ -1,12 +1,13 @@
 import "@nomiclabs/hardhat-waffle";
-import 'dotenv/config';
+import "@nomiclabs/hardhat-ethers";
+import "dotenv/config";
 
 export default {
-  solidity: "0.8.19",
+  solidity: "0.8.20",
   networks: {
     mainnet: {
       url: process.env.BLOCKCHAIN_RPC,
-      accounts: [process.env.PRIVATE_KEY]
-    }
-  }
+      accounts: [process.env.PRIVATE_KEY],
+    },
+  },
 };

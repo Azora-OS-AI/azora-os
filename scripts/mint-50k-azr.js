@@ -1,41 +1,50 @@
-import Web3 from 'web3';
+import { ethers } from 'ethers';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import dotenv from 'dotenv';
+import hardhat from "hardhat";
+
+dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const web3 = new Web3(process.env.BLOCKCHAIN_RPC);
+const provider = new ethers.JsonRpcProvider(process.env.BLOCKCHAIN_RPC);
+const wallet = new ethers.Wallet(process.env.PRIVATE_KEY, provider);
 const azrAbi = JSON.parse(fs.readFileSync(path.join(__dirname, '../artifacts/contracts/AZR.sol/AZR.json'))).abi;
 const azrAddress = process.env.AZR_CONTRACT_ADDRESS;
-const privateKey = process.env.PRIVATE_KEY;
-const ceoAddress = process.env.CEO_ADDRESS;
-
-const account = web3.eth.accounts.privateKeyToAccount(privateKey);
-web3.eth.accounts.wallet.add(account);
-
-const contract = new web3.eth.Contract(azrAbi, azrAddress);
+const contract = new ethers.Contract(azrAddress, azrAbi, wallet);
 
 async function mint50KAZR() {
   try {
-    const amount = web3.utils.toWei('50000', 'ether'); // 50,000 AZR
-    const tx = contract.methods.mint(ceoAddress, amount);
-    const gas = await tx.estimateGas({ from: account.address });
-    const data = tx.encodeABI();
-    const txData = {
-      to: azrAddress,
-      data,
-      gas,
-      from: account.address
-    };
-    const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
-    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-    console.log('Minted 50,000 AZR to founder address:', receipt.transactionHash);
-    console.log('As founder, use for development and offices!');
+    const amount = ethers.parseEther('50000'); // 50,000 AZR
+    const tx = await contract.mint(process.env.CEO_ADDRESS, amount);
+    const receipt = await tx.wait();
+    console.log('Minted 50,000 AZR to founder address:', receipt.hash);
   } catch (err) {
     console.error('Mint failed:', err.message);
   }
 }
 
 mint50KAZR();
+
+async function main() {
+  const [owner] = await hardhat.ethers.getSigners();
+  const azrAddress = process.env.AZR_CONTRACT_ADDRESS;
+  const founderAddress = process.env.CEO_ADDRESS;
+  const AZR = await hardhat.ethers.getContractAt("AZR", azrAddress);
+
+  const amount = hardhat.ethers.utils.parseUnits("50000", 18); // 50,000 AZR
+
+  const tx = await AZR.mint(founderAddress, amount);
+  await tx.wait();
+
+  console.log(`Minted 50,000 AZR to founder: ${founderAddress}`);
+  console.log(`Balance of founder: ${await AZR.balanceOf(founderAddress)}`);
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});

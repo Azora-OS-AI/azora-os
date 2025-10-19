@@ -1,13 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import AzoraPayService from '../../services/azora-pay-service/index.js';
-import LendingService from '../../services/lending-service/index.js';
-import VirtualCardService from '../../services/virtual-card-service/index.js';
-import DecentralizedBanking from '../../services/decentralized-banking/index.js';
-import EmailService from '../../services/email-service/index.js';
-import ComplianceService from '../../services/compliance-service/index.js';
-import AirtimeRewardsService from '../../services/airtime-rewards-service/index.js';
+import AzoraPayService from '../services/azora-pay-service/index.js';
+import LendingService from '../services/lending-service/index.js';
+import VirtualCardService from '../services/virtual-card-service/index.js';
+import DecentralizedBanking from '../services/decentralized-banking/index.js';
+import EmailService from '../services/email-service/index.js';
+import ComplianceService from '../services/compliance-service/index.js';
+import AirtimeRewardsService from '../services/airtime-rewards-service/index.js';
 
 class AzoraOS {
   constructor() {

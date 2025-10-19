@@ -1,20 +1,28 @@
+// SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract AZR is ERC20, Ownable {
-    mapping(address => uint256) public loans; // Track loans per user
-    uint256 public interestRate = 5; // 5% interest
+interface IERC20Mintable is IERC20 {
+    function mint(address to, uint256 amount) external;
+}
 
-    constructor() ERC20("Azora", "AZR") {}
+contract AZR is ERC20, Ownable, IERC20Mintable {
+    mapping(address => uint256) public loans;
+    uint256 public interestRate = 5;
+
+    constructor(address initialOwner)
+        ERC20("Azora", "AZR")
+        Ownable(initialOwner)
+    {}
 
     function mint(address to, uint256 amount) external onlyOwner {
         _mint(to, amount);
     }
 
-    function burn(address from, uint256 amount) external {
-        require(balanceOf(from) >= amount, "Insufficient balance");
+    function burn(address from, uint256 amount) external onlyOwner {
         _burn(from, amount);
     }
 
@@ -24,7 +32,6 @@ contract AZR is ERC20, Ownable {
     }
 
     function repayLoan(uint256 amount) external {
-        require(balanceOf(msg.sender) >= amount, "Insufficient balance");
         _burn(msg.sender, amount);
         loans[msg.sender] -= amount;
     }
