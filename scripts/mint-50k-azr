@@ -1,0 +1,41 @@
+import Web3 from 'web3';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const web3 = new Web3(process.env.BLOCKCHAIN_RPC);
+const azrAbi = JSON.parse(fs.readFileSync(path.join(__dirname, '../artifacts/contracts/AZR.sol/AZR.json'))).abi;
+const azrAddress = process.env.AZR_CONTRACT_ADDRESS;
+const privateKey = process.env.PRIVATE_KEY;
+const ceoAddress = process.env.CEO_ADDRESS;
+
+const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+web3.eth.accounts.wallet.add(account);
+
+const contract = new web3.eth.Contract(azrAbi, azrAddress);
+
+async function mint50KAZR() {
+  try {
+    const amount = web3.utils.toWei('50000', 'ether'); // 50,000 AZR
+    const tx = contract.methods.mint(ceoAddress, amount);
+    const gas = await tx.estimateGas({ from: account.address });
+    const data = tx.encodeABI();
+    const txData = {
+      to: azrAddress,
+      data,
+      gas,
+      from: account.address
+    };
+    const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
+    const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+    console.log('Minted 50,000 AZR to founder address:', receipt.transactionHash);
+    console.log('Use for development and offices!');
+  } catch (err) {
+    console.error('Mint failed:', err.message);
+  }
+}
+
+mint50KAZR();

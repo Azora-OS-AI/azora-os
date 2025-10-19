@@ -1,8 +1,9 @@
 import AzoraPayService from '../azora-pay-service/index.js';
+import AirtimeRewardsService from '../airtime-rewards-service/index.js';
 
 class LendingService {
   constructor() {
-    this.interestRate = 0.05; // 5% annual or for the period
+    this.interestRate = 0.05; // 5%
     this.loanPeriod = 30; // days
     this.collateralRatio = 1.5; // 150%
     this.maxLoan = 100000; // Max 100,000 AZR
@@ -47,7 +48,12 @@ class LendingService {
     const repayResult = await AzoraPayService.burnAZR(userAddress, loanDetails.loanAmount);
     if (repayResult.error) return repayResult;
 
-    return { status: 'Loan repaid, interest burned to strengthen AZR', burnInterestResult, repayResult };
+    // Reward student with airtime for repaying on time
+    if (Date.now() < loanDetails.dueDate.getTime()) {
+      await AirtimeRewardsService.rewardStudentAirtime(userAddress, 50); // 50 ZAR airtime
+    }
+
+    return { status: 'Loan repaid, interest burned to strengthen AZR, airtime rewarded', burnInterestResult, repayResult };
   }
 
   async getLoanDetails(userAddress) {
