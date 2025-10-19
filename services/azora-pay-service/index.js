@@ -1,7 +1,7 @@
-import axios from 'axios';
 import fs from 'fs';
 import path from 'path';
 import Web3 from 'web3';
+import axios from 'axios';
 
 class AzoraPayService {
   constructor() {
@@ -13,8 +13,10 @@ class AzoraPayService {
     this.ceoAddress = process.env.CEO_ADDRESS;
     this.privateKey = process.env.PRIVATE_KEY;
     this.lunoApiKey = process.env.LUNO_API_KEY;
-    this.lunoApiSecret = process.env.LUNO_API_SECRET || ''; // If needed
+    this.lunoApiSecret = process.env.LUNO_API_SECRET || '';
     this.lunoAccountId = process.env.LUNO_ACCOUNT_ID;
+    this.paystackSecret = process.env.PAYSTACK_SECRET_KEY;
+    this.paystackRecipient = process.env.PAYSTACK_RECIPIENT_CODE;
   }
 
   async mintAZR(to, amount) {
