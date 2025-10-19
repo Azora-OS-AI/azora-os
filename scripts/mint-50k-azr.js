@@ -32,7 +32,7 @@ async function mint50KAZR() {
     const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
     const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
     console.log('Minted 50,000 AZR to founder address:', receipt.transactionHash);
-    console.log('Use for development and offices!');
+    console.log('As founder, use for development and offices!');
   } catch (err) {
     console.error('Mint failed:', err.message);
   }

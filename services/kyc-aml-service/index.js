@@ -1,57 +1,34 @@
-import React, { useState } from 'react';
+import axios from 'axios';
 
-export default function StudentDashboard() {
-  const [status, setStatus] = useState('');
-  const [amount, setAmount] = useState(0);
-
-  async function handleMintWithdraw() {
-    setStatus('Processing...');
-    const res = await fetch('/api/mint-and-withdraw', {
-      method: 'POST',
-      body: JSON.stringify({ amount }),
-      headers: { 'Content-Type': 'application/json' }
-    });
-    const data = await res.json();
-    setStatus(`Minted ${data.minted} AZR, Withdrawn R${data.zarAmount}`);
+class ComplianceService {
+  constructor() {
+    this.geoApiKey = process.env.IPGEOLOCATION_API_KEY; // Free key from ipgeolocation.io
   }
 
-  return (
-    <div className="dashboard">
-      <h2>Azora Pro+ Dashboard</h2>
-      <div>
-        <label>Amount to Mint & Withdraw:</label>
-        <input type="number" value={amount} onChange={e => setAmount(Number(e.target.value))} />
-        <button onClick={handleMintWithdraw}>Mint & Withdraw</button>
-      </div>
-      <div className="status">{status}</div>
-      <div className="pro-features">
-        <h3>Pro+ Features</h3>
-        <ul>
-          <li>30 min daily AI tutoring</li>
-          <li>Priority governance access</li>
-          <li>Advanced quantum simulators</li>
-          <li>24/7 support</li>
-          <li>R20 airtime bonus</li>
-        </ul>
-      </div>
-    </div>
-  );
-}
-
-const allowedUsers = ['ceo', 'Sizwe Ngwenya', 'admin'];
-
-async function verifyKYC(userId, userData) {
-  if (allowedUsers.includes(userId) && userData.idDocument) {
-    return { status: 'verified', userId };
+  async checkKYC(userData) {
+    // Basic checks
+    const nameValid = /^[a-zA-Z\s]+$/.test(userData.name);
+    const idValid = /^\d{13}$/.test(userData.idNumber); // South African ID example
+    if (!nameValid || !idValid) {
+      return { approved: false, reason: 'Invalid name or ID' };
+    }
+    return { approved: true };
   }
-  return { status: 'rejected', userId };
-}
 
-async function verifyAML(userId, transactionData) {
-  if (transactionData.amount > 1000000) {
-    return { status: 'flagged', reason: 'Amount exceeds limit', userId };
+  async checkAML(transaction) {
+    try {
+      // Check IP location for sanctions
+      const response = await axios.get(`https://api.ipgeolocation.io/ipgeo?apiKey=${this.geoApiKey}&ip=${transaction.ip}`);
+      const country = response.data.country_name;
+      const sanctionedCountries = ['North Korea', 'Iran']; // Example
+      if (sanctionedCountries.includes(country)) {
+        return { flagged: true, reason: 'Sanctioned country' };
+      }
+      return { flagged: false };
+    } catch (err) {
+      return { flagged: true, reason: 'API error' };
+    }
   }
-  return { status: 'passed', userId };
 }
 
-module.exports = { verifyKYC, verifyAML };
+export default new ComplianceService();

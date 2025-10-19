@@ -1,12 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-import AzoraPayService from '../services/azora-pay-service/index.js';
-import LendingService from '../services/lending-service/index.js';
-import VirtualCardService from '../services/virtual-card-service/index.js';
-import DecentralizedBanking from '../services/decentralized-banking/index.js';
-import EmailService from '../services/email-service/index.js';
-import ComplianceService from '../services/compliance-service/index.js';
+import AzoraPayService from '../../services/azora-pay-service/index.js';
+import LendingService from '../../services/lending-service/index.js';
+import VirtualCardService from '../../services/virtual-card-service/index.js';
+import DecentralizedBanking from '../../services/decentralized-banking/index.js';
+import EmailService from '../../services/email-service/index.js';
+import ComplianceService from '../../services/compliance-service/index.js';
+import AirtimeRewardsService from '../../services/airtime-rewards-service/index.js';
 
 class AzoraOS {
   constructor() {
@@ -16,47 +17,46 @@ class AzoraOS {
     this.banking = DecentralizedBanking;
     this.email = EmailService;
     this.compliance = ComplianceService;
+    this.airtime = AirtimeRewardsService;
   }
 
-  async mintAndLend(userAddress, amount) {
-    // Check compliance
-    const kyc = await this.compliance.checkKYC({ name: 'User', idNumber: '123' });
+  async fullFlow(userAddress, phoneNumber) {
+    // 1. Check compliance
+    const kyc = await this.compliance.checkKYC({ name: 'User', idNumber: '1234567890123' });
     if (!kyc.approved) return { error: 'KYC failed' };
 
-    // Mint loan
-    const loan = await this.lending.approveLoan(userAddress, amount);
+    // 2. Approve loan (100k AZR)
+    const loan = await this.lending.approveLoan(userAddress, 100000);
     if (loan.error) return loan;
 
-    // Deposit to Aave pool
-    const deposit = await this.banking.depositToPool(process.env.AZR_CONTRACT_ADDRESS, amount);
-    if (deposit.error) return deposit;
-
-    // Send email
-    await this.email.sendEmail(userAddress, 'Loan Approved', `You received ${amount} AZR`);
-
-    return { status: 'Loan approved and deposited', loan, deposit };
-  }
-
-  async withdrawAndCard(userAddress, amount) {
-    // Borrow from pool
-    const borrow = await this.banking.borrowFromPool(process.env.AZR_CONTRACT_ADDRESS, amount);
-    if (borrow.error) return borrow;
-
-    // Issue virtual card
-    const card = await this.cards.issueCard(userAddress, amount);
+    // 3. Issue virtual card
+    const card = await this.cards.issueCard(userAddress, 1000);
     if (card.error) return card;
 
-    // Withdraw to Luno
-    const withdraw = await this.payService.withdrawToLuno(amount * 18.36); // Convert to ZAR
-    if (withdraw.error) return withdraw;
+    // 4. Deposit to decentralized banking
+    const deposit = await this.banking.depositToPool(process.env.AZR_CONTRACT_ADDRESS, 50000);
+    if (deposit.error) return deposit;
 
-    return { status: 'Borrowed, card issued, withdrawn', borrow, card, withdraw };
+    // 5. Buy airtime with AZR
+    const airtime = await this.airtime.buyAirtimeWithAZR(userAddress, phoneNumber, 100);
+    if (airtime.error) return airtime;
+
+    // 6. Send email notification
+    await this.email.sendEmail(userAddress, 'Azora Loan Approved', `Loan: ${loan.loanAmount} AZR, Card: ${card.cardId}`);
+
+    return {
+      kyc,
+      loan,
+      card,
+      deposit,
+      airtime,
+      status: 'Full integration successful'
+    };
   }
 }
 
 export default new AzoraOS();
 
-// Example usage
+// Test
 const azora = new AzoraOS();
-azora.mintAndLend('0xUserAddress', 1000).then(console.log);
-azora.withdrawAndCard('0xUserAddress', 500).then(console.log);
+azora.fullFlow('0xUserAddress', '27XXXXXXXXX').then(console.log);
