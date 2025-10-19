@@ -7,7 +7,6 @@ class VirtualCardService {
   }
 
   async issueCard(userAddress, amountInAZR) {
-    // Convert AZR to EUR (example rate: 1 AZR = 0.9 EUR)
     const eurAmount = amountInAZR * 0.9;
     try {
       const response = await axios.post(`${this.baseUrl}/cards`, {

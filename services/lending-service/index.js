@@ -2,7 +2,6 @@ const AzoraPayService = require('../azora-pay-service/index');
 
 class LendingService {
   async depositCollateral(userAddress, amount) {
-    // Check if user has enough AZR
     const balance = await AzoraPayService.getBalance(userAddress);
     if (balance < amount) return { error: 'Insufficient AZR balance' };
     return await AzoraPayService.callContract('depositCollateral', [amount], userAddress);
@@ -15,7 +14,6 @@ class LendingService {
   }
 
   async approveLoan(userAddress, amount) {
-    // Check credit score or collateral via external API (placeholder)
     const collateralRatio = await AzoraPayService.callContract('calculateCollateralRatio', [userAddress]);
     if (collateralRatio < 150) return { error: 'Insufficient collateral ratio' };
     return await AzoraPayService.callContract('mintLoan', [amount], userAddress);
@@ -32,8 +30,12 @@ class LendingService {
   }
 
   async liquidateLoan(userAddress) {
-    // Only owner can call, but service can trigger
     return await AzoraPayService.callContract('liquidateLoan', [userAddress]);
+  }
+
+  async checkAndLiquidate(userAddress) {
+    // Strict recovery: Check and liquidate if conditions met
+    return await AzoraPayService.callContract('checkAndLiquidate', [userAddress]);
   }
 }
 
