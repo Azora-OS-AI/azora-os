@@ -1,23 +1,20 @@
-const express = require('express');
-const cors = require('cors');
+const Web3 = require('web3');
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+class ValuationService {
+  constructor() {
+    this.azrValue = 1; // $1 per AZR
+  }
 
-const PORT = process.env.PORT || 3000; // Port should be managed by orchestrator
-const SERVICE_NAME = 'valuation-service';
+  async setValuation(azrAmount) {
+    const usdValue = azrAmount * this.azrValue;
+    const zarValue = usdValue * 18;
+    return { azr: azrAmount, usd: usdValue, zar: zarValue };
+  }
 
-app.get('/health', (req, res) => {
-  res.status(200).json({
-    status: 'online',
-    service: SERVICE_NAME,
-    timestamp: new Date().toISOString()
-  });
-});
+  async calculateWithdrawal(amount) {
+    const valuation = await this.setValuation(amount);
+    return valuation.zar;
+  }
+}
 
-// Add service-specific routes below this line
-
-app.listen(PORT, () => {
-  console.log();
-});
+module.exports = new ValuationService();
