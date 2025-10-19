@@ -1,20 +1,16 @@
-const Web3 = require('web3');
-
 class ValuationService {
   constructor() {
-    this.azrValue = 1; // $1 per AZR
+    this.azrValueUSD = 1;
+    this.usdToZar = 18.5;
   }
-
-  async setValuation(azrAmount) {
-    const usdValue = azrAmount * this.azrValue;
-    const zarValue = usdValue * 18;
-    return { azr: azrAmount, usd: usdValue, zar: zarValue };
+  getAZRValueUSD() {
+    return this.azrValueUSD;
   }
-
-  async calculateWithdrawal(amount) {
-    const valuation = await this.setValuation(amount);
-    return valuation.zar;
+  getAZRValueZAR() {
+    return this.azrValueUSD * this.usdToZar;
+  }
+  convertAZRtoZAR(amount) {
+    return amount * this.getAZRValueZAR();
   }
 }
-
 module.exports = new ValuationService();

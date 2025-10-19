@@ -7,7 +7,6 @@ contract Governance {
         uint256 voteCount;
         bool executed;
     }
-
     mapping(uint256 => Proposal) public proposals;
     uint256 public proposalCount;
 
@@ -15,11 +14,9 @@ contract Governance {
         proposalCount++;
         proposals[proposalCount] = Proposal(proposalCount, description, 0, false);
     }
-
     function vote(uint256 proposalId) public {
         proposals[proposalId].voteCount++;
     }
-
     function executeProposal(uint256 proposalId) public {
         require(proposals[proposalId].voteCount > 100, "Not enough votes");
         proposals[proposalId].executed = true;

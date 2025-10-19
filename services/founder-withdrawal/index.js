@@ -1,25 +1,14 @@
-const web3 = require('web3');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const tokenExchangeService = require('../token-exchange/index');
+const azoraCoinService = require('../azora-coin-service/index');
 
 class FounderWithdrawalService {
-  async withdraw(amount, currency = 'ZAR') {
-    const zarAmount = amount * 18; // Static exchange
-    const payout = await stripe.payouts.create({
-      amount: zarAmount * 100,
-      currency: currency.toLowerCase(),
-      method: 'instant',
-    });
-    return payout.id;
-  }
-
-  async instantWithdraw(from, to, amount) {
-    const tx = await web3.eth.sendTransaction({
-      from: from,
-      to: to,
-      value: web3.utils.toWei(amount.toString(), 'ether'),
-    });
-    return tx.transactionHash;
+  withdraw(userId, azrAmount) {
+    if (userId !== 'ceo') throw new Error('Unauthorized');
+    if (azrAmount <= 0) throw new Error('Invalid withdrawal amount');
+    const zarAmount = tokenExchangeService.exchangeAZRtoZAR(userId, azrAmount, azoraCoinService);
+    // Simulate payout integration
+    console.log(`[PAYOUT] Initiating ZAR payout of ${zarAmount} to ${userId}`);
+    return { userId, azrAmount, zarAmount, status: 'payout_initiated' };
   }
 }
-
 module.exports = new FounderWithdrawalService();
