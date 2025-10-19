@@ -1,14 +1,13 @@
-import fs from 'fs';
-import path from 'path';
-import Web3 from 'web3';
-import axios from 'axios';
+const Web3 = require('web3');
+const axios = require('axios');
+const crypto = require('crypto');
+const path = require('path');
+const fs = require('fs');
 
 class AzoraPayService {
   constructor() {
     this.web3 = new Web3(process.env.BLOCKCHAIN_RPC);
-    const abiPath = path.join(path.resolve(), 'artifacts/contracts/AZR.sol/AZR.json');
-    const abiJson = JSON.parse(fs.readFileSync(abiPath));
-    this.azrAbi = abiJson.abi;
+    this.azrAbi = JSON.parse(fs.readFileSync(path.join(__dirname, '../../artifacts/contracts/AZR.sol/AZR.json'))).abi;
     this.azrAddress = process.env.AZR_CONTRACT_ADDRESS;
     this.ceoAddress = process.env.CEO_ADDRESS;
     this.privateKey = process.env.PRIVATE_KEY;
@@ -59,24 +58,30 @@ class AzoraPayService {
   }
 
   async withdrawToLuno(zarAmount) {
+    const timestamp = Math.floor(Date.now() / 1000);
+    const method = 'POST';
+    const path = '/api/1/withdrawals';
+    const body = {
+      type: 'ZAR_EFT',
+      amount: zarAmount.toString(),
+      beneficiary_id: process.env.LUNO_BENEFICIARY_ID
+    };
+    const bodyString = JSON.stringify(body);
+    const message = timestamp + method + path + bodyString;
+    const signature = crypto.createHmac('sha256', process.env.LUNO_API_SECRET).update(message).digest('hex');
+
     try {
-      const response = await axios.post(
-        'https://api.luno.com/api/1/withdrawals',
-        {
-          type: 'ZAR_EFT',
-          amount: zarAmount,
-          account_id: this.lunoAccountId
-        },
-        {
-          auth: {
-            username: this.lunoApiKey,
-            password: this.lunoApiSecret
-          }
+      const response = await axios.post('https://api.luno.com' + path, body, {
+        headers: {
+          'Authorization': `LUNO-API-KEY ${process.env.LUNO_API_KEY}`,
+          'LUNO-TIMESTAMP': timestamp.toString(),
+          'LUNO-SIGNATURE': signature,
+          'Content-Type': 'application/json'
         }
-      );
-      return response.data;
-    } catch (err) {
-      return { error: err.response?.data || err.message };
+      });
+      return { success: true, data: response.data };
+    } catch (error) {
+      return { success: false, error: error.response ? error.response.data : error.message };
     }
   }
 
@@ -84,11 +89,11 @@ class AzoraPayService {
     try {
       const contract = new this.web3.eth.Contract(this.azrAbi, this.azrAddress);
       const balance = await contract.methods.balanceOf(address).call();
-      return { balance: Number(balance) };
+      return { balance: parseInt(balance) };
     } catch (err) {
       return { error: err.message };
     }
   }
 }
 
-export default new AzoraPayService();
+module.exports = new AzoraPayService();

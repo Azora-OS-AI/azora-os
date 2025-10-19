@@ -1,5 +1,5 @@
-import 'dotenv/config';
-import AzoraPayService from '../services/azora-pay-service/index.js';
+require('dotenv').config();
+const AzoraPayService = require('../services/azora-pay-service/index.js');
 
 const USER_ADDRESS = process.env.CEO_ADDRESS;
 
@@ -25,10 +25,10 @@ async function autoWithdrawHalf() {
     console.log(`Withdrawing ${halfAmount} AZR (${zarAmount} ZAR) to Luno`);
 
     const withdrawResult = await AzoraPayService.withdrawToLuno(zarAmount);
-    if (withdrawResult.error) {
-      console.error('Withdrawal error:', withdrawResult.error);
-    } else {
+    if (withdrawResult.success) {
       console.log('Withdraw to Luno result:', withdrawResult);
+    } else {
+      console.error('Withdrawal error:', withdrawResult.error);
     }
   } catch (err) {
     console.error('Script error:', err.message);

@@ -1,10 +1,8 @@
 {
   "name": "azora-os",
   "version": "1.0.0",
-  "type": "module",
   "description": "Africa's First Trillion-Dollar Operating System",
   "author": {
-    "name": "Sizwe Ngwenya",
     "email": "sizwe.ngwenya@azora.world"
   },
   "scripts": {
@@ -21,10 +19,12 @@
     "@metamask/delegation-toolkit": "^0.13.0",
     "axios": "^1.12.2",
     "dotenv": "^17.2.3",
+    "nodemailer": "^7.0.9",
     "web3": "^4.16.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.38.0",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@nomiclabs/hardhat-waffle": "^2.0.6",
     "eslint": "^9.38.0",
