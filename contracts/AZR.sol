@@ -16,11 +16,11 @@ contract AZR is ERC20, Ownable, ReentrancyGuard {
     }
 
     mapping(address => Loan) public loans;
-    uint256 public interestRate = 5; // 5% annual
+    uint256 public interestRate = 5; // 5% for 30 days
     uint256 public collateralRatio = 150; // 150%
     uint256 public penaltyRate = 2; // 2% daily penalty
     mapping(address => uint256) public collateralBalance;
-    uint256 public loanDuration = 30 days; // 30 days loan term
+    uint256 public loanDuration = 30 days;
 
     event LoanMinted(address indexed user, uint256 amount, uint256 collateral);
     event LoanRepaid(address indexed user, uint256 amount, uint256 penalty);
@@ -47,11 +47,12 @@ contract AZR is ERC20, Ownable, ReentrancyGuard {
     }
 
     function mintLoan(uint256 amount) external nonReentrant {
+        require(amount <= 100000 * 10**decimals(), "Loan exceeds max 100,000 AZR");
         uint256 requiredCollateral = (amount * collateralRatio) / 100;
         require(collateralBalance[msg.sender] >= requiredCollateral, "Insufficient collateral");
         require(loans[msg.sender].active == false, "Existing loan active");
 
-        uint256 interest = (amount * interestRate * loanDuration) / (100 * 365 days);
+        uint256 interest = (amount * interestRate) / 100; // 5% for 30 days
         uint256 dueDate = block.timestamp + loanDuration;
         _mint(msg.sender, amount);
         loans[msg.sender] = Loan(amount, interest, requiredCollateral, block.timestamp, dueDate, true, 0);
@@ -60,25 +61,19 @@ contract AZR is ERC20, Ownable, ReentrancyGuard {
 
     function repayLoan(uint256 amount) external nonReentrant {
         require(loans[msg.sender].active, "No active loan");
-        uint256 repayAmount = amount;
-        uint256 penalty = 0;
+        uint256 totalDue = loans[msg.sender].amount + loans[msg.sender].interest;
+        require(amount >= totalDue, "Insufficient repayment");
 
-        if (block.timestamp > loans[msg.sender].dueDate) {
-            penalty = (loans[msg.sender].amount * penaltyRate * (block.timestamp - loans[msg.sender].dueDate)) / (100 * 1 days);
-            loans[msg.sender].penalty += penalty;
-        }
-
-        uint256 totalDue = loans[msg.sender].amount + loans[msg.sender].interest + loans[msg.sender].penalty;
-        require(repayAmount >= totalDue, "Insufficient repayment");
-
-        _burn(msg.sender, repayAmount);
+        // Burn interest to strengthen AZR
+        _burn(msg.sender, loans[msg.sender].interest);
+        _burn(msg.sender, loans[msg.sender].amount);
         loans[msg.sender].active = false;
-        emit LoanRepaid(msg.sender, repayAmount, penalty);
+        emit LoanRepaid(msg.sender, amount, 0);
     }
 
     function liquidateLoan(address user) external onlyOwner {
         require(loans[user].active, "No active loan");
-        require(calculateCollateralRatio(user) < collateralRatio || block.timestamp > loans[user].dueDate + 7 days, "Not eligible for liquidation");
+        require(calculateCollateralRatio(user) < collateralRatio || block.timestamp > loans[user].dueDate + 7 days, "Not eligible");
 
         uint256 collateral = collateralBalance[user];
         collateralBalance[user] = 0;
@@ -97,7 +92,6 @@ contract AZR is ERC20, Ownable, ReentrancyGuard {
         return (loan.amount, loan.interest, loan.collateral, loan.dueDate, loan.active, loan.penalty);
     }
 
-    // Strict recovery: Automatic liquidation trigger if collateral drops too low
     function checkAndLiquidate(address user) external {
         if (loans[user].active && (calculateCollateralRatio(user) < collateralRatio || block.timestamp > loans[user].dueDate + 7 days)) {
             liquidateLoan(user);

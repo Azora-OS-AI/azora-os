@@ -1,42 +1,80 @@
-const AzoraPayService = require('../azora-pay-service/index');
+import AzoraPayService from '../azora-pay-service/index.js';
 
 class LendingService {
+  constructor() {
+    this.interestRate = 0.05; // 5% annual or for the period
+    this.loanPeriod = 30; // days
+    this.collateralRatio = 1.5; // 150%
+    this.maxLoan = 100000; // Max 100,000 AZR
+  }
+
+  async approveLoan(userAddress, amount) {
+    if (amount > this.maxLoan) return { error: 'Loan exceeds max 100,000 AZR' };
+
+    const balance = await AzoraPayService.getAZRBalance(userAddress);
+    const requiredCollateral = amount * this.collateralRatio;
+    if (balance.balance < requiredCollateral) {
+      return { error: `Insufficient collateral. Need ${requiredCollateral} AZR` };
+    }
+
+    const mintResult = await AzoraPayService.mintAZR(userAddress, amount);
+    if (mintResult.error) return mintResult;
+
+    const interest = amount * this.interestRate;
+    const totalRepay = amount + interest;
+    const dueDate = new Date(Date.now() + this.loanPeriod * 24 * 60 * 60 * 1000);
+
+    return {
+      loanAmount: amount,
+      interest,
+      totalRepay,
+      dueDate,
+      collateral: requiredCollateral,
+      txHash: mintResult.txHash
+    };
+  }
+
+  async repayLoan(userAddress, amount) {
+    const loanDetails = await this.getLoanDetails(userAddress);
+    if (!loanDetails) return { error: 'No active loan' };
+
+    if (amount < loanDetails.totalRepay) return { error: 'Insufficient repayment' };
+
+    // Burn interest to strengthen AZR
+    const burnInterestResult = await AzoraPayService.burnAZR(userAddress, loanDetails.interest);
+    if (burnInterestResult.error) return burnInterestResult;
+
+    const repayResult = await AzoraPayService.burnAZR(userAddress, loanDetails.loanAmount);
+    if (repayResult.error) return repayResult;
+
+    return { status: 'Loan repaid, interest burned to strengthen AZR', burnInterestResult, repayResult };
+  }
+
+  async getLoanDetails(userAddress) {
+    // Placeholder: Fetch from contract
+    const details = await AzoraPayService.callContract('getLoanDetails', [userAddress]);
+    if (details.error) return null;
+    return {
+      loanAmount: details.amount,
+      interest: details.interest,
+      totalRepay: details.amount + details.interest,
+      dueDate: new Date(details.dueDate * 1000),
+      collateral: details.collateral,
+      active: details.active
+    };
+  }
+
   async depositCollateral(userAddress, amount) {
-    const balance = await AzoraPayService.getBalance(userAddress);
-    if (balance < amount) return { error: 'Insufficient AZR balance' };
     return await AzoraPayService.callContract('depositCollateral', [amount], userAddress);
   }
 
   async withdrawCollateral(userAddress, amount) {
-    const collateral = await AzoraPayService.callContract('collateralBalance', [userAddress]);
-    if (collateral < amount) return { error: 'Insufficient collateral' };
     return await AzoraPayService.callContract('withdrawCollateral', [amount], userAddress);
   }
 
-  async approveLoan(userAddress, amount) {
-    const collateralRatio = await AzoraPayService.callContract('calculateCollateralRatio', [userAddress]);
-    if (collateralRatio < 150) return { error: 'Insufficient collateral ratio' };
-    return await AzoraPayService.callContract('mintLoan', [amount], userAddress);
-  }
-
-  async repayLoan(userAddress, amount) {
-    const loan = await AzoraPayService.callContract('getLoanDetails', [userAddress]);
-    if (!loan.active) return { error: 'No active loan' };
-    return await AzoraPayService.callContract('repayLoan', [amount], userAddress);
-  }
-
-  async getLoanStatus(userAddress) {
-    return await AzoraPayService.callContract('getLoanDetails', [userAddress]);
-  }
-
-  async liquidateLoan(userAddress) {
-    return await AzoraPayService.callContract('liquidateLoan', [userAddress]);
-  }
-
   async checkAndLiquidate(userAddress) {
-    // Strict recovery: Check and liquidate if conditions met
     return await AzoraPayService.callContract('checkAndLiquidate', [userAddress]);
   }
 }
 
-module.exports = new LendingService();
+export default new LendingService();
