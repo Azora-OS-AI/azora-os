@@ -10,6 +10,7 @@ import AuthLayout from './components/layout/AuthLayout'
 
 // Pages
 import Dashboard from './pages/Dashboard'
+import LandingPage from './components/LandingPage'
 import Login from './pages/auth/Login'
 import Signup from './pages/auth/Signup'
 import ForgotPassword from './pages/auth/ForgotPassword'
@@ -25,7 +26,7 @@ import ColdChainPanel from './pages/services/ColdChainPanel'
 import TrackingEnginePanel from './pages/services/TrackingEnginePanel'
 import DeepMindPanel from './pages/services/DeepMindPanel'
 import AnalyticsPanel from './pages/services/AnalyticsPanel'
-// import CompliancePanel from './pages/services/CompliancePanel'
+import CompliancePanel from './pages/services/CompliancePanel'
 import DocumentVaultPanel from './pages/services/DocumentVaultPanel'
 import MaintenancePanel from './pages/services/MaintenancePanel'
 import OnboardingPanel from './pages/services/OnboardingPanel'
@@ -74,6 +75,9 @@ function App() {
     <div data-theme={theme}>
       <AnimatePresence mode="wait">
         <Routes>
+          {/* Public Landing Page */}
+          <Route path="/" element={<LandingPage />} />
+
           {/* Auth Routes */}
           <Route path="/auth/*" element={
             user ? <Navigate to="/dashboard" replace /> : (
@@ -95,11 +99,10 @@ function App() {
 
           {/* Protected Routes */}
           <Route path="/*" element={
-            !user ? <Navigate to="/auth/login" replace /> :
+            !user ? <Navigate to="/" replace /> :
               user && !user.onboardingComplete ? <Navigate to="/onboarding" replace /> : (
                 <MainLayout>
                   <Routes>
-                    <Route path="/" element={<Navigate to="/dashboard" replace />} />
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/subscription" element={<Subscription />} />
 
