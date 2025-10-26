@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Bell, Settings, Wallet, Shield, TrendingUp, Users, Globe, ArrowRight, BookOpen, Zap } from "lucide-react"
+import { InternationalCollaboration } from "@/components/ui/international-collaboration"
 
 export default function StudentDashboard() {
   return (
@@ -212,6 +213,16 @@ export default function StudentDashboard() {
                   </div>
                 </div>
               </div>
+            </Card>
+
+            {/* International Collaboration */}
+            <Card className="p-6 bg-card/50 backdrop-blur border-border/50">
+              <div className="mb-4">
+                <h2 className="text-2xl font-bold mb-1">International Collaboration</h2>
+                <p className="text-sm text-muted-foreground">Global partnerships and cross-cultural knowledge exchange</p>
+              </div>
+
+              <InternationalCollaboration className="h-96" />
             </Card>
           </div>
 
