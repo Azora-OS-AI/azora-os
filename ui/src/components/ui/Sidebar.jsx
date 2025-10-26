@@ -12,6 +12,21 @@ const Sidebar = () => {
     { name: 'Dashboard', href: '/dashboard', icon: '📊' },
     { name: 'Subscription', href: '/subscription', icon: '💳' },
     {
+      name: 'Education',
+      href: '#',
+      icon: '🎓',
+      children: [
+        { name: 'Education Dashboard', href: '/education/dashboard' },
+        { name: 'Student Portal', href: '/education/student' },
+        { name: 'Parent Portal', href: '/education/parent' },
+        { name: 'Curriculum Manager', href: '/education/curriculum' },
+        { name: 'Assessment Center', href: '/education/assessments' },
+        { name: 'AI Learning Assistant', href: '/education/ai-assistant' },
+        { name: 'Virtual Classroom', href: '/education/virtual-classroom' },
+        { name: 'Compliance Reports', href: '/education/compliance' }
+      ]
+    },
+    {
       name: 'Services',
       href: '#',
       icon: '🔧',

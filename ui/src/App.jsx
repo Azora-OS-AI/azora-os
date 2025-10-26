@@ -43,6 +43,16 @@ import AccessibilityPanel from './pages/services/AccessibilityPanel'
 import HRDeputyPanel from './pages/services/HRDeputyPanel'
 import AIAssistantPanel from './pages/services/AIAssistantPanel'
 
+// Education Components
+import { EducationDashboard } from './components/education/EducationDashboard'
+import { StudentDashboard } from './components/education/StudentDashboard'
+import { ParentDashboard } from './components/education/ParentDashboard'
+import { CurriculumManager } from './components/education/CurriculumManager'
+import { AssessmentCenter } from './components/education/AssessmentCenter'
+import { AIPanel } from './components/education/AIPanel'
+import { VirtualClassroom } from './components/education/VirtualClassroom'
+import { ComplianceReports } from './components/education/ComplianceReports'
+
 function App() {
   const { user, loading } = useAuth()
   const { theme } = useTheme()
@@ -131,6 +141,16 @@ function App() {
                     <Route path="/services/accessibility" element={<AccessibilityPanel />} />
                     <Route path="/services/hr-deputy" element={<HRDeputyPanel />} />
                     <Route path="/services/ai-assistant" element={<AIAssistantPanel />} />
+
+                    {/* Education Routes */}
+                    <Route path="/education/dashboard" element={<EducationDashboard />} />
+                    <Route path="/education/student" element={<StudentDashboard />} />
+                    <Route path="/education/parent" element={<ParentDashboard />} />
+                    <Route path="/education/curriculum" element={<CurriculumManager />} />
+                    <Route path="/education/assessments" element={<AssessmentCenter />} />
+                    <Route path="/education/ai-assistant" element={<AIPanel />} />
+                    <Route path="/education/virtual-classroom" element={<VirtualClassroom />} />
+                    <Route path="/education/compliance" element={<ComplianceReports />} />
 
                     <Route path="*" element={<Navigate to="/dashboard" replace />} />
                   </Routes>
