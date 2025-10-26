@@ -1,3 +1,9 @@
+// AZORA PROPRIETARY LICENSE
+//
+// Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
+//
+// See LICENSE file for details.
+
 // MongoDB initialization script for Azora Workspace
 db = db.getSiblingDB('azora-workspace');
 

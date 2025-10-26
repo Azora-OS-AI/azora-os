@@ -1,3 +1,11 @@
+/*
+AZORA PROPRIETARY LICENSE
+
+Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
+
+See LICENSE file for details.
+*/
+
 const express = require('express');
 const http = require('http');
 const socketIo = require('socket.io');
@@ -15,6 +23,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { v4: uuidv4 } = require('uuid');
+const fetch = require('node-fetch');
 
 require('dotenv').config();
 
@@ -49,11 +58,191 @@ if (process.env.NODE_ENV !== 'production') {
   }));
 }
 
-// Middleware
-app.use(helmet());
-app.use(cors());
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+// Zero-rated optimizations and offline-first architecture
+const compression = require('compression');
+const offlineStorage = require('./offline-storage');
+
+// Enable compression for zero-rated data usage
+app.use(compression({
+  level: 9, // Maximum compression
+  threshold: 0, // Compress everything
+  filter: (req, res) => {
+    // Don't compress event streams or already compressed responses
+    if (req.headers['accept-encoding']?.includes('gzip')) {
+      return compression.filter(req, res);
+    }
+    return false;
+  }
+}));
+
+// Offline-first middleware
+app.use('/api/offline', offlineStorage.middleware);
+
+// Progressive Web App (PWA) support for zero-rated access
+app.get('/manifest.json', (req, res) => {
+  res.json({
+    name: 'Azora Workspace',
+    short_name: 'AzoraWork',
+    description: 'Zero-rated email and collaboration platform',
+    start_url: '/',
+    display: 'standalone',
+    background_color: '#0a0a0a',
+    theme_color: '#00d4ff',
+    icons: [
+      {
+        src: '/icon-192.png',
+        sizes: '192x192',
+        type: 'image/png'
+      },
+      {
+        src: '/icon-512.png',
+        sizes: '512x512',
+        type: 'image/png'
+      }
+    ],
+    categories: ['productivity', 'communication'],
+    lang: 'en',
+    dir: 'ltr'
+  });
+});
+
+// Service Worker for offline functionality
+app.get('/sw.js', (req, res) => {
+  res.setHeader('Content-Type', 'application/javascript');
+  res.send(`
+    const CACHE_NAME = 'azora-workspace-v1';
+    const STATIC_CACHE = 'azora-static-v1';
+    const API_CACHE = 'azora-api-v1';
+
+    // Install event - cache static assets
+    self.addEventListener('install', event => {
+      event.waitUntil(
+        caches.open(STATIC_CACHE).then(cache => {
+          return cache.addAll([
+            '/',
+            '/manifest.json',
+            '/offline.html'
+          ]);
+        })
+      );
+    });
+
+    // Fetch event - serve from cache when offline
+    self.addEventListener('fetch', event => {
+      const url = new URL(event.request.url);
+
+      // API requests - cache for offline use
+      if (url.pathname.startsWith('/api/')) {
+        event.respondWith(
+          caches.open(API_CACHE).then(cache => {
+            return fetch(event.request).then(response => {
+              // Cache successful GET requests
+              if (event.request.method === 'GET' && response.status === 200) {
+                cache.put(event.request, response.clone());
+              }
+              return response;
+            }).catch(() => {
+              // Return cached version if offline
+              return cache.match(event.request);
+            });
+          })
+        );
+      }
+      // Static assets - cache first
+      else {
+        event.respondWith(
+          caches.match(event.request).then(response => {
+            return response || fetch(event.request).then(response => {
+              if (response.status === 200) {
+                const responseClone = response.clone();
+                caches.open(STATIC_CACHE).then(cache => {
+                  cache.put(event.request, responseClone);
+                });
+              }
+              return response;
+            });
+          })
+        );
+      }
+    });
+
+    // Background sync for zero-rated sending
+    self.addEventListener('sync', event => {
+      if (event.tag === 'background-send-email') {
+        event.waitUntil(sendQueuedEmails());
+      }
+    });
+
+    async function sendQueuedEmails() {
+      const cache = await caches.open(API_CACHE);
+      const keys = await cache.keys();
+
+      for (const request of keys) {
+        if (request.url.includes('/api/emails/send')) {
+          try {
+            await fetch(request);
+            await cache.delete(request);
+          } catch (error) {
+            console.log('Failed to send queued email:', error);
+          }
+        }
+      }
+    }
+  `);
+});
+
+// Offline page
+app.get('/offline.html', (req, res) => {
+  res.send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Azora Workspace - Offline</title>
+      <style>
+        body {
+          font-family: Arial, sans-serif;
+          background: #0a0a0a;
+          color: #ffffff;
+          text-align: center;
+          padding: 50px;
+        }
+        .offline-message {
+          background: rgba(0, 212, 255, 0.1);
+          border: 1px solid #00d4ff;
+          border-radius: 10px;
+          padding: 20px;
+          margin: 20px auto;
+          max-width: 500px;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>🔌 Azora Workspace</h1>
+      <div class="offline-message">
+        <h2>You're Currently Offline</h2>
+        <p>Your emails and documents are available offline. We'll sync when you're back online.</p>
+        <p><strong>Zero Data Cost</strong> - All Azora services are optimized for low-data usage.</p>
+      </div>
+    </body>
+    </html>
+  `);
+});
+
+// Zero-rated data optimization middleware
+app.use((req, res, next) => {
+  // Add headers for zero-rated optimization
+  res.setHeader('X-Zero-Rated', 'true');
+  res.setHeader('Cache-Control', 'public, max-age=3600'); // Cache for 1 hour
+
+  // Compress responses
+  if (!res.getHeader('Content-Encoding')) {
+    res.setHeader('Content-Encoding', 'gzip');
+  }
+
+  next();
+});
 
 // Rate limiting
 const limiter = rateLimit({
@@ -79,10 +268,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/azora-workspace', {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/azora-workspace')
 .then(() => logger.info('Connected to MongoDB'))
 .catch(err => logger.error('MongoDB connection error:', err));
 
@@ -149,7 +335,7 @@ const Email = mongoose.model('Email', EmailSchema);
 const Workspace = mongoose.model('Workspace', WorkspaceSchema);
 
 // Email transporter setup
-const emailTransporter = nodemailer.createTransporter({
+const emailTransporter = nodemailer.createTransport({
   host: process.env.SMTP_HOST || 'smtp.gmail.com',
   port: process.env.SMTP_PORT || 587,
   secure: false,
@@ -180,6 +366,132 @@ const authenticateToken = async (req, res, next) => {
     return res.status(403).json({ error: 'Invalid token' });
   }
 };
+
+// Helper function to check online status
+const checkOnlineStatus = async () => {
+  try {
+    // Simple connectivity check - try to reach a reliable endpoint
+    const response = await fetch('https://www.google.com/favicon.ico', {
+      method: 'HEAD',
+      timeout: 5000,
+    });
+    return response.ok;
+  } catch (error) {
+    return false;
+  }
+};
+
+// Background sync for queued emails
+app.post('/api/emails/sync', authenticateToken, async (req, res) => {
+  try {
+    const queuedEmails = await offlineStorage.getQueuedEmails(req.user._id);
+
+    if (queuedEmails.length === 0) {
+      return res.json({
+        message: 'No queued emails to sync',
+        synced: 0,
+        zeroRated: true,
+      });
+    }
+
+    let synced = 0;
+    let failed = 0;
+    const results = [];
+
+    for (const queuedEmail of queuedEmails) {
+      try {
+        // Attempt to send the queued email
+        const mailOptions = {
+          from: req.user.email,
+          to: queuedEmail.emailData.to,
+          cc: queuedEmail.emailData.cc || [],
+          bcc: queuedEmail.emailData.bcc || [],
+          subject: queuedEmail.emailData.subject,
+          text: queuedEmail.emailData.text,
+          html: queuedEmail.emailData.html,
+        };
+
+        await emailTransporter.sendMail(mailOptions);
+
+        // Mark as sent and remove from queue
+        await offlineStorage.markEmailSent(queuedEmail.emailId);
+
+        // Update the email record if it exists
+        if (queuedEmail.emailId && !queuedEmail.emailId.startsWith('failed-')) {
+          await Email.findByIdAndUpdate(queuedEmail.emailId, {
+            sentAt: new Date(),
+          });
+        }
+
+        results.push({
+          emailId: queuedEmail.emailId,
+          status: 'sent',
+          subject: queuedEmail.emailData.subject,
+        });
+
+        synced++;
+      } catch (error) {
+        logger.error(`Failed to send queued email ${queuedEmail.emailId}:`, error);
+
+        // Increment retry count
+        await offlineStorage.incrementRetryCount(queuedEmail.emailId);
+
+        // If max retries reached, mark as failed
+        if (queuedEmail.retryCount >= 3) {
+          await offlineStorage.markEmailFailed(queuedEmail.emailId, error.message);
+          results.push({
+            emailId: queuedEmail.emailId,
+            status: 'failed',
+            error: error.message,
+            subject: queuedEmail.emailData.subject,
+          });
+          failed++;
+        } else {
+          results.push({
+            emailId: queuedEmail.emailId,
+            status: 'retry',
+            retryCount: queuedEmail.retryCount + 1,
+            subject: queuedEmail.emailData.subject,
+          });
+        }
+      }
+    }
+
+    res.json({
+      message: `Synced ${synced} emails, ${failed} failed`,
+      synced,
+      failed,
+      results,
+      zeroRated: true,
+    });
+  } catch (error) {
+    logger.error('Email sync error:', error);
+    res.status(500).json({
+      error: 'Failed to sync emails',
+      zeroRated: true,
+    });
+  }
+});
+
+// Get cached emails for offline access
+app.get('/api/emails/cached', authenticateToken, async (req, res) => {
+  try {
+    const cachedEmails = await offlineStorage.getCachedEmails(req.user._id);
+
+    res.json({
+      emails: cachedEmails,
+      count: cachedEmails.length,
+      zeroRated: true,
+      cached: true,
+    });
+  } catch (error) {
+    logger.error('Get cached emails error:', error);
+    res.status(500).json({
+      error: 'Failed to get cached emails',
+      zeroRated: true,
+    });
+  }
+});
 
 // Routes
 
@@ -288,13 +600,38 @@ app.get('/api/emails', authenticateToken, async (req, res) => {
       query.from = req.user.email;
     }
 
-    const emails = await Email.find(query)
-      .sort({ receivedAt: -1 })
-      .skip(skip)
-      .limit(parseInt(limit))
-      .populate('userId', 'email firstName lastName');
+    // Check online status
+    const isOnline = await checkOnlineStatus();
 
-    const total = await Email.countDocuments(query);
+    let emails = [];
+    let cachedEmails = [];
+    let total = 0;
+
+    if (isOnline) {
+      // Get fresh emails from database
+      emails = await Email.find(query)
+        .sort({ receivedAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit))
+        .populate('userId', 'email firstName lastName');
+
+      total = await Email.countDocuments(query);
+
+      // Cache recent emails for offline access
+      if (emails.length > 0) {
+        for (const email of emails.slice(0, 10)) { // Cache first 10 emails
+          await offlineStorage.cacheEmail(email._id, {
+            ...email.toObject(),
+            cachedAt: new Date(),
+          });
+        }
+      }
+    } else {
+      // Get cached emails for offline access
+      cachedEmails = await offlineStorage.getCachedEmails(req.user._id);
+      emails = cachedEmails.slice(skip, skip + parseInt(limit));
+      total = cachedEmails.length;
+    }
 
     res.json({
       emails,
@@ -304,6 +641,9 @@ app.get('/api/emails', authenticateToken, async (req, res) => {
         total,
         pages: Math.ceil(total / limit),
       },
+      offline: !isOnline,
+      cached: cachedEmails.length > 0,
+      zeroRated: true,
     });
   } catch (error) {
     logger.error('Get emails error:', error);
@@ -330,7 +670,36 @@ app.post('/api/emails/send', authenticateToken, async (req, res) => {
 
     await email.save();
 
-    // Send email via SMTP
+    // Check if user is online (has internet connection)
+    const isOnline = await checkOnlineStatus();
+
+    if (!isOnline) {
+      // Queue email for offline sending
+      await offlineStorage.queueEmail({
+        emailId: email._id,
+        userId: req.user._id,
+        emailData: {
+          from: req.user.email,
+          to: email.to,
+          cc: email.cc,
+          bcc: email.bcc,
+          subject: email.subject,
+          text: email.body,
+          html: email.html,
+        },
+        queuedAt: new Date(),
+        retryCount: 0,
+      });
+
+      return res.status(202).json({
+        message: 'Email queued for sending when online',
+        email,
+        status: 'queued',
+        zeroRated: true,
+      });
+    }
+
+    // Send email via SMTP when online
     const mailOptions = {
       from: req.user.email,
       to: email.to,
@@ -343,13 +712,42 @@ app.post('/api/emails/send', authenticateToken, async (req, res) => {
 
     await emailTransporter.sendMail(mailOptions);
 
+    // Cache sent email for offline access
+    await offlineStorage.cacheEmail(email._id, {
+      ...email.toObject(),
+      status: 'sent',
+      cachedAt: new Date(),
+    });
+
     res.status(201).json({
       message: 'Email sent successfully',
       email,
+      status: 'sent',
+      zeroRated: true,
     });
   } catch (error) {
     logger.error('Send email error:', error);
-    res.status(500).json({ error: 'Failed to send email' });
+
+    // If sending fails, queue for retry
+    try {
+      await offlineStorage.queueEmail({
+        emailId: req.body.emailId || 'failed-' + Date.now(),
+        userId: req.user._id,
+        emailData: req.body,
+        queuedAt: new Date(),
+        retryCount: 0,
+        error: error.message,
+      });
+    } catch (queueError) {
+      logger.error('Failed to queue email:', queueError);
+    }
+
+    res.status(202).json({
+      message: 'Email queued for retry',
+      error: error.message,
+      status: 'queued',
+      zeroRated: true,
+    });
   }
 });
 
@@ -490,21 +888,19 @@ server.listen(PORT, () => {
 // Graceful shutdown
 process.on('SIGTERM', () => {
   logger.info('SIGTERM received, shutting down gracefully');
-  server.close(() => {
-    mongoose.connection.close(false, () => {
-      logger.info('Process terminated');
-      process.exit(0);
-    });
+  server.close(async () => {
+    await mongoose.connection.close();
+    logger.info('Process terminated');
+    process.exit(0);
   });
 });
 
 process.on('SIGINT', () => {
   logger.info('SIGINT received, shutting down gracefully');
-  server.close(() => {
-    mongoose.connection.close(false, () => {
-      logger.info('Process terminated');
-      process.exit(0);
-    });
+  server.close(async () => {
+    await mongoose.connection.close();
+    logger.info('Process terminated');
+    process.exit(0);
   });
 });
 
