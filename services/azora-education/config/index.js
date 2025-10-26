@@ -125,7 +125,7 @@ module.exports = {
     commonCore: {
       version: '2023',
       subjects: ['math', 'ela', 'science', 'social_studies'],
-      grades: Array.from({length: 13}, (_, i) => i), // 0-12 (K-12)
+      grades: Array.from({ length: 13 }, (_, i) => i), // 0-12 (K-12)
       domains: {
         math: ['OA', 'NBT', 'NF', 'MD', 'G', 'SP', 'EE', 'F'],
         ela: ['RL', 'RI', 'RF', 'W', 'SL', 'L']
