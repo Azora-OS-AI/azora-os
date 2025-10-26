@@ -789,10 +789,11 @@ Azora OS represents the next evolution of economic intelligence:
 
 *Building the future of sovereign prosperity through education and innovation*
 
-## 📞 **Contact & Support**
+## 📞 Contact & Support
 
 - **Enterprise**: enterprise@azora.world
 - **Technical Support**: support@azora.world
+- **Phone**: +27 73 234 7232
 - **API Documentation**: `/docs/API_DOCUMENTATION.md`
 - **Architecture Docs**: 
   - `/docs/AZORA-COMPREHENSIVE-ARCHITECTURE.md` - Complete system architecture
