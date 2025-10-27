@@ -1,4 +1,4 @@
-# Azora OS Embassy Invitation - G20 South Africa Summit Opportunity
+`# Azora OS Embassy Invitation - G20 South Africa Summit Opportunity
 
 **Subject:** Invitation to Join Azora OS: Sovereign Digital Infrastructure for Planetary Economic Prosperity
 
