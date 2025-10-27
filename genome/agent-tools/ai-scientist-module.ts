@@ -319,10 +319,11 @@ export class AIScientistModule {
             setTimeout(() => this.startResearchCycle(), 24 * 60 * 60 * 1000); // Daily cycles
 
         } catch (error) {
-            logger.error('Research cycle failed', { cycleId: cycle.id, error: error.message });
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            logger.error('Research cycle failed', { cycleId: cycle.id, error: errorMessage });
             cycle.findings.push({
                 type: 'dead_end',
-                description: `Research cycle failed: ${error.message}`,
+                description: `Research cycle failed: ${errorMessage}`,
                 evidence: [],
                 impact: -0.1,
                 confidence: 1.0
@@ -454,7 +455,8 @@ export class AIScientistModule {
                     });
 
                 } catch (error) {
-                    logger.warn(`Failed to implement algorithm ${candidate.name}:`, error);
+                    const errorMessage = error instanceof Error ? error.message : String(error);
+                    logger.warn(`Failed to implement algorithm ${candidate.name}:`, errorMessage);
                 }
             }
         }
@@ -481,9 +483,9 @@ export class AIScientistModule {
                 if (passedTests.length === results.length) {
                     cycle.findings.push({
                         type: 'breakthrough',
-                        description: `Algorithm ${candidate.name} passed all tests with ${(results[0].improvement * 100).toFixed(1)}% improvement`,
+                        description: `Algorithm ${candidate.name} passed all tests with ${(results[0].comparison.improvement * 100).toFixed(1)}% improvement`,
                         evidence: results.map(r => `${r.testId}: ${r.performance.toFixed(3)}`),
-                        impact: results[0].improvement,
+                        impact: results[0].comparison.improvement,
                         confidence: 0.95
                     });
                 }
@@ -503,7 +505,7 @@ export class AIScientistModule {
             .filter(candidate =>
                 candidate.testResults &&
                 candidate.testResults.every(result => result.passed) &&
-                candidate.testResults.some(result => result.improvement > 1.05)
+                candidate.testResults.some(result => result.comparison.improvement > 1.05)
             );
 
         for (const algorithm of successfulAlgorithms) {
