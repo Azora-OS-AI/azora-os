@@ -17,6 +17,13 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 try:
+    from dotenv import load_dotenv
+    load_dotenv()  # Load environment variables from .env file
+except ImportError:
+    print("⚠️ python-dotenv not installed. Install with: pip install python-dotenv")
+    print("   Or set environment variables manually.")
+
+try:
     from web3 import Web3
     from web3.middleware import geth_poa_middleware
     from eth_account import Account
