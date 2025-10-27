@@ -126,19 +126,16 @@ start_ultra_mining() {
     case $MOST_PROFITABLE in
         "ERG")
             echo "🚀 Launching ERGO mining (most profitable)..."
-            cd xmrig-6.21.0
-            exec ./xmrig \
-                --url $ERG_POOL_2 \
+            cd 1.87
+            exec ./lolMiner --algo AUTOLYKOS2 \
+                --pool $ERG_POOL_1 \
                 --user $ERG_WALLET.i7-1065G7-ultra \
                 --pass x \
-                --keepalive \
-                --cpu-max-threads-hint 100 \
-                --asm ryzen \
-                --randomx-1gb-pages \
-                --http-host 127.0.0.1 \
-                --http-port 4444 \
-                --http-access-token x \
-                --donate-level 1
+                --tls 1 \
+                --cpu-threads 8 \
+                --cpu-affinity 0xFF \
+                --apiport 4446 \
+                --apihost 127.0.0.1
             ;;
         "CFX")
             echo "🚀 Launching CONFLUX mining (high hashrate)..."

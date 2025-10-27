@@ -53,12 +53,12 @@ Choose option 1 for auto-profit switching, or pick a specific coin.
 
 | Coin | Algorithm | Hashrate | Daily Profit | Monthly Profit |
 |------|-----------|----------|--------------|----------------|
-| **ERG** | Autolykos v2 | ~35 MH/s | **$4.80** | **$144** |
-| **CFX** | Octopus | ~25 MH/s | **$3.20** | **$96** |
-| **XMR** | RandomX | ~3 KH/s | **$2.50** | **$75** |
-| **RVN** | KawPow | ~12 MH/s | **$1.80** | **$54** |
+| **ERG** | Autolykos v2 | ~35 MH/s | **$0.12** | **$3.60** |
+| **CFX** | Octopus | ~25 MH/s | **$0.08** | **$2.40** |
+| **XMR** | RandomX | ~3 KH/s | **$0.07** | **$2.10** |
+| **RVN** | KawPow | ~12 MH/s | **$0.03** | **$0.90** |
 
-**Net Profit** (after $3/month electricity): **$2.50-4.50/day** ($75-135/month)
+**Net Profit** (after $3/month electricity): **$0.02-0.09/day** ($0.60-2.70/month)
 
 ## 🖥️ MINING DASHBOARD
 

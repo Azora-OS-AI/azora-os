@@ -2,12 +2,23 @@
     "buildCommand": "npm run build",
     "outputDirectory": ".next",
     "framework": "nextjs",
-    "regions": [
-        "iad1"
-    ],
+    "regions": ["iad1"],
     "functions": {
-        "src/app/**/*.js": {
+        "src/app/api/**/*.ts": {
             "maxDuration": 10
         }
-    }
+    },
+    "env": {
+        "BACKEND_API_URL": "@backend-api-url"
+    },
+    "rewrites": [
+        {
+            "source": "/api/mining/:path*",
+            "destination": "/api/mining/:path*"
+        },
+        {
+            "source": "/api/health",
+            "destination": "/api/health"
+        }
+    ]
 }
