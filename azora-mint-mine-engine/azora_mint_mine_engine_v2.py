@@ -78,6 +78,9 @@ class AzoraMintMineEngineV2:
             'conversion_rate': self.config['mining']['conversion_rate']
         }
 
+        # Track pool balance for delta calculations
+        self.last_pool_balance = 0.0
+
         # Setup logging
         self.setup_logging()
 
@@ -342,6 +345,10 @@ class AzoraMintMineEngineV2:
                 """)
                 result = cursor.fetchone()
                 self.mining_stats['active_sessions'] = result['active_sessions']
+
+                # Load last pool balance (initialize to 0 if not found)
+                # In production, you'd store this in a dedicated table
+                self.last_pool_balance = 0.0
 
         except Exception as e:
             self.logger.error(f"Failed to load mining stats: {e}")
