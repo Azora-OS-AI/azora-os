@@ -95,8 +95,8 @@ print_status "Verifying deployment..."
 REQUIRED_FILES=(
     ".env.production"
     "azora_mining_launcher.py"
-    "ethminer_woolypooly.sh"
-    "ethminer_woolypooly.bat"
+    "mining-config/ethminer_woolypooly.sh"
+    "mining-config/ethminer_woolypooly.bat"
     "mining-config/woolypooly_config.conf"
     "MINING_SETUP_README.md"
     "schema.sql"
@@ -140,7 +140,7 @@ fi
 print_status "Testing mining scripts..."
 
 # Test shell script syntax
-if bash -n ethminer_woolypooly.sh; then
+if bash -n mining-config/ethminer_woolypooly.sh; then
     print_status "✅ Linux mining script syntax valid"
 else
     print_error "❌ Linux mining script has syntax errors"
