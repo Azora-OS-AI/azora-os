@@ -66,9 +66,16 @@ fi
 
 print_status "Creating production deployment tag..."
 
-# Create a version tag
-VERSION="v2.0.0-production"
-git tag -a "$VERSION" -m "AZORA OS Production Release v2.0.0
+# Create a version tag (increment if exists)
+VERSION="v2.0.1-production"
+if git tag | grep -q "^${VERSION}$"; then
+    VERSION="v2.0.2-production"
+    if git tag | grep -q "^${VERSION}$"; then
+        VERSION="v2.0.$(date +%s)-production"
+    fi
+fi
+
+git tag -a "$VERSION" -m "AZORA OS Production Release $VERSION
 
 Production Features:
 - Live WoolyPooly mining integration
