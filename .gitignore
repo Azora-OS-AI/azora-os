@@ -154,10 +154,14 @@ proprietary/he-engine.js
 *.p12
 *.pfx
 
-# Backup files
-*.bak
-*.backup
-*.old
-*.orig
-*.swp
-*.swo
+# Archive files
+*.zip
+*.tar.gz
+*.tar.bz2
+*.7z
+
+# Offline cache (local)
+.offline-cache/
+
+# Docker volumes (local)
+docker-volumes/
