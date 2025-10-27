@@ -106,7 +106,7 @@ REQUIRED_FILES=(
     "mining-config/ethminer_woolypooly.bat"
     "mining-config/woolypooly_config.conf"
     "MINING_SETUP_README.md"
-    "schema.sql"
+    "database/schema.sql"
     "azora_mint_mine_engine_v2.py"
 )
 
