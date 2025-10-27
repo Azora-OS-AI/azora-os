@@ -107,7 +107,7 @@ REQUIRED_FILES=(
     "mining-config/woolypooly_config.conf"
     "MINING_SETUP_README.md"
     "database/schema.sql"
-    "azora_mint_mine_engine_v2.py"
+    "azora-mint-mine-engine/azora_mint_mine_engine_v2.py"
 )
 
 for file in "${REQUIRED_FILES[@]}"; do
