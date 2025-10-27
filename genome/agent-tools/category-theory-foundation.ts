@@ -126,7 +126,7 @@ export class AzoraEconomicCategory implements Category {
     services.forEach(service => {
       const obj: Object = {
         ...service,
-        properties: new Map([
+        properties: new Map<string, string | number>([
           ['status', 'active'],
           ['version', '1.0.0'],
           ['health', 1.0]
@@ -351,9 +351,9 @@ export class ServiceIntegrationFunctor implements Functor<any, any> {
  * Mathematical Proof Engine for Category Theory
  */
 export class CategoryProofEngine {
-  private category: Category;
+  private category: AzoraEconomicCategory;
 
-  constructor(category: Category) {
+  constructor(category: AzoraEconomicCategory) {
     this.category = category;
   }
 

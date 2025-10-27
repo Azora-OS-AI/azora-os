@@ -155,7 +155,7 @@ describe('Unified Elara Integration Tests', () => {
             const strategicResult = await elaraCore.processUserQuery(input, testContext);
 
             expect(strategicResult).toBeDefined();
-            expect(strategicResult.response).toContain('strategy' || 'planning' || 'goals' || 'vision');
+            expect(strategicResult.response).toMatch(/(strategy|planning|goals|vision)/i);
         });
 
         test('Operational mode should focus on immediate execution', async () => {

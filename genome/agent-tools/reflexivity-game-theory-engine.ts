@@ -181,7 +181,7 @@ export interface ReflexiveInsight {
 
 export class ReflexivityGameTheoryEngine {
     private eventEmitter: EventEmitter;
-    private currentGameState: GameState;
+    private currentGameState!: GameState;
     private simulations: Map<string, ReflexiveSimulation>;
     private evolutionEngine: EvolutionaryEngine;
 
@@ -375,13 +375,13 @@ export class ReflexivityGameTheoryEngine {
 
         // Calculate reflexive feedback loops
         const totalImpact = strategyImpacts.reduce((acc, impact) => ({
-            demand: acc.demand + impact.demand,
-            supply: acc.supply + impact.supply,
-            competition: acc.competition + impact.competition,
-            regulation: acc.regulation + impact.regulation,
-            technology: acc.technology + impact.technology,
+            demand: (acc.demand || 0) + (impact.demand || 0),
+            supply: (acc.supply || 0) + (impact.supply || 0),
+            competition: (acc.competition || 0) + (impact.competition || 0),
+            regulation: (acc.regulation || 0) + (impact.regulation || 0),
+            technology: (acc.technology || 0) + (impact.technology || 0),
             economicCycle: currentState.economicCycle
-        }), { demand: 0, supply: 0, competition: 0, regulation: 0, technology: 0 });
+        }), { demand: 0, supply: 0, competition: 0, regulation: 0, technology: 0, economicCycle: currentState.economicCycle }) as MarketConditions;
 
         // Apply reflexive effects (actions change fundamentals)
         const newState: MarketConditions = {

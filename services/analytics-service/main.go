@@ -35,10 +35,10 @@ type AnalyticsQuery struct {
 }
 
 type AnalyticsResult struct {
-	Query     AnalyticsQuery       `json:"query"`
+	Query     AnalyticsQuery           `json:"query"`
 	Results   []map[string]interface{} `json:"results"`
-	Total     int                   `json:"total"`
-	Processed int                   `json:"processed"`
+	Total     int                      `json:"total"`
+	Processed int                      `json:"processed"`
 }
 
 var (
@@ -85,11 +85,11 @@ func initKafka() {
 	}
 
 	kafkaReader = kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{kafkaBrokers},
-		Topic:     "analytics-events",
-		GroupID:   "analytics-service",
-		MinBytes:  10e3, // 10KB
-		MaxBytes:  10e6, // 10MB
+		Brokers:  []string{kafkaBrokers},
+		Topic:    "analytics-events",
+		GroupID:  "analytics-service",
+		MinBytes: 10e3, // 10KB
+		MaxBytes: 10e6, // 10MB
 	})
 
 	// Start background consumer
@@ -270,14 +270,14 @@ func executeCountQuery(query *AnalyticsQuery) ([]map[string]interface{}, error) 
 	return results, nil
 }
 
-func executeSumQuery(query *AnalyticsQuery) ([]map[string]interface{}, error) {
+func executeSumQuery(_ *AnalyticsQuery) ([]map[string]interface{}, error) {
 	// Simplified implementation - would aggregate numeric fields
 	return []map[string]interface{}{
 		{"message": "Sum aggregation not fully implemented"},
 	}, nil
 }
 
-func executeAvgQuery(query *AnalyticsQuery) ([]map[string]interface{}, error) {
+func executeAvgQuery(_ *AnalyticsQuery) ([]map[string]interface{}, error) {
 	// Simplified implementation - would calculate averages
 	return []map[string]interface{}{
 		{"message": "Average aggregation not fully implemented"},
