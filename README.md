@@ -86,6 +86,7 @@ Azora OS features a complete microservices architecture with autonomous AI capab
 - **AI/ML**: OpenAI integration, LangChain, custom constitutional AI
 - **Infrastructure**: Docker, Kubernetes, multi-cloud deployment
 - **Security**: Zero-trust architecture, cryptographic sovereignty
+- **Business Tools**: Microsoft 365 Business (email, collaboration, productivity)
 
 ### Genesis Log
 The official [Genesis Log](/docs/genesis-log.json) contains the cryptographic foundation of Azora OS, including:
@@ -315,6 +316,38 @@ services:
     ports: ["4030:4030"]
     depends_on: [postgres, redis]
 ```
+
+## 📧 Microsoft 365 Business Infrastructure
+
+Azora OS maintains sovereign business infrastructure through Microsoft 365 Business for enterprise-grade collaboration and communication.
+
+### Business Email Setup
+- **Domain**: azora.world
+- **Primary Accounts**:
+  - admin@azora.world (Global Administration)
+  - enterprise@azora.world (Business Development)
+  - support@azora.world (Technical Support)
+  - international@azora.world (Diplomatic Relations)
+
+### Collaboration Tools
+- **Teams**: Secure channels for G20 summit coordination and internal communication
+- **SharePoint**: Document management with encrypted G20 materials
+- **OneDrive**: Cloud storage with enterprise security
+- **Outlook**: Professional email with compliance features
+
+### Security Features
+- **Azure AD Premium**: Multi-factor authentication and conditional access
+- **Intune**: Mobile device management and endpoint protection
+- **Exchange Online Protection**: Advanced threat protection
+- **Data Loss Prevention**: Sensitive information protection
+
+### Integration Points
+- **Azora OS Dashboard**: Teams meeting integration
+- **Document Sharing**: Secure links for embassy communications
+- **Calendar Sync**: Meeting coordination across time zones
+- **Contact Management**: Global stakeholder database
+
+For complete setup instructions, see `MICROSOFT_365_SETUP_GUIDE.md`.
 
 ## 🔒 Security & Compliance
 
