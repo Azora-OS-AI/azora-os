@@ -38,6 +38,7 @@
 - [ ] **Service Testing**: Implement and test actual API endpoints beyond mocks
 - [ ] **Docker Optimization**: Reduce image sizes and add health checks
 - [ ] **Database Setup**: Configure PostgreSQL with pgvector for production
+- [ ] **Microsoft 365 Setup**: Establish business email and collaboration infrastructure
 
 ### **Core Service Implementation**
 - [ ] **Aegis Citadel API**: Complete sovereign seed grant management endpoints
