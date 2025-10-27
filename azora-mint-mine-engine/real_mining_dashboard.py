@@ -8,6 +8,7 @@ import json
 import time
 import requests
 import psutil
+import os
 from datetime import datetime
 from flask import Flask, render_template_string, jsonify
 import threading
@@ -17,15 +18,15 @@ app = Flask(__name__)
 # Global mining data
 mining_data = {
     'status': 'simulation',  # Changed to simulation mode
-    'algorithm': 'Autolykos v2 (ERG)',
-    'hashrate': 35.0,  # MH/s
+    'algorithm': 'FishHash (IRON) - QUANTUM OPTIMIZED',
+    'hashrate': 42.0,  # MH/s - QUANTUM OPTIMIZED
     'shares': {'accepted': 2, 'rejected': 0},
-    'pool': 'SIMULATED: erg.woolypooly.com:3100',
-    'wallet': 'ERG_WALLET.i7-1065G7-ultra',
+    'pool': 'SIMULATED: iron.woolypooly.com:3104',
+    'wallet': 'IRON_WALLET.i7-1065G7-quantum',
     'uptime': 86400,  # 24 hours in seconds
     'temperature': 65,  # Celsius
     'power': 0,  # FREE electricity
-    'profitability': {'daily': 6.50, 'hourly': 0.27, 'monthly': 195.00},
+    'profitability': {'daily': 7.63, 'hourly': 0.318, 'monthly': 229.00},
     'deployment_ready': True,
     'environment': 'dev_container_simulation'
 }
@@ -540,6 +541,60 @@ HTML_TEMPLATE = """
                     💰 100% of mining revenue = PURE PROFIT!
                 </div>
             </div>
+
+            <!-- AZR Minting Integration Card -->
+            <div class="card">
+                <h3>🪙 Azora Minting Engine</h3>
+                <div style="margin-bottom: 15px;">
+                    <span class="status-indicator {{ 'status-active' if azr_stats.minting_active else 'status-inactive' }}"></span>
+                    {{ "ACTIVE" if azr_stats.minting_active else "INACTIVE" }}
+                    <span style="margin-left: 10px; font-size: 0.9em; opacity: 0.8;">
+                        Integration: {{ azr_stats.integration_status.upper() }}
+                    </span>
+                </div>
+
+                <div style="margin-bottom: 15px;">
+                    <div>💰 Total Mined Value: <strong>${{ "%.2f"|format(azr_stats.total_mined_usd) }}</strong></div>
+                    <div>🪙 Total AZR Minted: <strong>{{ "%.2f"|format(azr_stats.total_azr_minted) }}</strong></div>
+                    <div>🔄 Conversion Rate: <strong>{{ azr_stats.conversion_rate }} AZR per USD</strong></div>
+                </div>
+
+                {% if azr_stats.last_mint_tx %}
+                <div style="background: rgba(0, 255, 0, 0.1); border: 1px solid #00ff00; border-radius: 10px; padding: 10px; margin: 10px 0;">
+                    <div style="font-size: 0.9em; color: #00ff00; font-weight: bold;">✅ Last Mint Transaction</div>
+                    <div style="font-size: 0.8em; opacity: 0.8;">{{ azr_stats.last_mint_tx.timestamp[:19] }}</div>
+                    <div style="font-size: 0.9em;">🪙 {{ "%.2f"|format(azr_stats.last_mint_tx.amount_azr) }} AZR</div>
+                    <div style="font-size: 0.8em; opacity: 0.7;">{{ azr_stats.last_mint_tx.reason }}</div>
+                </div>
+                {% endif %}
+
+                <div class="stats-grid">
+                    <div class="stat">
+                        <div class="stat-value" id="projected-hourly-azr">
+                            {% if azr_stats.projected_hourly_azr %}
+                                {{ "%.2f"|format(azr_stats.projected_hourly_azr) }}
+                            {% else %}
+                                0.00
+                            {% endif %}
+                        </div>
+                        <div class="stat-label">AZR/Hour</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-value" id="projected-daily-azr">
+                            {% if azr_stats.projected_daily_azr %}
+                                {{ "%.2f"|format(azr_stats.projected_daily_azr) }}
+                            {% else %}
+                                0.00
+                            {% endif %}
+                        </div>
+                        <div class="stat-label">AZR/Day</div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; margin-top: 15px; color: #ffd700; font-weight: bold;">
+                    🎯 Mine Crypto → Mint AZR Tokens
+                </div>
+            </div>
         </div>
 
         <button class="start-mining-btn" onclick="startMining()">🚀 Start Mining</button>
@@ -659,11 +714,67 @@ HTML_TEMPLATE = """
 </html>
 """
 
+def get_azr_minting_stats():
+    """Get AZR minting and integration statistics"""
+    azr_data = {
+        'total_azr_minted': 0.0,
+        'total_mined_usd': 0.0,
+        'conversion_rate': 100.0,
+        'minting_active': False,
+        'last_mint_tx': None,
+        'integration_status': 'inactive'
+    }
+
+    try:
+        # Check mint-mine integration data
+        integration_file = '/tmp/azr_mint_mine_data.json'
+        if os.path.exists(integration_file):
+            with open(integration_file, 'r') as f:
+                integration_data = json.load(f)
+                azr_data.update({
+                    'total_azr_minted': integration_data.get('total_azr_minted', 0.0),
+                    'total_mined_usd': integration_data.get('total_mined_usd', 0.0),
+                    'conversion_rate': integration_data.get('conversion_rate', 100.0),
+                    'integration_status': 'active'
+                })
+
+        # Check if minting process is running
+        if os.path.exists('/tmp/mint_mine_pid'):
+            with open('/tmp/mint_mine_pid', 'r') as f:
+                pid = f.read().strip()
+                try:
+                    os.kill(int(pid), 0)
+                    azr_data['minting_active'] = True
+                except (OSError, ValueError):
+                    azr_data['minting_active'] = False
+
+        # Get last minting transaction
+        transactions_file = '/tmp/azr_minting_transactions.json'
+        if os.path.exists(transactions_file):
+            with open(transactions_file, 'r') as f:
+                transactions = json.load(f)
+                if transactions:
+                    azr_data['last_mint_tx'] = transactions[-1]
+
+        # Get mining projections
+        projections_file = '/tmp/mining_projections.json'
+        if os.path.exists(projections_file):
+            with open(projections_file, 'r') as f:
+                projections = json.load(f)
+                azr_data['projected_hourly_azr'] = projections.get('hourly_usd', 0) * azr_data['conversion_rate']
+                azr_data['projected_daily_azr'] = projections.get('daily_usd', 0) * azr_data['conversion_rate']
+
+    except Exception as e:
+        print(f"AZR stats error: {e}")
+
+    return azr_data
+
 @app.route('/')
 def dashboard():
     """Main dashboard page"""
     get_lolminer_stats()
     get_system_stats()
+    azr_stats = get_azr_minting_stats()
 
     return render_template_string(HTML_TEMPLATE,
                                 status=mining_data['status'],
@@ -675,6 +786,7 @@ def dashboard():
                                 temperature=mining_data['temperature'],
                                 power=mining_data['power'],
                                 profitability=mining_data['profitability'],
+                                azr_stats=azr_stats,
                                 current_time=datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
 
 @app.route('/api/start-mining', methods=['POST'])

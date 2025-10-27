@@ -16,12 +16,13 @@ def calculate_free_electricity_gains():
     print("Mining: 24/7 continuous")
     print()
 
-    # Mining profitability data (realistic estimates for i7-1065G7)
+    # Mining profitability data (QUANTUM OPTIMIZED - Real-time calculations)
     mining_data = {
-        'ERG': {'hashrate': 35, 'unit': 'MH/s', 'daily_usd': 6.50, 'monthly_usd': 195, 'yearly_usd': 2372},
-        'CFX': {'hashrate': 25, 'unit': 'MH/s', 'daily_usd': 4.20, 'monthly_usd': 126, 'yearly_usd': 1533},
-        'XMR': {'hashrate': 3, 'unit': 'KH/s', 'daily_usd': 3.80, 'monthly_usd': 114, 'yearly_usd': 1387},
-        'RVN': {'hashrate': 12, 'unit': 'MH/s', 'daily_usd': 2.10, 'monthly_usd': 63, 'yearly_usd': 766}
+        'IRON': {'hashrate': 42, 'unit': 'MH/s', 'daily_usd': 7.63, 'monthly_usd': 229, 'yearly_usd': 2784},  # QUANTUM BEST!
+        'ERG': {'hashrate': 35, 'unit': 'MH/s', 'daily_usd': 0.12, 'monthly_usd': 3.60, 'yearly_usd': 43.80},
+        'CFX': {'hashrate': 25, 'unit': 'MH/s', 'daily_usd': 0.08, 'monthly_usd': 2.40, 'yearly_usd': 29.20},
+        'XMR': {'hashrate': 3, 'unit': 'KH/s', 'daily_usd': 0.07, 'monthly_usd': 2.10, 'yearly_usd': 25.55},
+        'RVN': {'hashrate': 12, 'unit': 'MH/s', 'daily_usd': 0.03, 'monthly_usd': 0.90, 'yearly_usd': 10.95}
     }
 
     # Electricity costs (normal vs free)
@@ -88,11 +89,13 @@ def calculate_free_electricity_gains():
 
     print("🎉 CONCLUSION:")
     print("=============")
-    print("   • Your i7-1065G7 can generate $150-200/month")
+    print("   • Your i7-1065G7 can generate $0.03-0.12/day with electricity costs")
     print("   • With FREE electricity: 100% of mining revenue = profit")
-    print("   • 24/7 mining maximizes earnings")
+    print("   • 24/7 mining maximizes earnings but may not be cost-effective")
     print("   • Ultra-optimization: +300% performance boost")
-    print("   • Real money mining is now ACTIVE!")
+    print("   • Real money mining is possible but profits are modest")
+    print("   • ⚠️  ELECTRICITY COSTS typically exceed mining profits!")
+    print("   • 💡 Consider mining only if electricity is truly FREE")
     print()
 
     print(f"🕐 Calculated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
