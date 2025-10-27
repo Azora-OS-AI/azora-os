@@ -1,167 +1,126 @@
-# Dependencies
-node_modules/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
+# PyInstaller
+*.manifest
+*.spec
 
-# Coverage directory used by tools like istanbul
-coverage/
-*.lcov
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
 
-# nyc test coverage
-.nyc_output
-
-# Grunt intermediate storage (https://gruntjs.com/creating-plugins#storing-task-files)
-.grunt
-
-# Bower dependency directory (https://bower.io/)
-bower_components
-
-# node-waf configuration
-.lock-wscript
-
-# Compiled binary addons (https://nodejs.org/api/addons.html)
-build/Release
-
-# Dependency directories
-jspm_packages/
-
-# TypeScript cache
-*.tsbuildinfo
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Optional stylelint cache
-.stylelintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Yarn Integrity file
-.yarn-integrity
-
-# dotenv environment variables file
-.env
-.env.test
-.env.production
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
-
-# parcel-bundler cache (https://parceljs.org/)
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.coverage.*
 .cache
-.parcel-cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Translations
+*.mo
+*.pot
+
+# Django stuff:
+*.log
+local_settings.py
+db.sqlite3
+
+# Flask stuff:
+instance/
+.webassets-cache
+
+# Scrapy stuff:
+.scrapy
+
+# Sphinx documentation
+docs/_build/
+
+# PyBuilder
+target/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# pyenv
+.python-version
+
+# celery beat schedule file
+celerybeat-schedule
+
+# SageMath parsed files
+*.sage.py
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Spyder project settings
+.spyderproject
+.spyproject
+
+# Rope project settings
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+node_modules
 
 # Next.js build output
+.next/
 .next
-out
-
-# Nuxt.js build / generate output
-.nuxt
-dist
-
-# Gatsby files
-.cache/
-public
-
-# Storybook build outputs
-.out
-.storybook-out
-
-# Temporary folders
-tmp/
-temp/
-
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-
-# OS generated files
-Thumbs.db
-ehthumbs.db
-Desktop.ini
-
-# Logs
-logs
-*.log
-
-# Build artifacts
-built/
-dist/
-build/
-
-# Testing
-test-results/
-playwright-report/
-playwright/.cache/
+out/
 
 # Nx cache
+.nx/
 .nx/cache
 .nx/workspace-data
 
-# Cursor rules
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
+# Build artifacts and archives
+*.tar.gz
+*.tgz
+
+# Synapse UI build outputs
+synapse/*/public/
+synapse/*/.next/
 
 # Vercel
 .vercel
-
-# Proprietary implementations (keep interfaces)
-proprietary/quantum-crypto.js
-proprietary/zkp-engine.js
-proprietary/mpc-engine.js
-proprietary/he-engine.js
-
-# Database files
-*.db
-*.sqlite
-*.sqlite3
-
-# Certificate files
-*.pem
-*.key
-*.crt
-*.cer
-*.p12
-*.pfx
-
-# Archive files
-*.zip
-*.tar.gz
-*.tar.bz2
-*.7z
-
-# Offline cache (local)
-.offline-cache/
-
-# Docker volumes (local)
-docker-volumes/
