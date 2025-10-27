@@ -26,13 +26,16 @@ const config: HardhatUserConfig = {
   },
   networks: {
     hardhat: {
+      type: "edr",
       chainId: 1337
     },
     localhost: {
+      type: "http",
       url: "http://127.0.0.1:8545",
       accounts: [PRIVATE_KEY]
     },
     azora: {
+      type: "http",
       url: process.env.AZORA_RPC_URL || "https://rpc.azora.network",
       accounts: [PRIVATE_KEY],
       chainId: 195,

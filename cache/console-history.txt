@@ -1,7 +1,0 @@
-npx hardhat run --network localhost scripts/deploy-redemption.mjs
-export GNOSIS_SAFE_ADDRESS=0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266
-export AZR_ADDRESS=0x742d35Cc6634C0532925a3b844Bc454e4438f44e
-export AZORA_RPC_URL=http://localhost:8545
-# Deploy Redemption contract
-npx hardhat node --port 8545 --hostname 0.0.0.0
-# Start local blockchain
