@@ -18,7 +18,8 @@ import {
     Globe,
     Users,
     TrendingUp,
-    Eye
+    Eye,
+    GraduationCap
 } from "lucide-react"
 
 interface SystemPulseProps {
@@ -149,7 +150,7 @@ export function SystemPulse({ className }: SystemPulseProps) {
         {
             label: "Knowledge Domains",
             value: systemMetrics.knowledgeDomains.toString(),
-            icon: BookOpen,
+            icon: GraduationCap,
             color: "text-indigo-500",
             bgColor: "bg-indigo-500/10",
             progress: null

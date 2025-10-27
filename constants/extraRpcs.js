@@ -1,0 +1,12 @@
+// Additional RPC endpoints for various chains
+// Used by Chainlist.org for extended RPC coverage
+
+export const extraRpcs = {
+  // Azora Mainnet additional RPCs (if needed in future)
+  195: {
+    rpcs: [
+      // Primary RPC already in chainid-195.js
+      // Additional RPCs can be added here
+    ]
+  }
+};
