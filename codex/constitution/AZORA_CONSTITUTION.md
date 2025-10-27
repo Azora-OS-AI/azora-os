@@ -9,7 +9,7 @@
 
 ## PREAMBLE
 
-We, the founders and builders of Azora ES, united in purpose to create the first
+We, the founders and builders of Azora OS, united in purpose to create the first
 complete, self-sufficient software infrastructure owned and operated from Africa,
 do hereby establish this Constitution to govern our operations, economics, and
 path to full software architecture to compete with global giants.
@@ -184,12 +184,207 @@ Certified students become "Cohort Leaders," earning percentage of AZR from 10-20
 4. **Legal Counsel** - Compliance & regulations
 5. **Community Representative** - Elected by token holders
 
-### Section 1-B: Situational Governance
+### Section 1-A: Diversity & Excellence Standards
 
-**Dynamic Seats:**
-During situations (e.g., Security Breach), algorithmically appoint 6th temporary member (e.g., top Bug Bounty contributor) with voting rights.
+**Diversity Mandate:**
+The Azora Board shall maintain maximum diversity across all dimensions to ensure comprehensive representation and decision-making excellence:
 
-**Benefit:** Adapts governance structure to immediate expertise needs.
+**Geographic Diversity (Pan-African Focus):**
+- Minimum 3 different African countries represented
+- Priority for underrepresented regions (West, Central, East Africa)
+- International advisors welcome but African majority maintained
+
+**Gender Diversity:**
+- Minimum 40% women/gender minorities on board
+- Active recruitment from African women in tech
+- Gender-balanced succession planning
+
+**Expertise Diversity:**
+- Technical, business, legal, community, and student perspectives
+- Age diversity (18-65+ years)
+- Experience levels from student to executive
+
+**Cultural & Linguistic Diversity:**
+- Multiple African languages represented
+- Cultural perspectives from different African ethnic groups
+- Global diaspora inclusion
+
+**Excellence Standards:**
+- **Technical Excellence:** Deep expertise in relevant domains
+- **Ethical Standards:** Uncompromising integrity and transparency
+- **Constitutional Adherence:** Perfect compliance record
+- **Performance Metrics:** Measurable contributions and outcomes
+- **Continuous Learning:** Commitment to personal and professional growth
+
+**Board Member Qualifications:**
+1. **Domain Mastery:** Recognized expertise in their field
+2. **Constitutional Knowledge:** Deep understanding of Azora principles
+3. **Track Record:** Proven success in similar roles
+4. **Cultural Fit:** Alignment with African-first, humanity-first values
+5. **Availability:** Minimum 20 hours/week commitment
+6. **Independence:** No conflicts of interest with Azora operations
+
+**Selection Process:**
+- **Open Applications:** Annual global recruitment
+- **Diversity-First Screening:** Priority for underrepresented groups
+- **Expert Panel Review:** Technical and cultural assessment
+- **Community Vote:** Final selection by token holders
+- **Probation Period:** 90-day evaluation before full board membership
+
+**Board Development:**
+- **Mentorship Program:** Senior members mentor new recruits
+- **Training Requirements:** Quarterly constitutional and industry training
+- **Performance Reviews:** Annual evaluation with improvement plans
+- **Succession Planning:** 2-year rotation cycle with overlap training
+
+---
+
+## ARTICLE V-B: AZORA EXCELLENCE & DIVERSITY BOARD
+
+### Section 1: Supreme Standards Mandate
+
+**Excellence Constitution:**
+Azora OS shall operate at the highest possible standards across all domains, setting new benchmarks for African technology excellence and establishing Azora as the global standard for ethical, innovative, and impactful software infrastructure.
+
+**Standards Hierarchy:**
+1. **Constitutional Standards** - Absolute minimum requirements
+2. **Industry Standards** - Competitive excellence benchmarks  
+3. **Azora Standards** - Self-imposed excellence targets (always 20% above industry)
+4. **Pioneer Standards** - Setting new industry paradigms
+
+### Section 2: The Azora Diversity Board
+
+**Board Structure:**
+A 12-member oversight board dedicated to ensuring diversity, excellence, and constitutional adherence across all Azora operations.
+
+**Board Composition:**
+- **4 Regional Representatives** (East, West, Southern, Northern Africa)
+- **3 Domain Experts** (Technical, Economic, Social Impact)
+- **2 Student Representatives** (Elected by active learners)
+- **2 Community Representatives** (Token holder elected)
+- **1 International Advisor** (Global perspective and standards)
+
+**Diversity Distribution Requirements:**
+- **Geographic:** 100% African representation with global advisory
+- **Gender:** Minimum 50% women/gender minorities
+- **Age:** Spanning 18-70+ years
+- **Expertise:** Technical, business, legal, community, academic
+- **Experience:** Student to executive levels
+- **Cultural:** Multiple African cultures and languages
+
+### Section 3: Board Responsibilities
+
+**Oversight Functions:**
+1. **Standards Setting** - Define and update excellence benchmarks
+2. **Diversity Monitoring** - Ensure representation across all operations
+3. **Constitutional Enforcement** - Supreme court for constitutional matters
+4. **Quality Assurance** - Review all major decisions and implementations
+5. **Innovation Catalyst** - Identify and promote breakthrough opportunities
+6. **Ethics Guardian** - Protect humanity-first principles
+
+**Decision Authority:**
+- **Advisory Power:** Binding recommendations on major decisions
+- **Veto Power:** Can block unconstitutional actions (3/4 majority)
+- **Initiative Power:** Can propose constitutional amendments
+- **Audit Power:** Full access to all systems and records
+
+### Section 4: Excellence Metrics
+
+**Quantitative Standards:**
+- **Code Quality:** 95%+ test coverage, zero critical vulnerabilities
+- **Performance:** 99.9% uptime, sub-100ms response times
+- **Security:** SOC 2 Type II compliance, regular penetration testing
+- **User Satisfaction:** 4.8+ star rating across all services
+- **Economic Impact:** Measurable GDP contribution in Africa
+
+**Qualitative Standards:**
+- **Innovation Leadership:** First-to-market in African tech solutions
+- **Ethical Excellence:** Zero compromises on humanity-first values
+- **Cultural Impact:** Transformative change in African education/tech
+- **Global Recognition:** Industry awards and academic citations
+
+### Section 5: Distribution of Authority
+
+**Decentralized Governance Model:**
+- **Board Level:** Strategic oversight and standards setting
+- **Executive Level:** Day-to-day operations (5-member board)
+- **Service Level:** Autonomous microservice governance
+- **Community Level:** Token holder voting on major decisions
+- **Student Level:** Learning pods and project governance
+
+**Authority Distribution Principles:**
+1. **Subsidiarity:** Decisions made at lowest competent level
+2. **Accountability:** Clear responsibility chains with oversight
+3. **Transparency:** All decisions auditable and publicly visible
+4. **Inclusivity:** Multiple voices in every major decision
+5. **Excellence Gate:** No compromise on quality standards
+
+### Section 6: Board Operations
+
+**Meeting Cadence:**
+- **Monthly Full Board:** Strategic review and decisions
+- **Weekly Executive Sessions:** Operational oversight
+- **Quarterly Community Forums:** Public accountability sessions
+- **Annual Excellence Summit:** Standards review and updates
+
+**Decision Framework:**
+- **Consensus First:** Seek unanimous agreement when possible
+- **Supermajority:** 3/4 for major decisions
+- **Advisory Vote:** Community input on all major changes
+- **Constitutional Override:** Board can override executive decisions
+
+**Board Member Standards:**
+- **Term Limits:** 3-year terms with 1-year overlap
+- **Performance Requirements:** Measurable contributions required
+- **Removal Process:** 2/3 board vote for non-performance
+- **Succession Planning:** Continuous development pipeline
+
+---
+
+## ARTICLE V-C: AZORA EXCELLENCE ACCELERATOR
+
+### Section 1: Acceleration Mandate
+
+**Excellence Engine:**
+Azora shall operate as a perpetual excellence accelerator, continuously raising standards and pushing boundaries across technology, economics, education, and social impact.
+
+### Section 2: Acceleration Mechanisms
+
+**Innovation Labs:**
+- Dedicated R&D facilities for breakthrough technologies
+- 20% time allocation for experimental projects
+- Cross-disciplinary collaboration requirements
+
+**Talent Acceleration:**
+- Accelerated learning programs for high-potential individuals
+- Mentorship networks connecting expertise globally
+- Skill development partnerships with leading institutions
+
+**Economic Acceleration:**
+- Value creation multipliers through ecosystem effects
+- Strategic partnerships amplifying impact
+- Market development initiatives creating new opportunities
+
+**Social Acceleration:**
+- Community building programs scaling impact
+- Policy advocacy for enabling environments
+- Knowledge sharing networks across Africa
+
+### Section 3: Global Standards Leadership
+
+**Azora Benchmark Initiative:**
+- Publish annual excellence benchmarks for African tech
+- Host global conferences on ethical technology
+- Lead industry standards development
+- Create certification programs for excellence
+
+**Thought Leadership:**
+- Research publications on African technology innovation
+- Policy papers on digital transformation
+- Case studies of successful implementations
+- Open-source contributions to global knowledge
+
+---
 
 ### Section 2: Decision Making
 
@@ -568,6 +763,7 @@ This constitution is ratified by the founding board on October 2025.
 - v3.0 - Biological, Cosmological, and Natural Principles Integration (Oct 2025)
 - v3.1 - Phoenix Protocol and Living Coin Genetic Metadata (Oct 2025)
 - v3.2 - Frontend Governance and Subdomain Architecture (Oct 2025)
+- v3.3 - Azora Excellence & Diversity Board Constitution (Oct 2025)
 
 ---
 
@@ -726,7 +922,7 @@ Azora shall maintain a subdomain-based frontend architecture to serve different 
 
 **Core Subdomains:**
 - **azora.world** - Main platform landing and general access
-- **learn.azora.world** - Student learning and earning platform
+- **sapiens.azora.world** - Student learning and earning platform
 - **enterprise.azora.world** - Business solutions and SaaS products
 - **marketplace.azora.world** - Service marketplace and P2P transactions
 - **pay.azora.world** - Payment processing and financial services
