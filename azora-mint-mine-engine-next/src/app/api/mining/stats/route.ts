@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
 // Backend API URL - configure this for your server
 const BACKEND_API_URL = process.env.BACKEND_API_URL || 'http://localhost:5000';
 
-export async function GET(request: NextRequest) {
+export async function GET() {
     try {
         // Proxy the request to the backend mining engine
         const backendResponse = await fetch(`${BACKEND_API_URL}/api/stats`, {
