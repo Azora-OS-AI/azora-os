@@ -421,7 +421,7 @@ class AzoraMintMineEngineV2:
         return earnings
 
     def check_external_mining_pools(self) -> float:
-        """Check external mining pool APIs for earnings"""
+        """Check external mining pool APIs for new earnings (delta only)"""
         earnings = 0.0
 
         if not self.config['apis']['mining_pool_stats']:
@@ -437,8 +437,29 @@ class AzoraMintMineEngineV2:
 
             if response.status_code == 200:
                 data = response.json()
-                # Extract earnings from pool API
-                earnings = data.get('earnings', {}).get('today', 0.0)
+                # Get current unpaid balance (this is the key - not cumulative earnings)
+                current_unpaid_balance = data.get('balance', {}).get('unpaid', 0.0)
+
+                if self.last_pool_balance == 0.0:
+                    # First run - just record the balance, don't mint
+                    self.last_pool_balance = current_unpaid_balance
+                    self.logger.info(f"Initialized pool balance: ${current_unpaid_balance:.4f}")
+                    return 0.0
+
+                if current_unpaid_balance > self.last_pool_balance:
+                    # New earnings detected
+                    new_earnings = current_unpaid_balance - self.last_pool_balance
+                    self.last_pool_balance = current_unpaid_balance
+                    self.logger.info(f"New pool earnings detected: ${new_earnings:.4f}")
+                    return new_earnings
+                elif current_unpaid_balance < self.last_pool_balance:
+                    # Balance reset after payout - update tracking
+                    self.last_pool_balance = current_unpaid_balance
+                    self.logger.info("Pool balance reset detected (likely after payout)")
+                    return 0.0
+                else:
+                    # No change
+                    return 0.0
 
         except Exception as e:
             self.logger.warning(f"External pool API check failed: {e}")
