@@ -130,7 +130,7 @@ else
 fi
 
 # Test Python syntax
-if python3 -m py_compile azora_mint_mine_engine_v2.py; then
+if python3 -m py_compile azora-mint-mine-engine/azora_mint_mine_engine_v2.py; then
     print_status "✅ Python mining engine syntax valid"
 else
     print_error "❌ Python mining engine has syntax errors"
