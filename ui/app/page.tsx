@@ -11,241 +11,266 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
-  Wallet,
-  Coins,
-  ArrowUpRight,
-  ArrowDownLeft,
-  TrendingUp,
-  CreditCard,
-  Send,
-  Download,
-  History,
-  DollarSign,
-  Zap,
-  Shield,
-  Crown,
-  Activity,
-  Star,
-  Users,
-  Globe,
   Brain,
-  Sparkles,
+  Crown,
+  Shield,
+  Coins,
+  TrendingUp,
+  Star,
+  Clock,
   CheckCircle,
   AlertTriangle,
+  BookOpen,
+  Award,
+  Target,
+  Zap,
+  Users,
+  Calendar,
+  Trophy,
+  Activity,
+  Sparkles,
   Eye,
   EyeOff
 } from "lucide-react"
 
-export default function PaymentPortal() {
+interface UserStats {
+  totalCoursesEnrolled: number
+  coursesCompleted: number
+  totalKnowledgePoints: number
+  ascensionLevel: number
+  learningStreak: number
+}
+
+interface UserRewards {
+  totalPoints: number
+  currentMultiplier: number
+  history: Array<{
+    activity: string
+    points: number
+    date: string
+    type: string
+  }>
+}
+
+interface UserProgress {
+  courses: Array<{
+    id: string
+    title: string
+    progress: number
+    assessments: number
+    passed: number
+  }>
+}
+
+interface UserEnrollment {
+  courseId: string
+  enrolledAt: string
+  progress: number
+  status: string
+}
+
+interface Course {
+  id: string
+  title: string
+  description: string
+  level: string
+  duration: string
+  enrolled: number
+  rating: number
+  instructor: string
+  icon: any
+  color?: string
+  userEnrolled?: boolean
+}
+
+interface CoursesData {
+  courses: Course[]
+}
+
+export default function AzoraSapiensPage() {
   const [selectedPeriod, setSelectedPeriod] = useState("7d")
   const [selectedAction, setSelectedAction] = useState<string | null>(null)
-  const [showBalance, setShowBalance] = useState(true)
+  const [showStats, setShowStats] = useState(true)
   const [activeTab, setActiveTab] = useState("overview")
 
   // Real-time data simulation
   const [systemHealth, setSystemHealth] = useState(96.4)
-  const [activeUsers, setActiveUsers] = useState(2847)
+  const [activeLearners, setActiveLearners] = useState(2847)
+
+  // Dynamic data from backend
+  const [userStats, setUserStats] = useState<UserStats | null>(null)
+  const [userRewards, setUserRewards] = useState<UserRewards | null>(null)
+  const [userProgress, setUserProgress] = useState<UserProgress | null>(null)
+  const [userEnrollments, setUserEnrollments] = useState<UserEnrollment[]>([])
+  const [coursesData, setCoursesData] = useState<CoursesData | null>(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const interval = setInterval(() => {
       setSystemHealth(prev => Math.max(90, Math.min(100, prev + (Math.random() - 0.5) * 2)))
-      setActiveUsers(prev => Math.max(2800, Math.min(3000, prev + Math.floor((Math.random() - 0.5) * 20))))
+      setActiveLearners(prev => Math.max(2800, Math.min(3000, prev + Math.floor((Math.random() - 0.5) * 20))))
     }, 5000)
 
     return () => clearInterval(interval)
   }, [])
 
-  const walletStats = [
+  // Fetch user data on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userId = 'demo-user'
+        const [statsRes, rewardsRes, progressRes, enrollmentsRes, coursesRes] = await Promise.all([
+          fetch(`/api/users/${userId}/stats`),
+          fetch(`/api/users/${userId}/rewards`),
+          fetch(`/api/users/${userId}/progress`),
+          fetch(`/api/enrollments?userId=${userId}`),
+          fetch('/api/courses')
+        ])
+
+        if (statsRes.ok) setUserStats(await statsRes.json())
+        if (rewardsRes.ok) setUserRewards(await rewardsRes.json())
+        if (progressRes.ok) setUserProgress(await progressRes.json())
+        if (enrollmentsRes.ok) setUserEnrollments((await enrollmentsRes.json()).enrollments || [])
+        if (coursesRes.ok) setCoursesData(await coursesRes.json())
+      } catch (error) {
+        console.error('Error fetching user data:', error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchUserData()
+  }, [])
+
+  const learningStats = [
     {
-      label: "Total Balance",
-      value: "45,280 AZR",
-      valueUSD: "$2,264.00",
+      label: "Knowledge Points",
+      value: loading ? "..." : (userStats?.totalKnowledgePoints || 0).toLocaleString() + " KP",
       change: "+12.5%",
       trend: "up",
-      icon: Wallet,
+      icon: Coins,
       color: "text-purple-500",
       bgColor: "bg-purple-500/10",
       gradient: "from-purple-500 to-pink-500"
     },
     {
-      label: "Available Balance",
-      value: "42,150 AZR",
-      valueUSD: "$2,107.50",
-      change: "+8.2%",
+      label: "Courses Completed",
+      value: loading ? "..." : (userStats?.coursesCompleted || 0).toString(),
+      change: "+2",
       trend: "up",
-      icon: Coins,
+      icon: BookOpen,
       color: "text-emerald-500",
       bgColor: "bg-emerald-500/10",
       gradient: "from-emerald-500 to-teal-500"
     },
     {
-      label: "Locked in Staking",
-      value: "3,130 AZR",
-      valueUSD: "$156.50",
-      change: "+15.3%",
+      label: "Current Level",
+      value: loading ? "..." : `CKQ-${userStats?.ascensionLevel || 1}`,
+      change: "68%",
       trend: "up",
-      icon: Shield,
+      icon: Crown,
       color: "text-blue-500",
       bgColor: "bg-blue-500/10",
       gradient: "from-blue-500 to-indigo-500"
     },
     {
-      label: "Monthly Earnings",
-      value: "1,847 AZR",
-      valueUSD: "$92.35",
-      change: "+23.1%",
+      label: "Learning Streak",
+      value: loading ? "..." : `${userStats?.learningStreak || 0} days`,
+      change: "+3",
       trend: "up",
-      icon: TrendingUp,
+      icon: Zap,
       color: "text-teal-500",
       bgColor: "bg-teal-500/10",
       gradient: "from-teal-500 to-cyan-500"
     },
   ]
 
-  const transactions = [
+  const currentCourses = [
     {
       id: 1,
-      type: "received",
-      description: "Payment from Acme Corporation",
-      amount: "+2,500 AZR",
-      amountUSD: "+$125.00",
-      date: "2 hours ago",
-      status: "completed",
-      icon: ArrowDownLeft,
-      color: "text-emerald-500",
-      category: "Business"
+      title: "Planetary Economic Intelligence",
+      progress: 75,
+      nextLesson: "Market Dynamics & Prediction",
+      timeLeft: "2h 15m",
+      level: "CKQ-3",
+      instructor: "Dr. Azora Prime",
+      icon: Brain,
+      color: "text-purple-500"
     },
     {
       id: 2,
-      type: "sent",
-      description: "Marketplace purchase: Constitutional AI Agent",
-      amount: "-2,500 AZR",
-      amountUSD: "-$125.00",
-      date: "5 hours ago",
-      status: "completed",
-      icon: ArrowUpRight,
-      color: "text-blue-500",
-      category: "Purchase"
+      title: "Aegis Integrity Systems",
+      progress: 45,
+      nextLesson: "Blockchain Security Fundamentals",
+      timeLeft: "4h 30m",
+      level: "CKQ-2",
+      instructor: "Guardian Protocol",
+      icon: Shield,
+      color: "text-blue-500"
     },
     {
       id: 3,
-      type: "received",
-      description: "Staking rewards",
-      amount: "+156 AZR",
-      amountUSD: "+$7.80",
-      date: "1 day ago",
-      status: "completed",
-      icon: ArrowDownLeft,
-      color: "text-emerald-500",
-      category: "Rewards"
-    },
-    {
-      id: 4,
-      type: "sent",
-      description: "Enterprise subscription renewal",
-      amount: "-1,200 AZR",
-      amountUSD: "-$60.00",
-      date: "2 days ago",
-      status: "completed",
-      icon: ArrowUpRight,
-      color: "text-blue-500",
-      category: "Subscription"
-    },
-    {
-      id: 5,
-      type: "received",
-      description: "Referral bonus",
-      amount: "+500 AZR",
-      amountUSD: "+$25.00",
-      date: "3 days ago",
-      status: "completed",
-      icon: ArrowDownLeft,
-      color: "text-emerald-500",
-      category: "Referral"
-    },
-    {
-      id: 6,
-      type: "sent",
-      description: "API credits purchase",
-      amount: "-800 AZR",
-      amountUSD: "-$40.00",
-      date: "4 days ago",
-      status: "completed",
-      icon: ArrowUpRight,
-      color: "text-blue-500",
-      category: "Purchase"
-    },
-    {
-      id: 7,
-      type: "received",
-      description: "Payment from TechFlow Industries",
-      amount: "+3,200 AZR",
-      amountUSD: "+$160.00",
-      date: "5 days ago",
-      status: "completed",
-      icon: ArrowDownLeft,
-      color: "text-emerald-500",
-      category: "Business"
-    },
-    {
-      id: 8,
-      type: "sent",
-      description: "Cloud infrastructure payment",
-      amount: "-1,500 AZR",
-      amountUSD: "-$75.00",
-      date: "6 days ago",
-      status: "pending",
-      icon: ArrowUpRight,
-      color: "text-blue-500",
-      category: "Infrastructure"
-    },
+      title: "Proof-of-Knowledge Mining",
+      progress: 90,
+      nextLesson: "Final Assessment",
+      timeLeft: "1h 45m",
+      level: "CKQ-4",
+      instructor: "Oracle Network",
+      icon: Target,
+      color: "text-emerald-500"
+    }
   ]
 
-  const paymentMethods = [
+  const recentAchievements = [
     {
       id: 1,
-      type: "Azora Wallet",
-      details: "Primary wallet",
-      balance: "45,280 AZR",
-      icon: Wallet,
-      color: "from-purple-500 to-pink-500",
-      primary: true,
-      security: "Bank-grade encryption"
+      title: "Economic Theory Mastery",
+      description: "Completed advanced economic modeling course",
+      points: 500,
+      date: "2 days ago",
+      icon: Trophy,
+      color: "text-yellow-500"
     },
     {
       id: 2,
-      type: "Credit Card",
-      details: "•••• 4242",
-      balance: "Visa",
-      icon: CreditCard,
-      color: "from-blue-500 to-indigo-500",
-      primary: false,
-      security: "PCI DSS compliant"
+      title: "Assessment Perfect Score",
+      description: "100% on Blockchain Security assessment",
+      points: 250,
+      date: "1 week ago",
+      icon: Target,
+      color: "text-green-500"
     },
     {
       id: 3,
-      type: "Bank Account",
-      details: "•••• 8901",
-      balance: "Chase",
-      icon: DollarSign,
-      color: "from-emerald-500 to-teal-500",
-      primary: false,
-      security: "ACH verified"
-    },
+      title: "Weekly Streak",
+      description: "7 consecutive days of learning",
+      points: 100,
+      date: "3 days ago",
+      icon: Zap,
+      color: "text-orange-500"
+    }
+  ]
+
+  const rewardHistory = [
+    { activity: "Completed 'Economic Theory' assessment", points: 150, date: "2 days ago", type: "assessment" },
+    { activity: "7-day learning streak bonus", points: 100, date: "3 days ago", type: "streak" },
+    { activity: "Enrolled in 'Blockchain Sovereignty'", points: 50, date: "5 days ago", type: "enrollment" },
+    { activity: "Perfect score bonus", points: 250, date: "1 week ago", type: "bonus" },
+    { activity: "Weekly progress milestone", points: 75, date: "1 week ago", type: "milestone" }
   ]
 
   const quickActions = [
-    { label: "Send", icon: Send, color: "from-blue-500 to-indigo-500", description: "Transfer AZR tokens" },
-    { label: "Receive", icon: Download, color: "from-emerald-500 to-teal-500", description: "Generate payment address" },
-    { label: "Buy AZR", icon: Coins, color: "from-purple-500 to-pink-500", description: "Purchase more tokens" },
-    { label: "Stake", icon: Shield, color: "from-orange-500 to-red-500", description: "Earn rewards by staking" },
+    { label: "Continue Learning", icon: BookOpen, color: "from-blue-500 to-indigo-500", description: "Resume your current course" },
+    { label: "Take Assessment", icon: Target, color: "from-emerald-500 to-teal-500", description: "Test your knowledge" },
+    { label: "View Rewards", icon: Coins, color: "from-purple-500 to-pink-500", description: "Check your KP balance" },
+    { label: "Join Community", icon: Users, color: "from-orange-500 to-red-500", description: "Connect with learners" },
   ]
 
   const ecosystemStats = [
-    { label: "Active Users", value: activeUsers.toLocaleString(), icon: Users, color: "text-blue-500" },
-    { label: "System Health", value: `${systemHealth.toFixed(1)}%`, icon: Activity, color: "text-green-500" },
-    { label: "Total Volume", value: "$12.4M", icon: TrendingUp, color: "text-purple-500" },
-    { label: "Network Uptime", value: "99.9%", icon: Zap, color: "text-teal-500" },
+    { label: "Active Learners", value: activeLearners.toLocaleString(), icon: Users, color: "text-blue-500" },
+    { label: "System Integrity", value: `${systemHealth.toFixed(1)}%`, icon: Shield, color: "text-green-500" },
+    { label: "Knowledge Generated", value: "1.2M KP", icon: Brain, color: "text-purple-500" },
+    { label: "Courses Available", value: "47", icon: BookOpen, color: "text-teal-500" },
   ]
 
   const handleQuickAction = (action: string) => {
@@ -253,8 +278,37 @@ export default function PaymentPortal() {
     // Implementation would go here
   }
 
-  const handleAddPaymentMethod = () => {
-    // Implementation would go here
+  const handleEnrollCourse = async (courseId: string) => {
+    try {
+      const response = await fetch('/api/enroll', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: 'demo-user', // In a real app, this would come from auth
+          courseId: courseId,
+        }),
+      });
+
+      if (response.ok) {
+        const result = await response.json();
+        // Update UI to show enrolled status
+        setCoursesData(prev => prev ? {
+          ...prev,
+          courses: prev.courses.map(course =>
+            course.id === courseId
+              ? { ...course, userEnrolled: true }
+              : course
+          )
+        } : null);
+        console.log('Enrolled successfully:', result);
+      } else {
+        console.error('Enrollment failed');
+      }
+    } catch (error) {
+      console.error('Error enrolling:', error);
+    }
   }
 
   return (
@@ -281,10 +335,10 @@ export default function PaymentPortal() {
                   </div>
                   <div>
                     <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-primary via-primary/80 to-accent bg-clip-text text-transparent">
-                      Azora Payment Portal
+                      Azora Sapiens University
                     </h1>
                     <p className="text-sm md:text-base text-muted-foreground">
-                      Sovereign digital economy • Living constitutional AI
+                      Planetary Economic Intelligence Platform • Living Constitutional AI
                     </p>
                   </div>
                 </div>
@@ -293,19 +347,48 @@ export default function PaymentPortal() {
               <div className="flex items-center gap-3">
                 <div className="flex items-center gap-2 px-3 py-2 bg-card/50 rounded-lg border border-border/50">
                   <div className={`w-2 h-2 rounded-full ${systemHealth > 95 ? 'bg-green-500' : systemHealth > 90 ? 'bg-yellow-500' : 'bg-red-500'} animate-living-pulse`} />
-                  <span className="text-sm font-medium">System: {systemHealth.toFixed(1)}%</span>
+                  <span className="text-sm font-medium">Aegis: {systemHealth.toFixed(1)}%</span>
                 </div>
                 <Button
                   variant="outline"
                   size="sm"
-                  onClick={() => setShowBalance(!showBalance)}
+                  onClick={() => setShowStats(!showStats)}
                   className="gap-2"
                 >
-                  {showBalance ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
-                  {showBalance ? 'Hide' : 'Show'} Balance
+                  {showStats ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                  {showStats ? 'Hide' : 'Show'} Stats
                 </Button>
               </div>
             </div>
+
+            {/* Aegis Mobile Sentry Status */}
+            <Card className="border-green-200 bg-green-50/50 dark:border-green-800 dark:bg-green-950/50">
+              <CardHeader className="pb-3">
+                <div className="flex items-center gap-2">
+                  <Shield className="h-5 w-5 text-green-600" />
+                  <CardTitle className="text-lg">Aegis Mobile Sentry</CardTitle>
+                  <Badge variant="outline" className="bg-green-100 text-green-800 border-green-300">
+                    Active
+                  </Badge>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">98.7%</div>
+                    <p className="text-sm text-muted-foreground">Integrity Score</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">24/7</div>
+                    <p className="text-sm text-muted-foreground">Monitoring</p>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">0</div>
+                    <p className="text-sm text-muted-foreground">Alerts Today</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
             {/* Ecosystem Stats */}
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -332,31 +415,28 @@ export default function PaymentPortal() {
                 <TabsTrigger value="overview" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
                   Overview
                 </TabsTrigger>
-                <TabsTrigger value="transactions" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  Transactions
+                <TabsTrigger value="courses" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  Courses
                 </TabsTrigger>
-                <TabsTrigger value="methods" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  Payment Methods
+                <TabsTrigger value="progress" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  Progress
                 </TabsTrigger>
-                <TabsTrigger value="analytics" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  Analytics
+                <TabsTrigger value="rewards" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
+                  Rewards
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="overview" className="space-y-6">
-                {/* Wallet Stats */}
+                {/* Learning Stats */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  {walletStats.map((stat, index) => (
+                  {learningStats.map((stat, index) => (
                     <Card key={index} className="glass border-border/50 hover:shadow-lg transition-all duration-300 overflow-hidden group">
                       <CardContent className="p-6">
                         <div className="flex items-start justify-between mb-4">
                           <div className="flex-1">
                             <p className="text-sm text-muted-foreground mb-1">{stat.label}</p>
                             <p className="text-2xl font-bold mb-1">
-                              {showBalance ? stat.value : '••••••'}
-                            </p>
-                            <p className="text-sm text-muted-foreground">
-                              {showBalance ? stat.valueUSD : '••••••'}
+                              {showStats ? stat.value : '••••••'}
                             </p>
                           </div>
                           <div className={`p-3 rounded-xl ${stat.bgColor} group-hover:scale-110 transition-transform duration-300`}>
@@ -381,7 +461,7 @@ export default function PaymentPortal() {
                       Quick Actions
                     </CardTitle>
                     <CardDescription>
-                      Fast access to common payment operations
+                      Fast access to learning activities
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
@@ -406,114 +486,44 @@ export default function PaymentPortal() {
                   </CardContent>
                 </Card>
 
-                {/* Recent Transactions Preview */}
-                <Card className="glass border-border/50">
-                  <CardHeader>
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <CardTitle className="flex items-center gap-2">
-                          <History className="h-5 w-5 text-primary" />
-                          Recent Transactions
-                        </CardTitle>
-                        <CardDescription>
-                          Your latest payment activity
-                        </CardDescription>
-                      </div>
-                      <Button variant="outline" size="sm" onClick={() => setActiveTab("transactions")}>
-                        View All
-                      </Button>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="space-y-4">
-                      {transactions.slice(0, 3).map((transaction) => (
-                        <div key={transaction.id} className="flex items-center gap-4 p-4 rounded-lg bg-card/30 hover:bg-card/50 transition-all duration-300">
-                          <div className={`p-2 rounded-lg flex-shrink-0 ${transaction.type === "received" ? "bg-emerald-500/10" : "bg-blue-500/10"}`}>
-                            <transaction.icon className={`w-5 h-5 ${transaction.color}`} />
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-1">
-                              <p className="font-semibold truncate">{transaction.description}</p>
-                              <div className="text-right flex-shrink-0">
-                                <p className={`font-bold ${transaction.color}`}>
-                                  {showBalance ? transaction.amount : '••••••'}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {showBalance ? transaction.amountUSD : '••••••'}
-                                </p>
-                              </div>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <p className="text-sm text-muted-foreground">{transaction.date}</p>
-                              <div className="flex items-center gap-2">
-                                <Badge variant="outline" className="text-xs">
-                                  {transaction.category}
-                                </Badge>
-                                <Badge
-                                  className={
-                                    transaction.status === "completed"
-                                      ? "bg-emerald-500/20 text-emerald-500 border-emerald-500/30"
-                                      : "bg-orange-500/20 text-orange-500 border-orange-500/30"
-                                  }
-                                >
-                                  {transaction.status}
-                                </Badge>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
-              </TabsContent>
-
-              <TabsContent value="transactions" className="space-y-6">
+                {/* Current Courses */}
                 <Card className="glass border-border/50">
                   <CardHeader>
                     <CardTitle className="flex items-center gap-2">
-                      <History className="h-5 w-5 text-primary" />
-                      Transaction History
+                      <BookOpen className="h-5 w-5 text-primary" />
+                      Current Courses
                     </CardTitle>
                     <CardDescription>
-                      Complete history of your Azora Coin transactions
+                      Your active learning journey
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
                     <div className="space-y-4">
-                      {transactions.map((transaction) => (
-                        <div key={transaction.id} className="flex items-center gap-4 p-4 rounded-lg bg-card/30 hover:bg-card/50 transition-all duration-300">
-                          <div className={`p-3 rounded-lg flex-shrink-0 ${transaction.type === "received" ? "bg-emerald-500/10" : "bg-blue-500/10"}`}>
-                            <transaction.icon className={`w-6 h-6 ${transaction.color}`} />
+                      {currentCourses.map((course) => (
+                        <div key={course.id} className="flex items-center gap-4 p-4 rounded-lg bg-card/30 hover:bg-card/50 transition-all duration-300">
+                          <div className={`p-2 rounded-lg flex-shrink-0 bg-purple-500/10`}>
+                            <course.icon className={`w-5 h-5 ${course.color}`} />
                           </div>
                           <div className="flex-1 min-w-0">
-                            <div className="flex items-center justify-between mb-2">
-                              <p className="font-semibold">{transaction.description}</p>
+                            <div className="flex items-center justify-between mb-1">
+                              <p className="font-semibold truncate">{course.title}</p>
                               <div className="text-right flex-shrink-0">
-                                <p className={`text-lg font-bold ${transaction.color}`}>
-                                  {showBalance ? transaction.amount : '••••••'}
-                                </p>
-                                <p className="text-sm text-muted-foreground">
-                                  {showBalance ? transaction.amountUSD : '••••••'}
-                                </p>
+                                <Badge variant="secondary">{course.level}</Badge>
                               </div>
                             </div>
+                            <div className="flex items-center justify-between mb-2">
+                              <p className="text-sm text-muted-foreground">Next: {course.nextLesson}</p>
+                              <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {course.timeLeft}
+                              </p>
+                            </div>
                             <div className="flex items-center justify-between">
-                              <div className="flex items-center gap-2">
-                                <p className="text-sm text-muted-foreground">{transaction.date}</p>
-                                <Badge variant="outline" className="text-xs">
-                                  {transaction.category}
-                                </Badge>
+                              <div className="flex-1 mr-4">
+                                <Progress value={course.progress} className="h-2" />
+                                <p className="text-xs text-muted-foreground mt-1">{course.progress}% complete</p>
                               </div>
-                              <Badge
-                                className={
-                                  transaction.status === "completed"
-                                    ? "bg-emerald-500/20 text-emerald-500 border-emerald-500/30"
-                                    : "bg-orange-500/20 text-orange-500 border-orange-500/30"
-                                }
-                              >
-                                {transaction.status}
-                              </Badge>
+                              <Button size="sm">Continue</Button>
                             </div>
                           </div>
                         </div>
@@ -521,95 +531,182 @@ export default function PaymentPortal() {
                     </div>
                   </CardContent>
                 </Card>
+
+                {/* Ascension Protocol Progress */}
+                <Card className="glass border-border/50">
+                  <CardHeader>
+                    <CardTitle className="flex items-center gap-2">
+                      <Crown className="h-5 w-5 text-yellow-500" />
+                      Ascension Protocol
+                    </CardTitle>
+                    <CardDescription>Your path to CKQ mastery</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <span className="text-sm font-medium">Current Level: {loading ? "..." : `CKQ-${userStats?.ascensionLevel || 1}`}</span>
+                        <span className="text-sm text-muted-foreground">Next: CKQ-{(userStats?.ascensionLevel || 1) + 1}</span>
+                      </div>
+                      <Progress value={68} className="h-3" />
+                      <div className="flex justify-between text-xs text-muted-foreground mb-4">
+                        <span>{loading ? "..." : `${userStats?.totalKnowledgePoints || 0} / 4,200 KP required`}</span>
+                        <span>1,353 KP to next level</span>
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {[
+                          { level: "CKQ-1", status: (userStats?.ascensionLevel || 0) >= 1 ? "completed" : "upcoming", kp: "500" },
+                          { level: "CKQ-2", status: (userStats?.ascensionLevel || 0) >= 2 ? "completed" : (userStats?.ascensionLevel || 0) === 1 ? "current" : "upcoming", kp: "1,200" },
+                          { level: "CKQ-3", status: (userStats?.ascensionLevel || 0) >= 3 ? "completed" : (userStats?.ascensionLevel || 0) === 2 ? "current" : "upcoming", kp: "2,847" },
+                          { level: "CKQ-4", status: (userStats?.ascensionLevel || 0) >= 4 ? "completed" : (userStats?.ascensionLevel || 0) === 3 ? "current" : "upcoming", kp: "4,200" }
+                        ].map((level, index) => (
+                          <div key={index} className={`text-center p-3 rounded-lg border ${level.status === 'completed' ? 'bg-green-50 border-green-200' :
+                            level.status === 'current' ? 'bg-blue-50 border-blue-200' :
+                              'bg-gray-50 border-gray-200'
+                            }`}>
+                            <div className="font-semibold">{level.level}</div>
+                            <div className="text-xs text-muted-foreground">{level.kp} KP</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </TabsContent>
 
-              <TabsContent value="methods" className="space-y-6">
+              <TabsContent value="courses" className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {paymentMethods.map((method) => (
-                    <Card key={method.id} className="glass border-border/50 hover:shadow-lg transition-all duration-300 overflow-hidden group">
-                      <div className={`h-32 bg-gradient-to-br ${method.color} relative overflow-hidden`}>
-                        <div className="absolute inset-0 bg-black/20" />
-                        <div className="absolute top-4 right-4">
-                          {method.primary && (
+                  {loading ? (
+                    <div className="col-span-full text-center py-8">Loading courses...</div>
+                  ) : coursesData?.courses ? (
+                    coursesData.courses.map((course) => (
+                      <Card key={course.id} className="glass border-border/50 hover:shadow-lg transition-all duration-300 overflow-hidden group">
+                        <div className={`h-32 bg-gradient-to-br ${course.color || 'from-purple-500 to-pink-500'} relative overflow-hidden`}>
+                          <div className="absolute inset-0 bg-black/20" />
+                          <div className="absolute top-4 right-4">
                             <Badge className="bg-white/20 text-white border-white/30 backdrop-blur">
-                              Primary
+                              {course.level}
                             </Badge>
-                          )}
-                        </div>
-                        <div className="absolute bottom-4 left-4 right-4">
-                          <div className="flex items-center justify-between text-white">
-                            <div>
-                              <p className="font-semibold text-lg">{method.type}</p>
-                              <p className="text-sm opacity-90">{method.details}</p>
-                            </div>
-                            <method.icon className="w-8 h-8 opacity-90" />
                           </div>
-                        </div>
-                      </div>
-                      <CardContent className="p-6">
-                        <div className="space-y-3">
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">Balance</span>
-                            <span className="font-semibold">
-                              {showBalance ? method.balance : '••••••'}
-                            </span>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <span className="text-sm text-muted-foreground">Security</span>
-                            <div className="flex items-center gap-1">
-                              <Shield className="w-4 h-4 text-green-500" />
-                              <span className="text-xs text-green-500">{method.security}</span>
+                          <div className="absolute bottom-4 left-4 right-4">
+                            <div className="flex items-center justify-between text-white">
+                              <div>
+                                <p className="font-semibold text-lg">{course.title}</p>
+                                <p className="text-sm opacity-90">{course.instructor}</p>
+                              </div>
+                              <course.icon className="w-8 h-8 opacity-90" />
                             </div>
                           </div>
                         </div>
-                      </CardContent>
-                    </Card>
-                  ))}
-
-                  <Card className="glass border-border/50 hover:shadow-lg transition-all duration-300 border-dashed">
-                    <CardContent className="p-6 flex flex-col items-center justify-center h-full min-h-[280px] text-center">
-                      <div className="w-16 h-16 bg-gradient-to-r from-primary to-accent rounded-full flex items-center justify-center mb-4 opacity-50">
-                        <Zap className="w-8 h-8 text-white" />
-                      </div>
-                      <h3 className="font-semibold mb-2">Add Payment Method</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        Connect bank accounts, cards, or crypto wallets
-                      </p>
-                      <Button onClick={handleAddPaymentMethod} className="w-full">
-                        Add Method
-                      </Button>
-                    </CardContent>
-                  </Card>
+                        <CardContent className="p-6">
+                          <div className="space-y-3">
+                            <p className="text-sm text-muted-foreground">{course.description}</p>
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-muted-foreground">Duration</span>
+                              <span className="font-semibold">{course.duration}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <span className="text-sm text-muted-foreground">Enrolled</span>
+                              <span className="font-semibold">{course.enrolled?.toLocaleString() || 0}</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                              <div className="flex items-center gap-1">
+                                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                <span className="text-sm font-medium">{course.rating || 0}</span>
+                              </div>
+                              <Button size="sm" onClick={() => handleEnrollCourse(course.id)} disabled={course.userEnrolled}>
+                                {course.userEnrolled ? "Enrolled" : "Enroll"}
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      </Card>
+                    ))
+                  ) : (
+                    <div className="col-span-full text-center py-8 text-muted-foreground">No courses available</div>
+                  )}
                 </div>
               </TabsContent>
 
-              <TabsContent value="analytics" className="space-y-6">
+              <TabsContent value="progress" className="space-y-6">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                   <Card className="glass border-border/50">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
                         <TrendingUp className="h-5 w-5 text-primary" />
-                        Portfolio Performance
+                        Learning Progress
+                      </CardTitle>
+                      <CardDescription>Your journey through knowledge</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {loading ? (
+                        <div className="text-center py-4">Loading progress data...</div>
+                      ) : userProgress?.courses ? (
+                        userProgress.courses.map((item, index) => (
+                          <div key={index} className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="font-medium">{item.title}</span>
+                              <span>{item.progress}%</span>
+                            </div>
+                            <Progress value={item.progress} className="h-2" />
+                            <div className="flex justify-between text-xs text-muted-foreground">
+                              <span>{item.passed}/{item.assessments} assessments passed</span>
+                              <span>{item.assessments - item.passed} remaining</span>
+                            </div>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-4 text-muted-foreground">No progress data available</div>
+                      )}
+                    </CardContent>
+                  </Card>
+
+                  <Card className="glass border-border/50">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Trophy className="h-5 w-5 text-primary" />
+                        Recent Achievements
+                      </CardTitle>
+                      <CardDescription>Your latest accomplishments</CardDescription>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      {recentAchievements.map((achievement) => (
+                        <div key={achievement.id} className="flex items-start gap-3 p-3 border rounded-lg">
+                          <achievement.icon className={`h-5 w-5 mt-0.5 ${achievement.color}`} />
+                          <div className="flex-1">
+                            <h4 className="font-semibold">{achievement.title}</h4>
+                            <p className="text-sm text-muted-foreground">{achievement.description}</p>
+                            <div className="flex items-center justify-between mt-2">
+                              <span className="text-xs text-muted-foreground">{achievement.date}</span>
+                              <Badge variant="secondary">+{achievement.points} KP</Badge>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </CardContent>
+                  </Card>
+                </div>
+              </TabsContent>
+
+              <TabsContent value="rewards" className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <Card className="glass border-border/50">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <Coins className="h-5 w-5 text-yellow-500" />
+                        Knowledge Points
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-4">
-                        <div className="flex items-center justify-between p-4 bg-card/30 rounded-lg">
-                          <div>
-                            <p className="font-semibold">AZR Holdings</p>
-                            <p className="text-sm text-muted-foreground">Primary asset</p>
-                          </div>
-                          <div className="text-right">
-                            <p className="font-bold text-lg">45,280 AZR</p>
-                            <p className="text-sm text-emerald-500">+12.5% this month</p>
-                          </div>
+                      <div className="text-3xl font-bold">{showStats ? (loading ? "..." : (userRewards?.totalPoints || 0).toLocaleString()) : "••••••"}</div>
+                      <p className="text-sm text-muted-foreground mt-1">Total earned</p>
+                      <div className="mt-4 space-y-2">
+                        <div className="flex justify-between text-sm">
+                          <span>This week</span>
+                          <span className="font-medium">+342</span>
                         </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span>Portfolio Health</span>
-                            <span>96.4%</span>
-                          </div>
-                          <Progress value={96.4} className="h-2" />
+                        <div className="flex justify-between text-sm">
+                          <span>This month</span>
+                          <span className="font-medium">+1,247</span>
                         </div>
                       </div>
                     </CardContent>
@@ -618,33 +715,84 @@ export default function PaymentPortal() {
                   <Card className="glass border-border/50">
                     <CardHeader>
                       <CardTitle className="flex items-center gap-2">
-                        <Activity className="h-5 w-5 text-primary" />
-                        Transaction Volume
+                        <Award className="h-5 w-5 text-purple-500" />
+                        Certifications
                       </CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-4">
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="text-center p-4 bg-card/30 rounded-lg">
-                            <p className="text-2xl font-bold text-emerald-500">+2,847</p>
-                            <p className="text-sm text-muted-foreground">Received</p>
-                          </div>
-                          <div className="text-center p-4 bg-card/30 rounded-lg">
-                            <p className="text-2xl font-bold text-blue-500">-1,423</p>
-                            <p className="text-sm text-muted-foreground">Sent</p>
-                          </div>
+                      <div className="text-3xl font-bold">7</div>
+                      <p className="text-sm text-muted-foreground mt-1">Earned</p>
+                      <div className="mt-4 space-y-2">
+                        <div className="text-sm">
+                          <span className="font-medium">Latest:</span> CKQ-3 Economic Architect
                         </div>
-                        <div className="space-y-2">
-                          <div className="flex justify-between text-sm">
-                            <span>Monthly Goal</span>
-                            <span>68%</span>
-                          </div>
-                          <Progress value={68} className="h-2" />
+                        <div className="text-sm">
+                          <span className="font-medium">Next:</span> CKQ-4 Systems Sovereign
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+
+                  <Card className="glass border-border/50">
+                    <CardHeader>
+                      <CardTitle className="flex items-center gap-2">
+                        <TrendingUp className="h-5 w-5 text-green-500" />
+                        Rewards Multiplier
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="text-3xl font-bold">{loading ? "..." : `${userRewards?.currentMultiplier || 0}x`}</div>
+                      <p className="text-sm text-muted-foreground mt-1">Current multiplier</p>
+                      <div className="mt-4 space-y-2">
+                        <div className="text-sm">
+                          <span className="font-medium">Streak bonus:</span> +0.8x
+                        </div>
+                        <div className="text-sm">
+                          <span className="font-medium">Assessment bonus:</span> +0.6x
                         </div>
                       </div>
                     </CardContent>
                   </Card>
                 </div>
+
+                <Card className="glass border-border/50">
+                  <CardHeader>
+                    <CardTitle>Reward History</CardTitle>
+                    <CardDescription>Your recent knowledge point earnings</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-3">
+                      {loading ? (
+                        <div className="text-center py-4">Loading reward history...</div>
+                      ) : userRewards?.history ? (
+                        userRewards.history.map((reward, index) => (
+                          <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                            <div className="flex items-center gap-3">
+                              <div className={`p-2 rounded-full ${reward.type === 'assessment' ? 'bg-blue-100' :
+                                reward.type === 'streak' ? 'bg-orange-100' :
+                                  reward.type === 'enrollment' ? 'bg-green-100' :
+                                    reward.type === 'bonus' ? 'bg-purple-100' : 'bg-gray-100'
+                                }`}>
+                                {reward.type === 'assessment' && <CheckCircle className="h-4 w-4 text-blue-600" />}
+                                {reward.type === 'streak' && <Zap className="h-4 w-4 text-orange-600" />}
+                                {reward.type === 'enrollment' && <BookOpen className="h-4 w-4 text-green-600" />}
+                                {reward.type === 'bonus' && <Trophy className="h-4 w-4 text-purple-600" />}
+                                {reward.type === 'milestone' && <Target className="h-4 w-4 text-gray-600" />}
+                              </div>
+                              <div>
+                                <p className="font-medium">{reward.activity}</p>
+                                <p className="text-sm text-muted-foreground">{reward.date}</p>
+                              </div>
+                            </div>
+                            <Badge variant="secondary">+{reward.points} KP</Badge>
+                          </div>
+                        ))
+                      ) : (
+                        <div className="text-center py-4 text-muted-foreground">No reward history available</div>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
               </TabsContent>
             </Tabs>
           </div>

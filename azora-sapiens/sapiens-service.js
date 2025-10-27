@@ -34,37 +34,40 @@ class AzoraSapiens {
 
     initializeCKQPrograms() {
         return {
-            'solar-grid-technician': {
-                id: 'solar-grid-technician',
-                title: 'Solar Grid Technician (CKQ)',
-                description: 'Complete qualification for solar energy system installation and maintenance',
+            'planetary-economic-intelligence': {
+                id: 'planetary-economic-intelligence',
+                title: 'Planetary Economic Intelligence',
+                description: 'Master the fundamentals of planetary-scale economic systems',
                 duration: '8 weeks',
+                level: 'CKQ-3',
                 modules: [
-                    'Photovoltaic Fundamentals',
-                    'Electrical Safety Standards',
-                    'Grid Integration Principles',
-                    'Maintenance & Troubleshooting',
-                    'Innovation Capstone: Smart Grid Optimization'
+                    'Economic Systems Fundamentals',
+                    'Planetary Resource Allocation',
+                    'Market Dynamics & Prediction',
+                    'Sovereign Currency Design',
+                    'Innovation Capstone: Planetary Economic Modeling'
                 ],
                 assessment: {
-                    type: 'practical_exam',
-                    duration: 180, // minutes
+                    type: 'comprehensive_exam',
+                    duration: 180,
                     requiresAegis: true
                 },
                 enrollmentFee: 0,
-                status: 'live'
+                status: 'live',
+                instructor: 'Dr. Azora Prime'
             },
-            'hydroponic-farm-operator': {
-                id: 'hydroponic-farm-operator',
-                title: 'Hydroponic Farm Operator (CKQ)',
-                description: 'Complete qualification for modern hydroponic farming operations',
+            'aegis-integrity-systems': {
+                id: 'aegis-integrity-systems',
+                title: 'Aegis Integrity Systems',
+                description: 'Learn to build and maintain incorruptible systems',
                 duration: '6 weeks',
+                level: 'CKQ-2',
                 modules: [
-                    'Hydroponic System Design',
-                    'Nutrient Management',
-                    'Climate Control Systems',
-                    'Crop Optimization',
-                    'Innovation Capstone: AI-Driven Yield Maximization'
+                    'Integrity Fundamentals',
+                    'Blockchain Security Principles',
+                    'Cryptographic Sovereignty',
+                    'Mobile Sentry Architecture',
+                    'Innovation Capstone: Aegis Citadel Design'
                 ],
                 assessment: {
                     type: 'practical_exam',
@@ -72,19 +75,43 @@ class AzoraSapiens {
                     requiresAegis: true
                 },
                 enrollmentFee: 0,
-                status: 'live'
+                status: 'live',
+                instructor: 'Guardian Protocol'
             },
-            'smart-contract-auditing': {
-                id: 'smart-contract-auditing',
-                title: 'Smart Contract Auditing (CKQ)',
-                description: 'Complete qualification for blockchain smart contract security auditing',
-                duration: '10 weeks',
+            'constitutional-economics': {
+                id: 'constitutional-economics',
+                title: 'Constitutional Economics',
+                description: 'Building economies on mathematical and ethical foundations',
+                duration: '7 weeks',
+                level: 'CKQ-3',
                 modules: [
-                    'Solidity Fundamentals',
-                    'Vulnerability Assessment',
-                    'Formal Verification Methods',
-                    'DeFi Protocol Analysis',
-                    'Innovation Capstone: Zero-Knowledge Proof Applications'
+                    'Economic Constitution Design',
+                    'Mathematical Incentive Structures',
+                    'Ethical Economic Frameworks',
+                    'Constitutional AI Constraints',
+                    'Innovation Capstone: Sovereign Economy Constitution'
+                ],
+                assessment: {
+                    type: 'design_exam',
+                    duration: 210,
+                    requiresAegis: true
+                },
+                enrollmentFee: 0,
+                status: 'live',
+                instructor: 'Economic Architect'
+            },
+            'ai-economic-agents': {
+                id: 'ai-economic-agents',
+                title: 'AI Economic Agents',
+                description: 'Programming autonomous economic intelligence',
+                duration: '9 weeks',
+                level: 'CKQ-4',
+                modules: [
+                    'AI Agent Fundamentals',
+                    'Economic Decision Algorithms',
+                    'Autonomous Trading Systems',
+                    'Multi-Agent Coordination',
+                    'Innovation Capstone: Planetary Economic AI Network'
                 ],
                 assessment: {
                     type: 'code_audit_exam',
@@ -92,7 +119,8 @@ class AzoraSapiens {
                     requiresAegis: true
                 },
                 enrollmentFee: 0,
-                status: 'live'
+                status: 'live',
+                instructor: 'AI Architect'
             }
         };
     }
@@ -132,26 +160,75 @@ class AzoraSapiens {
             });
         });
 
-        this.app.post('/api/enroll', (req, res) => {
-            const { userId, programId } = req.body;
+        // New endpoint for UI course catalog
+        this.app.get('/api/courses', (req, res) => {
+            const courses = Object.values(this.ckqPrograms).map(program => ({
+                id: program.id,
+                title: program.title,
+                description: program.description,
+                level: program.level,
+                duration: program.duration,
+                enrolled: Math.floor(Math.random() * 1000) + 100, // Mock enrollment numbers
+                rating: (Math.random() * 0.5 + 4.5).toFixed(1), // 4.5-5.0 rating
+                instructor: program.instructor,
+                modules: program.modules,
+                assessment: program.assessment
+            }));
 
-            if (!userId || !programId) {
-                return res.status(400).json({ error: 'Missing userId or programId' });
+            res.json({
+                courses,
+                total: courses.length,
+                status: 'live'
+            });
+        });
+
+        // Get specific course details
+        this.app.get('/api/courses/:courseId', (req, res) => {
+            const courseId = req.params.courseId;
+            const program = this.ckqPrograms[courseId];
+
+            if (!program) {
+                return res.status(404).json({ error: 'Course not found' });
             }
 
-            if (!this.ckqPrograms[programId]) {
+            res.json({
+                course: {
+                    id: program.id,
+                    title: program.title,
+                    description: program.description,
+                    level: program.level,
+                    duration: program.duration,
+                    enrolled: Math.floor(Math.random() * 1000) + 100,
+                    rating: (Math.random() * 0.5 + 4.5).toFixed(1),
+                    instructor: program.instructor,
+                    modules: program.modules,
+                    assessment: program.assessment,
+                    status: program.status
+                }
+            });
+        });
+
+        this.app.post('/api/enroll', (req, res) => {
+            const { userId, programId, courseId } = req.body;
+            const programIdentifier = programId || courseId;
+
+            if (!userId || !programIdentifier) {
+                return res.status(400).json({ error: 'Missing userId or programId/courseId' });
+            }
+
+            if (!this.ckqPrograms[programIdentifier]) {
                 return res.status(404).json({ error: 'Program not found' });
             }
 
             const enrollment = {
                 id: crypto.randomUUID(),
                 userId,
-                programId,
+                programId: programIdentifier,
                 enrolledAt: new Date().toISOString(),
                 status: 'active',
                 progress: {
                     completedModules: [],
-                    currentModule: this.ckqPrograms[programId].modules[0],
+                    currentModule: this.ckqPrograms[programIdentifier].modules[0],
                     overallProgress: 0
                 }
             };
@@ -175,7 +252,357 @@ class AzoraSapiens {
         this.app.get('/api/enrollments/:userId', (req, res) => {
             const userId = req.params.userId;
             const userEnrollments = this.enrollments.get(userId) || [];
-            res.json({ enrollments: userEnrollments });
+
+            // Transform enrollments to match UI expectations
+            const transformedEnrollments = userEnrollments.map(enrollment => ({
+                id: enrollment.id,
+                userId: enrollment.userId,
+                courseId: enrollment.programId,
+                courseTitle: this.ckqPrograms[enrollment.programId]?.title,
+                enrolledAt: enrollment.enrolledAt,
+                status: enrollment.status,
+                progress: enrollment.progress
+            }));
+
+            res.json({ enrollments: transformedEnrollments });
+        });
+
+        // Get user learning stats
+        this.app.get('/api/users/:userId/stats', (req, res) => {
+            const userId = req.params.userId;
+            const userEnrollments = this.enrollments.get(userId) || [];
+
+            // Calculate stats
+            const coursesEnrolled = userEnrollments.length;
+            const coursesInProgress = userEnrollments.filter(e => e.status === 'active').length;
+            const coursesCompleted = userEnrollments.filter(e => e.status === 'completed').length;
+
+            // Mock knowledge points (would be calculated from actual rewards)
+            const knowledgePoints = Math.floor(Math.random() * 1000) + 500;
+
+            // Mock streak
+            const currentStreak = Math.floor(Math.random() * 15) + 1;
+
+            res.json({
+                userId,
+                stats: {
+                    coursesEnrolled,
+                    coursesInProgress,
+                    coursesCompleted,
+                    knowledgePoints,
+                    currentStreak,
+                    assessmentsPassed: Math.floor(coursesCompleted * 2.5), // Mock
+                    successRate: 95 // Mock
+                }
+            });
+        });
+
+        // Get user rewards history
+        this.app.get('/api/users/:userId/rewards', (req, res) => {
+            const userId = req.params.userId;
+
+            // Mock rewards history
+            const rewards = [
+                { activity: "Completed 'Economic Theory' assessment", points: 150, date: "2 days ago", type: "assessment" },
+                { activity: "7-day learning streak bonus", points: 100, date: "3 days ago", type: "streak" },
+                { activity: "Enrolled in 'Blockchain Sovereignty'", points: 50, date: "5 days ago", type: "enrollment" },
+                { activity: "Perfect score bonus", points: 250, date: "1 week ago", type: "bonus" },
+                { activity: "Weekly progress milestone", points: 75, date: "1 week ago", type: "milestone" }
+            ];
+
+            res.json({ rewards });
+        });
+
+        // Get user progress details
+        this.app.get('/api/users/:userId/progress', (req, res) => {
+            const userId = req.params.userId;
+
+            // Mock progress data
+            const progress = [
+                { subject: "Economic Theory", progress: 85, assessments: 12, passed: 11 },
+                { subject: "Blockchain Technology", progress: 72, assessments: 8, passed: 7 },
+                { subject: "AI Ethics", progress: 91, assessments: 15, passed: 15 },
+                { subject: "System Architecture", progress: 68, assessments: 10, passed: 8 }
+            ];
+
+            res.json({ progress });
+        });
+
+        // Enroll in a course
+        this.app.post('/api/enroll', (req, res) => {
+            const { userId, courseId } = req.body;
+
+            if (!userId || !courseId) {
+                return res.status(400).json({ error: 'userId and courseId are required' });
+            }
+
+            if (!this.ckqPrograms[courseId]) {
+                return res.status(404).json({ error: 'Course not found' });
+            }
+
+            // Check if already enrolled
+            const userEnrollments = this.enrollments.get(userId) || [];
+            const existingEnrollment = userEnrollments.find(e => e.programId === courseId);
+
+            if (existingEnrollment) {
+                return res.status(409).json({ error: 'Already enrolled in this course' });
+            }
+
+            // Create enrollment
+            const enrollment = {
+                id: `enrollment_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                userId,
+                programId: courseId,
+                enrolledAt: new Date().toISOString(),
+                status: 'active',
+                progress: 0,
+                completedModules: [],
+                currentModule: 0
+            };
+
+            userEnrollments.push(enrollment);
+            this.enrollments.set(userId, userEnrollments);
+
+            res.json({
+                success: true,
+                enrollment,
+                message: 'Successfully enrolled in course'
+            });
+        });
+
+        // Aegis Mobile Sentry endpoints
+        this.app.post('/api/aegis/start-exam', (req, res) => {
+            const { userId, courseId, assessmentId } = req.body;
+
+            if (!userId || !courseId || !assessmentId) {
+                return res.status(400).json({ error: 'userId, courseId, and assessmentId are required' });
+            }
+
+            // Start Aegis monitoring session
+            const sessionId = `aegis_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+            const session = {
+                id: sessionId,
+                userId,
+                courseId,
+                assessmentId,
+                startTime: new Date().toISOString(),
+                status: 'active',
+                integrityScore: 100,
+                alerts: []
+            };
+
+            this.activeExams.set(sessionId, session);
+
+            res.json({
+                success: true,
+                sessionId,
+                message: 'Aegis Mobile Sentry activated for exam integrity monitoring'
+            });
+        });
+
+        this.app.post('/api/aegis/heartbeat', (req, res) => {
+            const { sessionId, deviceData } = req.body;
+
+            if (!sessionId) {
+                return res.status(400).json({ error: 'sessionId is required' });
+            }
+
+            const session = this.activeExams.get(sessionId);
+            if (!session) {
+                return res.status(404).json({ error: 'Exam session not found' });
+            }
+
+            // Process device data for integrity monitoring
+            // In a real implementation, this would analyze device data for suspicious activity
+            const integrityScore = Math.max(0, session.integrityScore - Math.random() * 5);
+
+            session.integrityScore = integrityScore;
+            session.lastHeartbeat = new Date().toISOString();
+
+            // Generate alerts if integrity score drops too low
+            if (integrityScore < 70 && !session.alerts.some(a => a.type === 'integrity_warning')) {
+                session.alerts.push({
+                    type: 'integrity_warning',
+                    message: 'Potential integrity compromise detected',
+                    timestamp: new Date().toISOString(),
+                    severity: 'medium'
+                });
+            }
+
+            res.json({
+                success: true,
+                integrityScore: Math.round(integrityScore),
+                status: session.status,
+                alerts: session.alerts
+            });
+        });
+
+        this.app.post('/api/aegis/end-exam', (req, res) => {
+            const { sessionId } = req.body;
+
+            if (!sessionId) {
+                return res.status(400).json({ error: 'sessionId is required' });
+            }
+
+            const session = this.activeExams.get(sessionId);
+            if (!session) {
+                return res.status(404).json({ error: 'Exam session not found' });
+            }
+
+            session.status = 'completed';
+            session.endTime = new Date().toISOString();
+
+            // Final integrity assessment
+            const finalScore = session.integrityScore;
+            const passed = finalScore >= 80; // 80% integrity threshold
+
+            this.activeExams.delete(sessionId);
+
+            res.json({
+                success: true,
+                finalIntegrityScore: Math.round(finalScore),
+                passed,
+                alerts: session.alerts,
+                message: passed ? 'Exam completed with integrity verified' : 'Exam flagged for integrity review'
+            });
+        });
+
+        // Get certifications
+        this.app.get('/api/users/:userId/certifications', (req, res) => {
+            const userId = req.params.userId;
+
+            // Mock certifications based on completed courses
+            const certifications = [
+                {
+                    id: 'cert_001',
+                    title: 'Planetary Economic Intelligence',
+                    issuedAt: '2024-01-15T10:00:00Z',
+                    issuer: 'Azora Sapiens University',
+                    credentialId: 'AZORA-CERT-2024-001',
+                    blockchainVerified: true,
+                    proofOfKnowledge: {
+                        points: 1500,
+                        level: 'Advanced',
+                        specializations: ['Economic Theory', 'Planetary Systems']
+                    }
+                },
+                {
+                    id: 'cert_002',
+                    title: 'Aegis Integrity Systems',
+                    issuedAt: '2024-01-20T14:30:00Z',
+                    issuer: 'Azora Sapiens University',
+                    credentialId: 'AZORA-CERT-2024-002',
+                    blockchainVerified: true,
+                    proofOfKnowledge: {
+                        points: 1200,
+                        level: 'Intermediate',
+                        specializations: ['Security Systems', 'Integrity Monitoring']
+                    }
+                }
+            ];
+
+            res.json({ certifications });
+        });
+
+        // Mint Proof-of-Knowledge reward
+        this.app.post('/api/rewards/mint', (req, res) => {
+            const { userId, achievementType, achievementData } = req.body;
+
+            if (!userId || !achievementType) {
+                return res.status(400).json({ error: 'userId and achievementType are required' });
+            }
+
+            // Calculate reward points based on achievement type
+            let points = 0;
+            let description = '';
+
+            switch (achievementType) {
+                case 'course_completion':
+                    points = 500;
+                    description = `Completed course: ${achievementData.courseTitle}`;
+                    break;
+                case 'assessment_passed':
+                    points = 150;
+                    description = `Passed assessment: ${achievementData.assessmentTitle}`;
+                    break;
+                case 'perfect_score':
+                    points = 250;
+                    description = `Perfect score on: ${achievementData.assessmentTitle}`;
+                    break;
+                case 'learning_streak':
+                    points = achievementData.days * 10;
+                    description = `${achievementData.days}-day learning streak`;
+                    break;
+                default:
+                    points = 50;
+                    description = 'General achievement';
+            }
+
+            // In a real implementation, this would interact with Azora Mint service
+            // For now, we'll simulate the reward minting
+            const reward = {
+                id: `reward_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+                userId,
+                type: 'proof_of_knowledge',
+                points,
+                description,
+                mintedAt: new Date().toISOString(),
+                transactionHash: `0x${Math.random().toString(16).substr(2, 64)}`, // Mock hash
+                blockchainVerified: true
+            };
+
+            res.json({
+                success: true,
+                reward,
+                message: `Successfully minted ${points} Proof-of-Knowledge points`
+            });
+        });
+
+        // Get reward balance
+        this.app.get('/api/users/:userId/rewards/balance', (req, res) => {
+            const userId = req.params.userId;
+
+            // Mock balance - in real implementation, this would query Azora Mint
+            const balance = {
+                totalPoints: 2450,
+                availablePoints: 2200,
+                lockedPoints: 250,
+                level: 'Advanced Scholar',
+                nextLevelThreshold: 3000,
+                recentTransactions: [
+                    { type: 'earned', points: 500, description: 'Course completion', date: '2 days ago' },
+                    { type: 'spent', points: 100, description: 'Premium content access', date: '1 week ago' },
+                    { type: 'earned', points: 150, description: 'Assessment passed', date: '1 week ago' }
+                ]
+            };
+
+            res.json({ balance });
+        });
+
+        // Get Ascension Protocol status
+        this.app.get('/api/users/:userId/ascension', (req, res) => {
+            const userId = req.params.userId;
+
+            const ascensionStatus = {
+                currentLevel: 'Scholar',
+                progressToNext: 68, // 68% towards next level
+                totalKnowledgePoints: 2450,
+                nextLevelThreshold: 3000,
+                specializations: [
+                    { name: 'Economic Theory', level: 'Advanced', progress: 85 },
+                    { name: 'AI Ethics', level: 'Intermediate', progress: 72 },
+                    { name: 'Blockchain Sovereignty', level: 'Beginner', progress: 45 }
+                ],
+                achievements: [
+                    'First Course Completed',
+                    'Perfect Assessment Score',
+                    '7-Day Learning Streak',
+                    'Economic Theory Mastery'
+                ],
+                nextMilestone: 'Advanced Scholar (3000 points)'
+            };
+
+            res.json({ ascensionStatus });
         });
 
         this.app.post('/api/exam/start', (req, res) => {
