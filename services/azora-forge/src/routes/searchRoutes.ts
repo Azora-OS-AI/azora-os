@@ -195,8 +195,8 @@ router.get('/suggestions', [
       title: { $regex: q as string, $options: 'i' },
       status: 'active'
     })
-    .select('title')
-    .limit(5);
+      .select('title')
+      .limit(5);
 
     res.json({
       success: true,

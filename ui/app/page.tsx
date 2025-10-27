@@ -806,3 +806,5 @@ export default function AzoraSapiensPage() {
     </div>
   )
 }
+
+export const dynamic = 'force-dynamic'

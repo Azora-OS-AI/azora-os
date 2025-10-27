@@ -1,0 +1,24 @@
+// Example Hardhat deploy script for Redemption contract (testAmount 150 AZR)
+// Usage: set env vars RPC_URL, PRIVATE_KEY, AZR_ADDRESS, GNOSIS_SAFE_ADDRESS
+// then run: npx hardhat run --network azora scripts/deploy-redemption.js
+
+import { ethers as hreEthers } from "hardhat";
+
+async function main() {
+    const azrAddress = process.env.AZR_ADDRESS || "0x742d35Cc6634C0532925a3b844Bc454e4438f44e";
+    const admin = process.env.GNOSIS_SAFE_ADDRESS || "0x0000000000000000000000000000000000000000";
+
+    console.log("Deploying Redemption with AZR:", azrAddress, "admin:", admin);
+
+    const Redemption = await hreEthers.getContractFactory("Redemption");
+    const redemption = await Redemption.deploy(azrAddress, admin);
+    await redemption.waitForDeployment();
+
+    console.log("Redemption deployed to:", await redemption.getAddress());
+    console.log("IMPORTANT: Set REDEMPTION_ADDRESS in your offchain worker and update the Ops payout confirmation.");
+}
+
+main().catch((error) => {
+    console.error(error);
+    process.exitCode = 1;
+});
