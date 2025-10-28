@@ -384,27 +384,34 @@ class AegisCitadel {
      * Check activation trigger for a country
      */
     checkActivationTrigger(country, triggerType, triggerData) {
-            const countryData = this.countryRegistry.get(country);
-            if(!countryData) {
-                return { success: false, error: 'Country not found' };
-            }
+        const countryData = this.countryRegistry.get(country);
+        if (!countryData) {
+            return { success: false, error: 'Country not found' };
+        }
 
         let triggerAchieved = false;
-            const activationStatus = countryData.activationStatus;
+        const activationStatus = countryData.activationStatus;
 
-            switch(triggerType) {
+        switch (triggerType) {
             case 'userThreshold':
-            const userCount = triggerData.userCount || 0;
-            activationStatus.userThreshold.current = userCount;
-            if(userCount >= this.activationTriggers.userThreshold) {
-            activationStatus.userThreshold.achieved = true;
-            triggerAchieved = true;
+                const userCount = triggerData.userCount || 0;
+                activationStatus.userThreshold.current = userCount;
+                if (userCount >= this.activationTriggers.userThreshold) {
+                    activationStatus.userThreshold.achieved = true;
+                    triggerAchieved = true;
+                }
+                break;
+            default:
+                return { success: false, error: 'Unknown trigger type' };
         }
-        break;
-        /**
-         * Evaluate if a nation meets GRI unlock criteria
-         */
-        evaluateGRIUnlock(nationId, unlockType, griScore) {
+
+        return { success: true, triggerAchieved };
+    }
+
+    /**
+     * Evaluate if a nation meets GRI unlock criteria
+     */
+    evaluateGRIUnlock(nationId, unlockType, griScore) {
             const unlockCriteria = {
                 seed_grant: {
                     critical: true,    // Critical readiness = immediate unlock

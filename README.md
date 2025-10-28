@@ -69,6 +69,12 @@ Azora OS is actively preparing for the G20 South Africa Summit, positioning the 
 - Conduct bilateral meetings during summit week (November 16-22, 2025)
 - Follow up on commitments and begin implementation planning
 
+### 🎯 G20 Validation Notes
+- **Summit Dates**: Confirmed for November 22-23, 2025 in Johannesburg
+- **Budget**: ~R691M (~$38M USD) allocated by South African government
+- **Theme**: "Fostering Solidarity, Equality, and Sustainable Development"
+- **Timeline Alignment**: Outreach Nov 1, bilateral meetings Nov 16-22 perfectly positioned
+
 ---
 
 ### Core Services
@@ -100,6 +106,14 @@ Azora OS features a complete microservices architecture with autonomous AI capab
 - **Security**: Zero-trust architecture, cryptographic sovereignty
 - **Business Tools**: Microsoft 365 Business (email, collaboration, productivity)
 
+### Architecture Enhancements
+| Component | Current Status | Enhancement Opportunities |
+|-----------|----------------|---------------------------|
+| **Aegis Citadel (:4099)** | Global genesis triggers for 195 nations | Web3 wallet integration (WalletConnect) for seamless sovereign grants |
+| **Azora Sapiens (:4200)** | CKQ programs + Aegis proctoring | NFT certificates for tradeable educational achievements |
+| **Azora Mint (:4300)** | UBO fund (1% aZAR pool) | RLHF-tuned constitutional AI for dynamic reward scaling |
+| **Azora Oracle (:4030)** | Real-time rates + Ascension Protocol | Chainlink oracle integration for enhanced reliability |
+
 ### Genesis Log
 The official [Genesis Log](/docs/genesis-log.json) contains the cryptographic foundation of Azora OS, including:
 - Contract addresses for all core services
@@ -126,7 +140,13 @@ The official [Genesis Log](/docs/genesis-log.json) contains the cryptographic fo
    npm install
    ```
 
-2. **Environment Configuration:**
+2. **One-Command Planetary Ignition:**
+   ```bash
+   # Automated launch script (includes all steps below)
+   bash azora-launch.sh
+   ```
+
+3. **Manual Environment Configuration:**
    ```bash
    # Copy environment template
    cp .env.example .env.local
@@ -135,7 +155,7 @@ The official [Genesis Log](/docs/genesis-log.json) contains the cryptographic fo
    # Database, Redis, API keys, etc.
    ```
 
-3. **Start infrastructure:**
+4. **Start infrastructure:**
    ```bash
    # Start PostgreSQL and Redis
    docker-compose up -d postgres redis
@@ -144,7 +164,7 @@ The official [Genesis Log](/docs/genesis-log.json) contains the cryptographic fo
    npm run db:init
    ```
 
-4. **Build and launch planetary services:**
+5. **Build and launch planetary services:**
    ```bash
    # Build all services
    npm run build
@@ -162,7 +182,7 @@ The official [Genesis Log](/docs/genesis-log.json) contains the cryptographic fo
    cd ../azora-oracle && npm start
    ```
 
-5. **Verify planetary deployment:**
+6. **Verify planetary deployment:**
    ```bash
    # Check Aegis Citadel status
    curl http://localhost:4099/api/citadel/genesis/status
@@ -527,6 +547,12 @@ Azora OS represents the next evolution of economic intelligence, starting with a
 - **Technical Support**: support@azora.world
 - **API Documentation**: `/docs/API_DOCUMENTATION.md`
 - **Architecture Docs**: `/docs/AZORA-COMPREHENSIVE-ARCHITECTURE.md`
+
+### Repository & Collaboration
+- **GitHub**: https://github.com/Sizwe780/azora-os (Private repository - access by invitation)
+- **Development**: Active development with comprehensive branch management
+- **Collaboration**: Open to technical reviews, API testing, and G20 pitch refinement
+- **Community**: Sovereign Starter Kit modules available for open-source contributions
 
 ---
 

@@ -14,6 +14,7 @@ module.exports = {
     "./apps/main-app/src/**/*.{js,jsx,ts,tsx}",
     "./synapse/**/*.{js,jsx,ts,tsx}",  // Add synapse directory
     "./ui/**/*.{js,jsx,ts,tsx}",  // Add ui directory
+    "./app/**/*.{js,jsx,ts,tsx}",  // Add app directory
   ],
   darkMode: "class",
   theme: {
