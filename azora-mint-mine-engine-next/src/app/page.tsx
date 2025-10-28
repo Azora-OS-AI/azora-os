@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 interface MiningData {
   status: string;
@@ -15,6 +17,8 @@ interface MiningData {
 }
 
 export default function Home() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [miningData, setMiningData] = useState<MiningData>({
     status: 'stopped',
     algorithm: 'FishHash (IRON) - QUANTUM OPTIMIZED',
@@ -30,6 +34,12 @@ export default function Home() {
   const [lastUpdate, setLastUpdate] = useState<string>('');
 
   useEffect(() => {
+    if (status === 'loading') return;
+
+    if (!session) {
+      // Allow mining without login, but show login prompt for claiming
+    }
+
     const fetchData = async () => {
       try {
         // Fetch real data from our API routes
@@ -66,7 +76,7 @@ export default function Home() {
     const interval = setInterval(fetchData, 5000); // Update every 5 seconds
 
     return () => clearInterval(interval);
-  }, []);
+  }, [session, status]);
 
   const startMining = async () => {
     if (confirm('🚀 Start AZORA MINT-MINE ENGINE?\n\nThis will begin mining IRON tokens and generating real profits!\n\n⚠️ Ensure you have:\n- Backend mining services running\n- Real wallet addresses configured\n- Internet connection to mining pools\n\nContinue?')) {
@@ -108,6 +118,41 @@ export default function Home() {
     }
   };
 
+  const claimRewards = async () => {
+    if (!session) {
+      alert('Please login to claim your minted AZR tokens!');
+      router.push('/login');
+      return;
+    }
+
+    if (confirm('💰 Claim your mined AZR tokens?\n\nThis will mint AZR tokens based on your mining performance and transfer them to your wallet.\n\nContinue?')) {
+      try {
+        // Calculate claimable amount based on mining performance
+        const claimableAmount = miningData.profitability.daily * 0.1; // Example: claim 10% of daily earnings
+
+        const response = await fetch('/api/mining/claim', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            amount: claimableAmount,
+            userId: session.user?.id
+          }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          alert(`✅ Successfully claimed ${claimableAmount.toFixed(4)} AZR tokens!\n\nTransaction Hash: ${data.txHash || 'Pending...'}`);
+        } else {
+          alert('❌ Failed to claim rewards: ' + data.error);
+        }
+      } catch (error) {
+        alert('❌ Failed to claim rewards: ' + error);
+      }
+    }
+  };
+
   const formatHashrate = (hashrate: number) => {
     if (hashrate >= 1000000000) return `${(hashrate / 1000000000).toFixed(2)} GH/s`;
     if (hashrate >= 1000000) return `${(hashrate / 1000000).toFixed(2)} MH/s`;
@@ -122,6 +167,11 @@ export default function Home() {
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold mb-2">🚀 AZORA MINT-MINE ENGINE</h1>
           <p className="text-xl opacity-90">Intel Core i7-1065G7 - Real-Time Mining Control Center</p>
+          {!session && (
+            <p className="text-sm opacity-70 mt-2">
+              Mining available without login • <button onClick={() => router.push('/login')} className="text-blue-400 hover:text-blue-300 underline">Login to claim AZR tokens</button>
+            </p>
+          )}
         </div>
 
         {/* Status Notices */}
@@ -133,7 +183,7 @@ export default function Home() {
             🔬 <strong>AZORA MINT-MINE ENGINE:</strong> Deployed on Vercel - connect to backend mining services for real profits
           </div>
           <div className="bg-green-500/20 border border-green-500/50 rounded-lg p-4 text-center">
-            🎉 <strong>AZORA MINT-MINE ENGINE:</strong> 1 AZR = $1.00 USD - Constitutionally aligned token economics!
+            🎉 <strong>AZORA MINT-MINE ENGINE:</strong> Constitutionally aligned token economics!
           </div>
         </div>
 
@@ -150,6 +200,13 @@ export default function Home() {
             className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-6 rounded-full transition-colors"
           >
             ⏹️ Stop Mining
+          </button>
+          <button
+            onClick={claimRewards}
+            className={`font-bold py-3 px-6 rounded-full transition-colors ${session ? 'bg-yellow-600 hover:bg-yellow-700 text-white' : 'bg-gray-600 text-gray-300 cursor-not-allowed'}`}
+            disabled={!session}
+          >
+            💰 Claim AZR
           </button>
           <button
             onClick={() => window.location.reload()}
