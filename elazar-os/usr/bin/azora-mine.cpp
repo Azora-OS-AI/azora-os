@@ -33,6 +33,11 @@
 #include <boost/beast.hpp>
 #include <nlohmann/json.hpp>
 
+#ifdef CUDA_ENABLED
+#include <cuda_runtime.h>
+#include <cuda.h>
+#endif
+
 // Advanced Mining Constants
 #define BLOCK_SIZE 1024
 #define NONCE_SIZE 32
@@ -64,7 +69,7 @@ public:
 class Blake2b : public HashFunction {
 public:
     std::string hash(const std::string& input) override {
-        CryptoPP::Blake2b blake2b;
+        CryptoPP::BLAKE2b blake2b;
         std::string digest;
         blake2b.Update(reinterpret_cast<const CryptoPP::byte*>(input.data()), input.size());
         digest.resize(blake2b.DigestSize());
@@ -259,13 +264,14 @@ private:
     void receiveMessages() {
         try {
             while (connected) {
-                boost::beast::multi_buffer buffer;
+                boost::asio::streambuf buffer;
                 boost::system::error_code ec;
 
                 boost::asio::read_until(socket, buffer, "\n", ec);
                 if (ec) break;
 
-                std::string message = boost::beast::make_printable(buffer.data());
+                std::string message = boost::asio::buffer_cast<const char*>(buffer.data());
+                buffer.consume(message.size());
                 processMessage(message);
             }
         } catch (const std::exception& e) {
@@ -313,7 +319,9 @@ class GPUMiner {
 private:
     bool cuda_available;
     int device_count;
+#ifdef CUDA_ENABLED
     std::vector<cudaDeviceProp> device_props;
+#endif
 
 public:
     GPUMiner() : cuda_available(false), device_count(0) {
@@ -336,6 +344,7 @@ public:
     // For now, return CPU fallback
     double getGPUHashRate() const {
         if (!cuda_available) return 0.0;
+#ifdef CUDA_ENABLED
         // Estimate based on device properties
         double total_hash_rate = 0.0;
         for (const auto& prop : device_props) {
@@ -343,6 +352,9 @@ public:
             total_hash_rate += prop.multiProcessorCount * 128 * prop.clockRate / 1000000.0;
         }
         return total_hash_rate;
+#else
+        return 0.0;
+#endif
     }
 };
 
@@ -442,7 +454,7 @@ public:
         }
 
         // Start performance monitoring
-        std::thread(&AzoraMiner::performanceMonitor).detach();
+        std::thread(&AzoraMiner::performanceMonitor, this).detach();
 
         // Start GPU mining if available
         if (config.gpu_mining) {

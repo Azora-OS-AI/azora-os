@@ -27,6 +27,8 @@
 #include <arpa/inet.h>
 #include <ifaddrs.h>
 #include <net/if.h>
+#include <linux/if_link.h>
+#include <dirent.h>
 #include <openssl/sha.h>
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
@@ -34,6 +36,7 @@
 #include <boost/asio.hpp>
 #include <boost/beast.hpp>
 #include <boost/beast/ssl.hpp>
+#include <boost/filesystem.hpp>
 #include <nlohmann/json.hpp>
 
 // Advanced System Monitoring Constants
