@@ -7,13 +7,15 @@ See LICENSE file for details.
 */
 
 import { ethers } from "ethers";
+import hre from "hardhat";
 
 async function main() {
-  // Connect to Hardhat network
+  // Use Hardhat's default provider
   const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-  
-  // Use the first default account
+
+  // Create a signer using the first default account
   const deployer = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478c3a526db38f019c1d4991c2e", provider);
+
   console.log("Deploying contracts with the account:", deployer.address);
 
   try {
@@ -25,7 +27,9 @@ async function main() {
 
   console.log("Deploying AzoraCoin...");
 
-  const AzoraCoin = await ethers.getContractFactory("AzoraCoin", deployer);
+  // Get the contract factory using artifacts
+  const AzoraCoinArtifact = await hre.artifacts.readArtifact("AzoraCoin");
+  const AzoraCoin = new ethers.ContractFactory(AzoraCoinArtifact.abi, AzoraCoinArtifact.bytecode, deployer);
   const azoraCoin = await AzoraCoin.deploy();
 
   await azoraCoin.waitForDeployment();

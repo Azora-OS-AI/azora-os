@@ -6,26 +6,20 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 See LICENSE file for details.
 */
 
-import { ethers } from "ethers";
-
-async function main() {
-  // Connect to Hardhat network
-  const provider = new ethers.JsonRpcProvider("http://127.0.0.1:8545");
-  
-  // Use the first default account
-  const deployer = new ethers.Wallet("0xac0974bec39a17e36ba4a6b4d238ff944bacb478c3a526db38f019c1d4991c2e", provider);
+export default async function (taskArgs, hre) {
+  const [deployer] = await hre.ethers.getSigners();
   console.log("Deploying contracts with the account:", deployer.address);
 
   try {
-    const balance = await provider.getBalance(deployer.address);
-    console.log("Account balance:", ethers.formatEther(balance), "ETH");
+    const balance = await hre.ethers.provider.getBalance(deployer.address);
+    console.log("Account balance:", hre.ethers.formatEther(balance), "ETH");
   } catch (error) {
     console.log("Could not check balance:", error.message);
   }
 
   console.log("Deploying AzoraCoin...");
 
-  const AzoraCoin = await ethers.getContractFactory("AzoraCoin", deployer);
+  const AzoraCoin = await hre.ethers.getContractFactory("AzoraCoin");
   const azoraCoin = await AzoraCoin.deploy();
 
   await azoraCoin.waitForDeployment();
@@ -35,8 +29,8 @@ async function main() {
     `✅ AzoraCoin (AZR) deployed successfully!`
   );
   console.log(`📍 Contract Address: ${contractAddress}`);
-  console.log(`🌐 Network: hardhat`);
-  console.log(`🔍 Block Explorer: Local Hardhat Network`);
+  console.log(`🌐 Network: ${hre.network.name}`);
+  console.log(`🔍 Block Explorer: https://${hre.network.name === 'sepolia' ? 'sepolia.' : ''}etherscan.io/address/${contractAddress}`);
 
   // Test basic functionality
   console.log("\nTesting contract functionality...");
@@ -48,21 +42,21 @@ async function main() {
 
   console.log(`📋 Token Name: ${name}`);
   console.log(`🏷️  Token Symbol: ${symbol}`);
-  console.log(`💰 Total Supply: ${ethers.formatEther(totalSupply)} AZR`);
-  console.log(`🎯 Max Supply: ${ethers.formatEther(maxSupply)} AZR`);
+  console.log(`💰 Total Supply: ${hre.ethers.formatEther(totalSupply)} AZR`);
+  console.log(`🎯 Max Supply: ${hre.ethers.formatEther(maxSupply)} AZR`);
   console.log(`👑 Owner: ${owner}`);
 
   // Save deployment info
   const deploymentInfo = {
-    network: "hardhat",
+    network: hre.network.name,
     contractAddress: contractAddress,
     deployer: deployer.address,
     timestamp: new Date().toISOString(),
     tokenDetails: {
       name: name,
       symbol: symbol,
-      totalSupply: ethers.formatEther(totalSupply),
-      maxSupply: ethers.formatEther(maxSupply),
+      totalSupply: hre.ethers.formatEther(totalSupply),
+      maxSupply: hre.ethers.formatEther(maxSupply),
       owner: owner
     }
   };
@@ -72,8 +66,3 @@ async function main() {
 
   return contractAddress;
 }
-
-main().catch((error) => {
-  console.error("❌ Deployment failed:", error);
-  process.exitCode = 1;
-});
