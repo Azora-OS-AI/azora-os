@@ -95,8 +95,8 @@ async function validateService() {
     advancedFeatures.forEach(feature => {
       const featureKey = feature.toLowerCase().replace(/\s+/g, '');
       if (indexContent.includes(featureKey) ||
-          indexContent.includes(feature.replace(/\s+/g, '')) ||
-          indexContent.includes(feature.toLowerCase())) {
+        indexContent.includes(feature.replace(/\s+/g, '')) ||
+        indexContent.includes(feature.toLowerCase())) {
         console.log(`✅ ${feature} implemented`);
       } else {
         console.log(`❌ ${feature} missing`);

@@ -20,8 +20,12 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@azora/shared-ui": ["../shared-ui"]
+      "@/*": [
+        "./*"
+      ],
+      "@azora/shared-ui": [
+        "../shared-ui"
+      ]
     },
     "plugins": [
       {

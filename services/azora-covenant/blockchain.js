@@ -120,7 +120,7 @@ async function initialize() {
   try {
     // Create data directory if it doesn't exist
     await fs.mkdir(DATA_DIR, { recursive: true });
-    
+
     // Load or create blockchain
     try {
       const data = await fs.readFile(BLOCKCHAIN_FILE, 'utf8');
@@ -135,7 +135,7 @@ async function initialize() {
         throw err;
       }
     }
-    
+
     // Load or create complexity metrics
     try {
       const data = await fs.readFile(COMPLEXITY_METRICS_FILE, 'utf8');
@@ -146,19 +146,19 @@ async function initialize() {
         // Update metrics based on blockchain length
         complexityMetrics.blockCount = blockchain.length;
         complexityMetrics.currentComplexityLevel = determineComplexityLevel(blockchain.length);
-        
+
         await fs.writeFile(COMPLEXITY_METRICS_FILE, JSON.stringify(complexityMetrics, null, 2));
         console.log('Created complexity metrics');
       } else {
         throw err;
       }
     }
-    
+
     isInitialized = true;
     events.emit('blockchain:initialized', { blockCount: blockchain.length, complexityLevel: complexityMetrics.currentComplexityLevel });
-    
-    return { 
-      status: 'initialized', 
+
+    return {
+      status: 'initialized',
       blocks: blockchain.length,
       complexityLevel: complexityMetrics.currentComplexityLevel
     };
@@ -194,10 +194,10 @@ function getCurrentComplexitySettings() {
 function createHash(data, complexityLevel = null) {
   const level = complexityLevel || complexityMetrics.currentComplexityLevel;
   const settings = complexityMetrics.complexityProgression.find(c => c.level === level);
-  
+
   let hash;
   const stringData = typeof data === 'string' ? data : JSON.stringify(data);
-  
+
   switch (settings.algorithm) {
     case 'sha256':
       hash = crypto.createHash('sha256').update(stringData).digest('hex');
@@ -216,7 +216,7 @@ function createHash(data, complexityLevel = null) {
     default:
       hash = crypto.createHash('sha256').update(stringData).digest('hex');
   }
-  
+
   return hash;
 }
 
@@ -226,7 +226,7 @@ function createHash(data, complexityLevel = null) {
 function meetsComplexityRequirements(hash, complexityLevel = null) {
   const level = complexityLevel || complexityMetrics.currentComplexityLevel;
   const settings = complexityMetrics.complexityProgression.find(c => c.level === level);
-  
+
   return hash.startsWith(settings.hashPrefix);
 }
 
@@ -235,11 +235,11 @@ function meetsComplexityRequirements(hash, complexityLevel = null) {
  */
 function mineBlock(block) {
   const settings = getCurrentComplexitySettings();
-  
+
   let nonce = 0;
   let hash;
   const startTime = Date.now();
-  
+
   // Remove hash and nonce from the block when calculating new hash
   const blockData = {
     index: block.index,
@@ -249,20 +249,20 @@ function mineBlock(block) {
     complexity: block.complexity,
     creator: block.creator
   };
-  
+
   // Mine until we find a hash that meets complexity requirements
   do {
     nonce++;
     hash = createHash({ ...blockData, nonce });
   } while (!meetsComplexityRequirements(hash));
-  
+
   const endTime = Date.now();
   const hashingTime = endTime - startTime;
-  
+
   // Update performance metrics
-  complexityMetrics.performanceMetrics.averageHashingTime = 
+  complexityMetrics.performanceMetrics.averageHashingTime =
     (complexityMetrics.performanceMetrics.averageHashingTime * (blockchain.length - 1) + hashingTime) / blockchain.length;
-  
+
   return { hash, nonce, hashingTime };
 }
 
@@ -273,24 +273,24 @@ async function createBlock(creator = 'azora-system') {
   if (!isInitialized) {
     throw new Error('Blockchain not initialized');
   }
-  
+
   if (pendingTransactions.length === 0) {
     return null; // No transactions to include
   }
-  
+
   const previousBlock = blockchain[blockchain.length - 1];
   const newIndex = previousBlock.index + 1;
-  
+
   // Update complexity level if needed
   const newComplexityLevel = determineComplexityLevel(newIndex);
   if (newComplexityLevel > complexityMetrics.currentComplexityLevel) {
     complexityMetrics.currentComplexityLevel = newComplexityLevel;
-    events.emit('blockchain:complexity-increased', { 
+    events.emit('blockchain:complexity-increased', {
       level: newComplexityLevel,
       blockIndex: newIndex
     });
   }
-  
+
   const newBlock = {
     index: newIndex,
     timestamp: new Date().toISOString(),
@@ -299,36 +299,36 @@ async function createBlock(creator = 'azora-system') {
     complexity: complexityMetrics.currentComplexityLevel,
     creator
   };
-  
+
   // Mine the block to find a valid hash
   const { hash, nonce, hashingTime } = mineBlock(newBlock);
   newBlock.hash = hash;
   newBlock.nonce = nonce;
-  
+
   // Reset pending transactions
   pendingTransactions = [];
-  
+
   // Add to blockchain
   blockchain.push(newBlock);
-  
+
   // Update metrics
   complexityMetrics.blockCount = blockchain.length;
   complexityMetrics.transactionCount += newBlock.transactions.length;
   complexityMetrics.lastUpdated = new Date().toISOString();
-  complexityMetrics.averageTransactionsPerBlock = 
+  complexityMetrics.averageTransactionsPerBlock =
     (complexityMetrics.averageTransactionsPerBlock * (blockchain.length - 1) + newBlock.transactions.length) / blockchain.length;
-  
+
   // Save blockchain and metrics
   await saveBlockchain();
   await fs.writeFile(COMPLEXITY_METRICS_FILE, JSON.stringify(complexityMetrics, null, 2));
-  
+
   // Emit event
-  events.emit('blockchain:block-created', { 
+  events.emit('blockchain:block-created', {
     blockIndex: newBlock.index,
     transactionCount: newBlock.transactions.length,
     hashingTime
   });
-  
+
   return newBlock;
 }
 
@@ -339,36 +339,36 @@ function addTransaction(transaction) {
   if (!isInitialized) {
     throw new Error('Blockchain not initialized');
   }
-  
+
   // Generate transaction ID if not provided
   if (!transaction.id) {
     transaction.id = crypto.randomUUID();
   }
-  
+
   // Add timestamp if not provided
   if (!transaction.timestamp) {
     transaction.timestamp = new Date().toISOString();
   }
-  
+
   // Validate transaction
   if (!transaction.type || !transaction.data) {
     throw new Error('Invalid transaction format');
   }
-  
+
   // Add to pending transactions
   pendingTransactions.push(transaction);
-  
+
   // Emit event
-  events.emit('blockchain:transaction-added', { 
+  events.emit('blockchain:transaction-added', {
     transactionId: transaction.id,
     type: transaction.type
   });
-  
+
   // If this is a founder transaction, create a block immediately
   if (transaction.type === 'founder-withdrawal' || transaction.type === 'founder-registration') {
     createBlock('priority-system');
   }
-  
+
   return transaction;
 }
 
@@ -400,7 +400,7 @@ async function saveBlockchain() {
   if (!isInitialized) {
     throw new Error('Blockchain not initialized');
   }
-  
+
   await fs.writeFile(BLOCKCHAIN_FILE, JSON.stringify(blockchain, null, 2));
   return true;
 }
@@ -412,7 +412,7 @@ function verifyBlockchain() {
   for (let i = 1; i < blockchain.length; i++) {
     const currentBlock = blockchain[i];
     const previousBlock = blockchain[i - 1];
-    
+
     // Check if the hash of the current block is valid
     const blockData = {
       index: currentBlock.index,
@@ -423,7 +423,7 @@ function verifyBlockchain() {
       creator: currentBlock.creator,
       nonce: currentBlock.nonce
     };
-    
+
     if (createHash(blockData) !== currentBlock.hash) {
       return {
         valid: false,
@@ -431,7 +431,7 @@ function verifyBlockchain() {
         block: currentBlock
       };
     }
-    
+
     // Check if the previous hash matches
     if (currentBlock.previousHash !== previousBlock.hash) {
       return {
@@ -441,7 +441,7 @@ function verifyBlockchain() {
       };
     }
   }
-  
+
   return { valid: true, message: 'Blockchain is valid' };
 }
 
@@ -465,7 +465,7 @@ function getComplexityVisualization() {
       timestamp: block.timestamp
     };
   });
-  
+
   // Group blocks by complexity level
   const levelDistribution = {};
   blockchain.forEach(block => {
@@ -474,7 +474,7 @@ function getComplexityVisualization() {
     }
     levelDistribution[block.complexity]++;
   });
-  
+
   return {
     progressData,
     levelDistribution,
@@ -491,7 +491,7 @@ function getComplexityVisualization() {
  */
 function findTransactionsByType(type) {
   const transactions = [];
-  
+
   blockchain.forEach(block => {
     block.transactions.forEach(tx => {
       if (tx.type === type) {
@@ -504,7 +504,7 @@ function findTransactionsByType(type) {
       }
     });
   });
-  
+
   return transactions;
 }
 
@@ -513,11 +513,11 @@ function findTransactionsByType(type) {
  */
 function findFounderTransactions(founderId) {
   const transactions = [];
-  
+
   blockchain.forEach(block => {
     block.transactions.forEach(tx => {
       if (
-        (tx.type === 'founder-registration' || tx.type === 'founder-withdrawal') && 
+        (tx.type === 'founder-registration' || tx.type === 'founder-withdrawal') &&
         tx.data.founderId === founderId
       ) {
         transactions.push({
@@ -529,7 +529,7 @@ function findFounderTransactions(founderId) {
       }
     });
   });
-  
+
   return transactions;
 }
 
