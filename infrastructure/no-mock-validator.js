@@ -1,11 +1,23 @@
+/*
+AZORA PROPRIETARY LICENSE
+
+Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
+
+See LICENSE file for details.
+*/
+
 /**
  * No Mock Protocol Validator
  * Scans entire codebase to ensure ZERO mocks, stubs, or placeholders
  */
 
-const fs = require('fs');
-const path = require('path');
-const glob = require('glob');
+import fs from 'fs';
+import path from 'path';
+import { glob } from 'glob';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const MOCK_PATTERNS = [
   /\bmock\(/gi,
@@ -36,7 +48,7 @@ class NoMockValidator {
   async validate() {
     console.log('🔍 Running No Mock Protocol Validator...\n');
 
-    const files = glob.sync('**/*.{js,ts,jsx,tsx}', {
+    const files = await glob('**/*.{js,ts,jsx,tsx}', {
       ignore: [
         'node_modules/**',
         'dist/**',
@@ -46,11 +58,15 @@ class NoMockValidator {
     });
 
     for (const file of files) {
+      // Skip directories
+      const stat = await fs.promises.stat(file);
+      if (stat.isDirectory()) continue;
+
       this.scanFile(file);
     }
 
     this.printReport();
-    
+
     if (this.violations.length > 0) {
       console.error('\n❌ No Mock Protocol VIOLATED');
       process.exit(1);
@@ -59,16 +75,16 @@ class NoMockValidator {
     }
   }
 
-  scanFile(filePath) {
+  async scanFile(filePath) {
     this.scannedFiles++;
-    const content = fs.readFileSync(filePath, 'utf8');
+    const content = await fs.promises.readFile(filePath, 'utf8');
     const lines = content.split('\n');
 
     lines.forEach((line, index) => {
       for (const pattern of MOCK_PATTERNS) {
         if (pattern.test(line)) {
           // Check if it's an allowed exception
-          const isAllowed = ALLOWED_MOCK_PATTERNS.some(allowed => 
+          const isAllowed = ALLOWED_MOCK_PATTERNS.some(allowed =>
             allowed.test(line)
           );
 
@@ -107,9 +123,9 @@ class NoMockValidator {
 }
 
 // Run if called directly
-if (require.main === module) {
+if (import.meta.url === `file://${process.argv[1]}`) {
   const validator = new NoMockValidator();
   validator.validate().catch(console.error);
 }
 
-module.exports = NoMockValidator;
+export default NoMockValidator;

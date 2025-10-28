@@ -1,23 +1,29 @@
-FROM node:20-alpine
+# Compliance Dashboard Dockerfile
+FROM node:18-alpine
 
-# Set working directory
 WORKDIR /app
 
 # Copy package files
-COPY package.json package-lock.json ./
+COPY package*.json ./
 
 # Install dependencies
-RUN npm ci --only=production || npm install --only=production
+RUN npm ci --only=production
 
-# Copy application code
+# Copy source code
 COPY . .
 
-# Expose port
-EXPOSE 4086
+# Create non-root user
+RUN addgroup -g 1001 -S nodejs
+RUN adduser -S azora -u 1001
+
+# Change ownership
+RUN chown -R azora:nodejs /app
+USER azora
+
+EXPOSE 4000
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:4086/health || exit 1
+  CMD node -e "require('http').get('http://localhost:4000/api/health', (res) => { process.exit(res.statusCode === 200 ? 0 : 1) })"
 
-# Start the service
-CMD ["node", "index.js"]
+CMD ["npm", "start"]
