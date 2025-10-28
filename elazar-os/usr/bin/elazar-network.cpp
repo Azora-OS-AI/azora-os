@@ -380,7 +380,7 @@ private:
                 while (ws_active) {
                     ws_stream->read(buffer);
 
-                    std::string message_str = boost::beast::make_printable(buffer.data());
+                    std::string message_str = boost::beast::buffers_to_string(buffer.data());
                     buffer.consume(buffer.size());
 
                     if (!message_str.empty()) {

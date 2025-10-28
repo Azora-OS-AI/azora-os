@@ -73,17 +73,19 @@ public:
     }
 };
 
-class Argon2Hash : public HashFunction {
+class ScryptHash : public HashFunction {
 public:
     std::string hash(const std::string& input) override {
-        CryptoPP::Argon2 argon2(CryptoPP::Argon2::DEFAULT_ITERATIONS,
-                               CryptoPP::Argon2::DEFAULT_MEMORY,
-                               CryptoPP::Argon2::DEFAULT_PARALLELISM);
-        std::string digest;
-        argon2.Update(reinterpret_cast<const CryptoPP::byte*>(input.data()), input.size());
-        digest.resize(argon2.DigestSize());
-        argon2.Final(reinterpret_cast<CryptoPP::byte*>(&digest[0]));
-        return digest;
+        std::string derived;
+        derived.resize(32); // 256-bit output
+        CryptoPP::Scrypt scrypt;
+        scrypt.DeriveKey(reinterpret_cast<CryptoPP::byte*>(&derived[0]), derived.size(),
+                        reinterpret_cast<const CryptoPP::byte*>(input.data()), input.size(),
+                        reinterpret_cast<const CryptoPP::byte*>("salt123456789"), 12, // salt and length
+                        16384, // cost (N)
+                        8,     // block size (r)
+                        1);    // parallelism (p)
+        return derived;
     }
 };
 
@@ -91,14 +93,14 @@ class HybridHash : public HashFunction {
 private:
     SHA3_256 sha3;
     Blake2b blake2b;
-    Argon2Hash argon2;
+    ScryptHash scrypt;
 
 public:
     std::string hash(const std::string& input) override {
         // Multi-stage hashing for maximum security
         std::string stage1 = sha3.hash(input);
         std::string stage2 = blake2b.hash(stage1);
-        std::string stage3 = argon2.hash(stage2 + input); // Include original input
+        std::string stage3 = scrypt.hash(stage2 + input); // Include original input
         return sha3.hash(stage3); // Final SHA3 hash
     }
 };

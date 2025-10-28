@@ -13,7 +13,7 @@ INCLUDES = -I/usr/include/eigen3 \
 
 # Library paths
 LIBS = -L/usr/local/lib
-LDFLAGS = -lboost_system -lboost_thread -pthread -lgomp -lm -lssl -lcrypto
+LDFLAGS = -lboost_system -lboost_thread -lboost_filesystem -pthread -lgomp -lm -lssl -lcrypto
 
 # Source files
 SOURCES = elazar-os/usr/bin/elazar-ai.cpp \

@@ -308,7 +308,7 @@ private:
     std::map<std::string, std::vector<std::string>> constitutional_principles;
     std::map<std::string, double> compliance_scores;
     std::vector<std::string> violations_log;
-    std::mutex compliance_mutex;
+    mutable std::mutex compliance_mutex;
 
 public:
     ConstitutionalComplianceEngine() {
@@ -644,10 +644,17 @@ private:
     void handleAnomaliesRequest(boost::beast::http::response<boost::beast::http::string_body>& res) {
         nlohmann::json anomalies = {
             {"total_events", security_events.size()},
-            {"anomaly_threshold", 3.0},
-            {"recent_anomalies", security_events.size() > 10 ?
-                security_events.end() - 10 : security_events.begin()}
+            {"anomaly_threshold", 3.0}
         };
+
+        // Add recent anomalies as array
+        nlohmann::json recent_anomalies = nlohmann::json::array();
+        size_t start = security_events.size() > 10 ? security_events.size() - 10 : 0;
+        for (size_t i = start; i < security_events.size(); ++i) {
+            recent_anomalies.push_back(security_events[i]);
+        }
+        anomalies["recent_anomalies"] = recent_anomalies;
+
         res.body() = anomalies.dump(2);
         res.result(boost::beast::http::status::ok);
     }

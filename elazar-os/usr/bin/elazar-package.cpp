@@ -22,6 +22,7 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <dirent.h>
+#include <set>
 #include <openssl/sha.h>
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
@@ -570,7 +571,7 @@ private:
         archive_read_support_filter_all(archive);
         archive_read_support_format_all(archive);
 
-        if (archive_read_open_filename(archive, archive_path, 10240) != ARCHIVE_OK) {
+        if (archive_read_open_filename(archive, archive_path.c_str(), 10240) != ARCHIVE_OK) {
             std::cerr << "Failed to open archive: " << archive_path << std::endl;
             archive_read_free(archive);
             return false;
@@ -620,7 +621,7 @@ private:
     PackageDownloader downloader;
     std::thread sync_thread;
     std::atomic<bool> sync_active;
-    std::mutex repo_mutex;
+    mutable std::mutex repo_mutex;
 
 public:
     RepositoryManager() : sync_active(true) {
@@ -665,6 +666,11 @@ public:
             return package_index[name];
         }
         return PackageInfo{}; // Return empty package info
+    }
+
+    size_t getRepositoryCount() const {
+        std::lock_guard<std::mutex> lock(repo_mutex);
+        return repositories.size();
     }
 
     void updatePackageIndex() {
