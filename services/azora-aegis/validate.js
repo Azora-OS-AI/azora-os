@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 /*
 AZORA PROPRIETARY LICENSE
 
@@ -5,8 +7,6 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 
 See LICENSE file for details.
 */
-
-#!/usr/bin/env node
 
 /**
  * @file AI Security Monitoring Service Validation

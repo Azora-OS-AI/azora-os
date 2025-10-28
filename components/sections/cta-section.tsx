@@ -129,7 +129,7 @@ export function CTASection() {
               </div>
             </div>
             <p className="text-gray-400 text-sm mt-4 max-w-md mx-auto">
-              "Azora is more than technology—it's our commitment to African innovation and economic empowerment."
+              &quot;Azora is more than technology—it&apos;s our commitment to African innovation and economic empowerment.&quot;
             </p>
           </motion.div>
         </div>

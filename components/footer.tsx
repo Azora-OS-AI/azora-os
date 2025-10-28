@@ -46,7 +46,7 @@ export function Footer() {
               <span className="text-xl font-bold">Azora OS</span>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
-              Africa's first full software infrastructure. Built in South Africa by Sizwe Ngwenya,
+              Africa&apos;s first full software infrastructure. Built in South Africa by Sizwe Ngwenya,
               empowering African innovation through AI, blockchain, and cloud technology.
             </p>
 

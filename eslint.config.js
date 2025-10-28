@@ -24,6 +24,7 @@ export default [
       'coverage/**',
       '**/*.min.js',
       '**/*.bundle.js',
+      '.nx/**',
       // Exclude sub-apps with their own ESLint configs
       'pay-ui/**',
       'learn-ui/**',
@@ -49,7 +50,7 @@ export default [
       'onboarding-wizard/**',
       'reflexes/**',
       'secrets/**',
-      'shield_service/**',
+      'services/**',
       'ab_tests/**',
       'ai-models/**',
       'api/**',
@@ -67,6 +68,7 @@ export default [
       'public/**',
       'scripts/**',
       'templates/**',
+      'artifacts/**',
       // Config files
       '**/*.config.js',
       '**/*.config.ts',
@@ -130,7 +132,7 @@ export default [
     },
   },
   {
-    files: ['services/**/*.js'],
+    files: ['services/**/*.js', 'constants/**/*.js', 'demo-mve.js', 'mve-server.js', 'server.js'],
     languageOptions: {
       ecmaVersion: 2020,
       sourceType: 'module',

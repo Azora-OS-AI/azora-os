@@ -71,7 +71,7 @@ export function HeroSection() {
           transition={{ duration: 0.6, delay: 0.6 }}
           className="text-lg md:text-xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed"
         >
-          Africa's First Full Software Infrastructure. Learn, earn, and build with AI-powered compliance,
+          Africa&apos;s First Full Software Infrastructure. Learn, earn, and build with AI-powered compliance,
           decentralized finance, and enterprise-grade cloud solutions. Powered by South African innovation.
         </motion.p>
 

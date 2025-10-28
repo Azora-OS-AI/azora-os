@@ -240,6 +240,8 @@ class AegisCitadel {
                     country,
                     region: data.region,
                     localToken: data.economyStatus.localToken,
+                }));
+
         // Health check
         this.app.get('/health', (req, res) => {
             res.json({
@@ -375,16 +377,6 @@ class AegisCitadel {
                     details: error.message
                 });
             }
-        });
-    }       res.json({
-                status: 'operational',
-                service: 'Aegis Citadel',
-                globalGenesisFund: {
-                    available: this.globalGenesisFund.available,
-                    nationsReady: this.countryRegistry.size
-                },
-                timestamp: new Date().toISOString()
-            });
         });
     }
 

@@ -202,10 +202,11 @@ function createHash(data, complexityLevel = null) {
     case 'sha256':
       hash = crypto.createHash('sha256').update(stringData).digest('hex');
       break;
-    case 'sha256-double':
+    case 'sha256-double': {
       const firstHash = crypto.createHash('sha256').update(stringData).digest('hex');
       hash = crypto.createHash('sha256').update(firstHash).digest('hex');
       break;
+    }
     case 'sha384':
       hash = crypto.createHash('sha384').update(stringData).digest('hex');
       break;

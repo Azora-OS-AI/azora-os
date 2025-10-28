@@ -32,6 +32,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
+        "./*",
         "apps/main-app/*",
         "synapse/shared-ui/*"
       ]

@@ -34,6 +34,9 @@ fi
 # Build Docker images
 print_status "Building Docker images..."
 
+# Ensure we're in the project root
+cd "$(dirname "$0")"
+
 # Build main app
 cd synapse/main-app
 docker build -t azora-main-app:latest .

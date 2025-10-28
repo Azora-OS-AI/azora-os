@@ -7,38 +7,38 @@ export function ValueProposition() {
   const features = [
     {
       icon: Brain,
-      title: 'African AI Intelligence',
-      description: 'Advanced AI systems trained on African data, understanding African contexts, languages, and cultural nuances.',
+      title: 'African AI Intelligence'.replace(/'/g, "&apos;"),
+      description: 'Advanced AI systems trained on African data, understanding African contexts, languages, and cultural nuances.'.replace(/'/g, "&apos;"),
       color: 'from-cyan-500 to-blue-500'
     },
     {
       icon: Shield,
-      title: 'AI-Powered Compliance',
-      description: 'Automated regulatory compliance with AI-driven insights, real-time monitoring, and predictive analytics.',
+      title: 'AI-Powered Compliance'.replace(/'/g, "&apos;"),
+      description: 'Automated regulatory compliance with AI-driven insights, real-time monitoring, and predictive analytics.'.replace(/'/g, "&apos;"),
       color: 'from-green-500 to-emerald-500'
     },
     {
       icon: Zap,
-      title: 'Decentralized Finance',
-      description: 'Full DeFi infrastructure with African market focus, including stablecoins, lending, and cross-border payments.',
+      title: 'Decentralized Finance'.replace(/'/g, "&apos;"),
+      description: 'Full DeFi infrastructure with African market focus, including stablecoins, lending, and cross-border payments.'.replace(/'/g, "&apos;"),
       color: 'from-purple-500 to-pink-500'
     },
     {
       icon: Globe,
-      title: 'Enterprise Cloud',
-      description: 'Scalable cloud infrastructure designed for African enterprises with local data sovereignty and compliance.',
+      title: 'Enterprise Cloud'.replace(/'/g, "&apos;"),
+      description: 'Scalable cloud infrastructure designed for African enterprises with local data sovereignty and compliance.'.replace(/'/g, "&apos;"),
       color: 'from-orange-500 to-red-500'
     },
     {
       icon: Users,
-      title: 'Learn & Earn Economy',
-      description: 'SAQA-aligned education with AZR token rewards, creating sustainable learning incentives.',
+      title: 'Learn & Earn Economy'.replace(/'/g, "&apos;"),
+      description: 'SAQA-aligned education with AZR token rewards, creating sustainable learning incentives.'.replace(/'/g, "&apos;"),
       color: 'from-indigo-500 to-blue-500'
     },
     {
       icon: Award,
-      title: 'African Innovation Hub',
-      description: 'Showcasing African talent and innovation through our comprehensive development platform.',
+      title: 'African Innovation Hub'.replace(/'/g, "&apos;"),
+      description: 'Showcasing African talent and innovation through our comprehensive development platform.'.replace(/'/g, "&apos;"),
       color: 'from-teal-500 to-cyan-500'
     }
   ]
@@ -57,7 +57,7 @@ export function ValueProposition() {
             Why Choose <span className="bg-gradient-to-r from-cyan-600 to-blue-600 bg-clip-text text-transparent">Azora OS</span>?
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
-            We're not just another platform. We're Africa's first comprehensive software infrastructure
+            We&apos;re not just another platform. We&apos;re Africa&apos;s first comprehensive software infrastructure
             that combines learning, earning, compliance, and enterprise solutions—all powered by African intelligence.
           </p>
         </motion.div>
@@ -76,7 +76,7 @@ export function ValueProposition() {
                 <feature.icon className="w-7 h-7 text-white" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-4 group-hover:text-cyan-600 transition-colors">
-                {feature.title}
+                {feature.title.replace(/'/g, "&apos;")}
               </h3>
               <p className="text-gray-600 leading-relaxed">
                 {feature.description}

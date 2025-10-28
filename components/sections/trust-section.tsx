@@ -138,7 +138,7 @@ export function TrustSection() {
                 ))}
               </div>
               <p className="text-gray-700 mb-6 leading-relaxed italic">
-                "{testimonial.content}"
+                &quot;{testimonial.content}&quot;
               </p>
               <div>
                 <div className="font-bold text-gray-900">{testimonial.name}</div>
