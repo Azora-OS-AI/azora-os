@@ -7,6 +7,8 @@ See LICENSE file for details.
 */
 
 import { ChatOpenAI } from "@langchain/openai";
+import { PromptTemplate } from "@langchain/core/prompts";
+import { PromptTemplate } from "@langchain/core/prompts";
 
 /**
  * Geopolitical Readiness Index (GRI)
@@ -120,10 +122,16 @@ export interface CrisisIndicator {
   detectionDate: number;
   status: 'active' | 'mitigated' | 'resolved';
   mitigationStrategies: string[];
-}
-
 export class GeopoliticalReadinessIndex {
   private llm: ChatOpenAI;
+  private nations: Map<string, NationProfile> = new Map();
+  private griScores: Map<string, GRIScore> = new Map();
+  private trends: GRITrend[] = [];
+  private crisisIndicators: CrisisIndicator[] = [];
+
+  // AI-powered GRI calculation prompt
+  private griPrompt: PromptTemplate;
+  private nations: Map<string, NationProfile> = new Map();
   private nations: Map<string, NationProfile> = new Map();
   private griScores: Map<string, GRIScore> = new Map();
   private trends: GRITrend[] = [];
@@ -148,15 +156,169 @@ export class GeopoliticalReadinessIndex {
   };
 
   // Sovereign Seed Grant amounts
-  private readonly SEED_GRANTS = {
-    critical: 1000000,   // 1M AZR
-    high: 750000,        // 750K AZR
-    moderate: 500000,    // 500K AZR
-    low: 0,             // No grant
-    unfavorable: 0,     // No grant
-  };
-
   constructor(openaiApiKey: string) {
+    this.llm = new ChatOpenAI({
+      openaiApiKey,
+      modelName: "gpt-4-turbo-preview",
+      temperature: 0.2, // Low temperature for analytical assessments
+    });
+
+    // Initialize AI prompt for GRI calculations
+    this.griPrompt = PromptTemplate.fromTemplate(`
+You are Elara, the Constitutional AI codifier for Azora's Ubuntu-aligned sovereignty protocol.
+  /**
+   * Calculate comprehensive GRI score for a nation using AI-powered analysis
+   */
+  async calculateGRIScore(nationId: string): Promise<GRIScore | { error: string }> {
+    const nation = this.nations.get(nationId);
+    if (!nation || !nation.isActive) {
+      return { error: "Nation not found or inactive" };
+    }
+
+    try {
+      // Use AI-powered analysis with Elara
+      const chain = this.griPrompt.pipe(this.llm);
+      const response = await chain.invoke({
+        nationName: nation.name,
+        region: nation.region,
+        population: nation.population.toLocaleString(),
+        gdpPerCapita: `$${nation.gdpPerCapita.toLocaleString()}`,
+        isoCode: nation.isoCode,
+        digitalInfrastructure: "Advanced internet infrastructure with growing blockchain adoption",
+        regulatoryClimate: "Progressive crypto regulations with international cooperation",
+        economicFactors: "Stable economy with fintech innovation potential",
+        socialFactors: "Educated population with digital literacy growth",
+        politicalStability: "Democratic governance with rule of law",
+      });
+
+      const aiAnalysis = JSON.parse(response.content.trim());
+
+      // Extract factors from AI analysis
+      const factors = aiAnalysis.factors;
+
+      // Calculate weighted overall score (fallback to AI score if needed)
+      const overallScore = aiAnalysis.overallScore || Math.round(
+        (factors.digitalInfrastructure.score * this.SCORING_WEIGHTS.digitalInfrastructure / 100) +
+        (factors.regulatoryClimate.score * this.SCORING_WEIGHTS.regulatoryClimate / 100) +
+        (factors.economicFactors.score * this.SCORING_WEIGHTS.economicFactors / 100) +
+        (factors.socialFactors.score * this.SCORING_WEIGHTS.socialFactors / 100) +
+        (factors.politicalStability.score * this.SCORING_WEIGHTS.politicalStability / 100)
+      );
+
+      // Determine readiness level
+      const readinessLevel = aiAnalysis.readinessLevel || this.determineReadinessLevel(overallScore);
+
+      // Generate recommendations based on AI analysis
+      const recommendations = await this.generateRecommendations(nation, readinessLevel, aiAnalysis.aiAnalysis);
+
+      const griScore: GRIScore = {
+        nationId,
+        overallScore,
+        assessmentDate: Date.now(),
+        factors,
+        readinessLevel,
+        sovereignSeedGrant: {
+          eligible: readinessLevel !== 'unfavorable' && readinessLevel !== 'low',
+          grantAmount: this.SEED_GRANTS[readinessLevel],
+          unlockConditions: this.generateUnlockConditions(readinessLevel),
+          estimatedTimeline: this.estimateTimeline(readinessLevel),
+        },
+        recommendations,
+        aiAnalysis: aiAnalysis.aiAnalysis,
+      };
+
+      this.griScores.set(nationId, griScore);
+
+      // Update nation last updated timestamp
+      nation.lastUpdated = Date.now();
+
+    return griScore;
+  }
+
+  /**
+   * Calculate GRI score for a nation using traditional assessment (fallback)
+   */
+  private async calculateGRIScoreFallback(nationId: string): Promise<GRIScore> {
+    const nation = this.nations.get(nationId);
+    if (!nation) {
+      throw new Error(`Nation ${nationId} not found`);
+    }
+
+    // Traditional assessment without AI
+    const factors = await Promise.all([
+      this.assessDigitalInfrastructure(nation),
+      this.assessRegulatoryClimate(nation),
+      this.assessEconomicFactors(nation),
+      this.assessSocialFactors(nation),
+      this.assessPoliticalStability(nation),
+    ]);
+
+    const [digitalInfrastructure, regulatoryClimate, economicFactors, socialFactors, politicalStability] = factors;
+
+    // Calculate overall score using weighted average
+    const overallScore = Math.round(
+      (digitalInfrastructure.score * 0.25) +
+      (regulatoryClimate.score * 0.20) +
+      (economicFactors.score * 0.20) +
+      (socialFactors.score * 0.20) +
+      (politicalStability.score * 0.15)
+    );
+
+    const readinessLevel = this.determineReadinessLevel(overallScore);
+
+    // Generate basic AI analysis (placeholder)
+    const aiAnalysis: GRIScore['aiAnalysis'] = {
+      confidence: 60,
+      keyInsights: [
+        'Traditional assessment completed',
+        'AI analysis not available - using fallback method',
+        'Consider manual review for accuracy'
+      ],
+      predictiveOutlook: 'stable',
+      catalystEvents: ['Further assessment recommended'],
+    };
+
+    const griScore: GRIScore = {
+      nationId,
+      overallScore,
+      readinessLevel,
+      factors: {
+        digitalInfrastructure,
+        regulatoryClimate,
+        economicFactors,
+        socialFactors,
+        politicalStability,
+      },
+      aiAnalysis,
+      recommendations: await this.generateRecommendations(nation, readinessLevel, aiAnalysis),
+      unlockConditions: this.generateUnlockConditions(readinessLevel),
+      estimatedTimeline: this.estimateTimeline(readinessLevel),
+      assessmentDate: Date.now(),
+    };
+
+    // Store the score
+    this.griScores.set(nationId, griScore);
+
+    // Update nation last updated timestamp
+    nation.lastUpdated = Date.now();
+
+    return griScore;
+  }
+
+  /**
+   * Get GRI score for a nationcoreFallback(nation);
+    }
+  } "sovereignDignity": <0-100>,
+    "interconnectedness": <0-100>,
+    "ubuntuScore": <0-100>
+  }}
+}}
+
+Focus on Ubuntu principles: How well does this nation embody collective prosperity, sovereign dignity, and interconnected economic relationships? Consider Azora's potential to enhance rather than disrupt local economic sovereignty.
+    `);
+
+    this.initializeNationDatabase();
+  }onstructor(openaiApiKey: string) {
     this.llm = new ChatOpenAI({
       openaiApiKey,
       modelName: "gpt-4-turbo-preview",

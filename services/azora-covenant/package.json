@@ -20,10 +20,18 @@
   "author": "Autonomous Logistics Team",
   "license": "AZORA PROPRIETARY LICENSE",
   "dependencies": {
-    "express": "^4.21.2",
-    "axios": "^1.12.2"
+    "axios": "^1.12.2",
+    "dotenv": "^17.2.3",
+    "express": "^4.21.2"
   },
   "engines": {
     "node": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ethers": "^4.0.2",
+    "@nomicfoundation/hardhat-toolbox": "^6.1.0",
+    "@nomicfoundation/hardhat-verify": "^3.0.4",
+    "@openzeppelin/contracts": "^5.4.0",
+    "hardhat": "^3.0.9"
   }
 }
