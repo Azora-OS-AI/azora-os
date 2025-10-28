@@ -325,7 +325,7 @@ export class MetabolicPathwayEngine {
   /**
    * Calculate metabolic health of a node
    */
-  private calculateNodeHealth(node: MetabolicNode): number {
+  private calculateNodeHealth(node: Omit<MetabolicNode, "health">): number {
     const efficiency = node.metabolicEfficiency;
     const wasteRatio = Array.from(node.wasteProfile.values()).reduce((sum, waste) => sum + waste, 0) /
       Array.from(node.resourceOutputs.values()).reduce((sum, output) => sum + output, 0);

@@ -305,7 +305,7 @@ export class ElaraCore {
             } catch (error) {
                 logger.error(`Failed to execute decision ${decision.id}:`, error);
                 decision.status = 'failed';
-                decision.error = error.message;
+                decision.error = error instanceof Error ? error.message : String(error);
             }
         }
     }
@@ -424,14 +424,33 @@ export class ElaraCore {
     private async gatherSocialMetrics(): Promise<any> { /* Implementation */ }
     private async gatherInnovationSignals(): Promise<any> { /* Implementation */ }
 
-    private async createDecision(evaluation: EthicalEvaluation): Promise<Decision> { /* Implementation */ }
+    private async createDecision(evaluation: EthicalEvaluation): Promise<Decision> {
+        // Implementation placeholder
+        return {
+            id: `decision-${Date.now()}`,
+            type: 'ethical_evaluation',
+            description: 'Decision based on ethical evaluation',
+            parameters: evaluation,
+            priority: 'medium',
+            status: 'pending',
+            createdAt: new Date()
+        };
+    }
     private async executeDecision(decision: Decision): Promise<void> { /* Implementation */ }
     private async publishDecisionEvent(decision: Decision): Promise<void> { /* Implementation */ }
     private async requestHumanIntervention(evaluation: EthicalEvaluation): Promise<void> { /* Implementation */ }
     private async measureOutcomes(): Promise<any> { /* Implementation */ }
     private updatePerformanceMetrics(): void { /* Implementation */ }
     private async handleProcessingError(error: any): Promise<void> { /* Implementation */ }
-    private async generateIntelligentResponse(analysis: any, context: UserContext): Promise<ElaraResponse> { /* Implementation */ }
+    private async generateIntelligentResponse(analysis: any, context: UserContext): Promise<ElaraResponse> {
+        // Implementation placeholder
+        return {
+            response: 'Intelligent response based on analysis',
+            confidence: 0.85,
+            requiresApproval: false,
+            ethicalConcerns: []
+        };
+    }
     private async executeEmergencyProtocols(): Promise<void> { /* Implementation */ }
     private async publishEmergencyEvent(reason: string): Promise<void> { /* Implementation */ }
 }

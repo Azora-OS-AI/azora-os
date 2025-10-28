@@ -7,7 +7,7 @@ See LICENSE file for details.
 */
 
 import { Router, Request, Response } from 'express';
-import { query, validationResult } from 'express-validator';
+const { query, validationResult } = require('express-validator');
 import { Listing } from '../models/Listing';
 import logger from '../middleware/requestLogger';
 
@@ -195,8 +195,8 @@ router.get('/suggestions', [
       title: { $regex: q as string, $options: 'i' },
       status: 'active'
     })
-    .select('title')
-    .limit(5);
+      .select('title')
+      .limit(5);
 
     res.json({
       success: true,

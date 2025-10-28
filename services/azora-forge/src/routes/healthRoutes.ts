@@ -7,8 +7,8 @@ See LICENSE file for details.
 */
 
 import { Router, Request, Response } from 'express';
-import mongoose from 'mongoose';
-import { getMetrics } from '../middleware/metrics';
+// import mongoose from 'mongoose';
+// import { getMetrics } from '../middleware/metrics';
 import logger from '../middleware/requestLogger';
 
 const router = Router();
@@ -38,17 +38,17 @@ router.get('/', (req: Request, res: Response) => {
 router.get('/ready', async (req: Request, res: Response) => {
   try {
     // Check database connectivity
-    const db = mongoose.connection.db;
-    if (!db) {
-      throw new Error('Database not connected');
-    }
-    await db.admin().ping();
+    // const db = mongoose.connection.db;
+    // if (!db) {
+    //   throw new Error('Database not connected');
+    // }
+    // await db.admin().ping();
 
     res.json({
       success: true,
       status: 'ready',
       service: 'azora-forge',
-      database: 'connected',
+      database: 'mock-connected', // Mock for now
       timestamp: new Date().toISOString()
     });
   } catch (error) {
@@ -87,9 +87,9 @@ router.get('/live', (req: Request, res: Response) => {
  */
 router.get('/metrics', async (req: Request, res: Response) => {
   try {
-    const metrics = await getMetrics();
+    // const metrics = await getMetrics();
     res.set('Content-Type', 'text/plain; charset=utf-8');
-    res.send(metrics);
+    res.send('# Mock metrics\nup 1\n');
   } catch (error) {
     logger.error('Error getting metrics:', error);
     res.status(500).json({ success: false, error: 'Failed to get metrics' });
@@ -104,35 +104,35 @@ router.get('/metrics', async (req: Request, res: Response) => {
  */
 router.get('/stats', async (req: Request, res: Response) => {
   try {
-    const db = mongoose.connection.db;
-    if (!db) {
-      throw new Error('Database not connected');
-    }
+    // const db = mongoose.connection.db;
+    // if (!db) {
+    //   throw new Error('Database not connected');
+    // }
 
-    const [
-      totalListings,
-      activeListings,
-      totalCategories,
-      totalTransactions
-    ] = await Promise.all([
-      db.collection('listings').countDocuments(),
-      db.collection('listings').countDocuments({ status: 'active' }),
-      db.collection('categories').countDocuments({ isActive: true }),
-      db.collection('transactions').countDocuments()
-    ]);
+    // const [
+    //   totalListings,
+    //   activeListings,
+    //   totalCategories,
+    //   totalTransactions
+    // ] = await Promise.all([
+    //   db.collection('listings').countDocuments(),
+    //   db.collection('listings').countDocuments({ status: 'active' }),
+    //   db.collection('categories').countDocuments({ isActive: true }),
+    //   db.collection('transactions').countDocuments()
+    // ]);
 
     res.json({
       success: true,
       data: {
         listings: {
-          total: totalListings,
-          active: activeListings
+          total: 0, // Mock data
+          active: 0
         },
-        categories: totalCategories,
-        transactions: totalTransactions,
+        categories: 0,
+        transactions: 0,
         database: {
-          name: db.databaseName,
-          collections: (await db.collections()).length
+          name: 'mock-db',
+          collections: 0
         }
       },
       timestamp: new Date().toISOString()

@@ -24,6 +24,7 @@ import stakingRoutes from './routes/staking.js';
 import defiRoutes from './routes/defi.js';
 import liquidityRoutes from './routes/liquidity.js';
 import paymentRoutes from './routes/payment.js';
+import { processKnowledgeReward } from './controllers/rewardController.js';
 
 // Import services
 import { CreditService } from './services/CreditService.js';
@@ -128,6 +129,9 @@ app.use('/api/v1/staking', authenticateToken, stakingRoutes);
 app.use('/api/v1/defi', authenticateToken, defiRoutes);
 app.use('/api/v1/liquidity', authenticateToken, liquidityRoutes);
 app.use('/api/v1/payment', authenticateToken, paymentRoutes);
+
+// Proof-of-Knowledge Protocol Endpoints
+app.post('/api/v2/knowledge-reward', processKnowledgeReward);
 
 // Metrics endpoint
 app.get('/metrics', async (req, res) => {
