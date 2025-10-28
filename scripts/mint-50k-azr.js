@@ -31,17 +31,24 @@ mint50KAZR();
 
 async function main() {
   const [owner] = await hardhat.ethers.getSigners();
+  console.log("Owner address:", owner.address);
+
   const azrAddress = process.env.AZR_CONTRACT_ADDRESS;
   const founderAddress = process.env.CEO_ADDRESS;
-  const AZR = await hardhat.ethers.getContractAt("AZR", azrAddress);
 
+  console.log("AZR Address:", azrAddress);
+  console.log("Founder Address:", founderAddress);
+
+  const AZR = await hardhat.ethers.getContractAt("AZR", azrAddress);
   const amount = hardhat.ethers.utils.parseUnits("50000", 18); // 50,000 AZR
 
+  console.log("Minting 50,000 AZR...");
   const tx = await AZR.mint(founderAddress, amount);
   await tx.wait();
 
   console.log(`Minted 50,000 AZR to founder: ${founderAddress}`);
-  console.log(`Balance of founder: ${await AZR.balanceOf(founderAddress)}`);
+  const balance = await AZR.balanceOf(founderAddress);
+  console.log(`Balance of founder: ${balance.toString()}`);
 }
 
 main().catch((error) => {
