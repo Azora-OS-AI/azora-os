@@ -274,7 +274,7 @@ export class EthicsEngine {
      */
     private async assessCulturalAlignment(decision: any): Promise<CulturalAlignmentResult> {
         const culture = decision.culturalContext || this.ethicalFramework.culturalAlignment.primaryCulture;
-        const cultureValues = this.ethicalFramework.culturalAlignment.ethicalMappings.get(culture) || [];
+        const cultureValues = this.ethicalFramework.culturalAlignment.valueFrameworks;
 
         let alignmentScore = 0;
         const concerns: string[] = [];

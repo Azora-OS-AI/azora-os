@@ -7,7 +7,7 @@ See LICENSE file for details.
 */
 
 import { Router, Request, Response } from 'express';
-import { body, param, query, validationResult } from 'express-validator';
+const { body, param, query, validationResult } = require('express-validator');
 import { Listing, Transaction } from '../models/Listing';
 import { customMetrics } from '../middleware/metrics';
 import logger from '../middleware/requestLogger';

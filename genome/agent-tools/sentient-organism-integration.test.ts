@@ -129,10 +129,9 @@ describe('Sentient Economic Organism Integration Test', () => {
         });
 
         test('Should identify evolutionarily stable strategies', () => {
-            const status = reflexivityEngine.getUnifiedStatus?.() || { agentStatus: { operational: true } };
-
-            // The engine should be operational and capable of strategic analysis
-            expect(status.agentStatus?.operational).toBe(true);
+            // Test that the reflexivity engine can run simulations
+            const simulation = reflexivityEngine.runReflexiveSimulation('test scenario', 1);
+            expect(simulation).toBeDefined();
         });
 
         test('Should model competitor behavior with behavioral biases', async () => {

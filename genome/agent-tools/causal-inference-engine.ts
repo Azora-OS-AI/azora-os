@@ -330,7 +330,7 @@ export class DoCalculusEngine {
 
       // Check if current has multiple outgoing edges
       const outgoing = this.getOutgoingNeighbors(current);
-      if (outgoing.size > 1) {
+      if (outgoing.length > 1) {
         // Check if paths rejoin later
         const remainingPath = path.slice(i + 1);
         if (remainingPath.includes(current)) {
@@ -455,8 +455,8 @@ export class CausalInferenceEngine {
 
     let effect = 0;
     let confidence = 0;
-    const assumptions: string[] = [];
-    const limitations: string[] = [];
+    let assumptions: string[] = [];
+    let limitations: string[] = [];
 
     switch (method) {
       case 'backdoor':
