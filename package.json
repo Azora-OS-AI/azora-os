@@ -1,17 +1,8 @@
 {
-<<<<<<< HEAD
-  "name": "azora-os",
-  "version": "1.0.0",
-  "description": "Africa's First Trillion-Dollar Operating System",
-  "author": {
-    "email": "sizwe.ngwenya@azora.world"
-  },
-=======
   "name": "azora-es",
   "version": "0.1.0",
   "private": true,
   "type": "module",
->>>>>>> f67f6e62a0323d30efb3d00a3a59b0e992007c75
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -26,28 +17,6 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "license-check": "find . -name '*.ts' -o -name '*.js' | grep -v node_modules | grep -v .next | xargs -I {} sh -c 'if ! head -n 10 \"{}\" | grep -q \"AZORA PROPRIETARY LICENSE\"; then echo \"Missing license in {}\"; exit 1; fi'"
   },
-<<<<<<< HEAD
-  "license": "SEE LICENSE IN LICENSE",
-  "private": true,
-  "dependencies": {
-    "@metamask/delegation-toolkit": "^0.13.0",
-    "axios": "^1.12.2",
-    "crypto": "^1.0.1",
-    "dotenv": "^17.2.3",
-    "nodemailer": "^7.0.9",
-    "web3": "^4.16.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.38.0",
-    "@nomiclabs/hardhat-ethers": "^2.2.3",
-    "@nomiclabs/hardhat-waffle": "^2.0.6",
-    "@openzeppelin/contracts": "^5.4.0",
-    "chai": "^4.3.10",
-    "ethers": "^5.7.2",
-    "hardhat": "^2.22.2"
-  },
-  "type": "module"
-=======
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
     "@langchain/core": "^1.0.1",
@@ -184,5 +153,4 @@
     "typescript": "^5"
   },
   "nx": {}
->>>>>>> f67f6e62a0323d30efb3d00a3a59b0e992007c75
 }
