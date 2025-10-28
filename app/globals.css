@@ -33,18 +33,23 @@
   }
 
   .dark {
-    --background: 210 40% 6%; /* #0A0F1A */
-    --foreground: 220 20% 90%; /* #E0E7FF */
-    --card: 210 40% 10%; /* rgba(20, 25, 40, 0.7) approx */
+    --background: 210 40% 6%;
+    /* #0A0F1A */
+    --foreground: 220 20% 90%;
+    /* #E0E7FF */
+    --card: 210 40% 10%;
+    /* rgba(20, 25, 40, 0.7) approx */
     --card-foreground: 220 20% 90%;
     --popover: 210 40% 10%;
     --popover-foreground: 220 20% 90%;
-    --primary: 185 100% 50%; /* #00D9FF */
+    --primary: 185 100% 50%;
+    /* #00D9FF */
     --primary-foreground: 210 40% 6%;
     --secondary: 210 40% 15%;
     --secondary-foreground: 220 20% 90%;
     --muted: 210 40% 15%;
-    --muted-foreground: 215 20% 65%; /* #94A3B8 approx */
+    --muted-foreground: 215 20% 65%;
+    /* #94A3B8 approx */
     --accent: 185 100% 50%;
     --accent-foreground: 210 40% 6%;
     --destructive: 0 62.8% 30.6%;
@@ -80,8 +85,8 @@
     border-radius: 1.5rem;
     padding: 1.5rem;
     backdrop-filter: blur(12px);
-    border: 1px solid rgba(255,255,255,0.1);
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     position: relative;
     overflow: hidden;
   }
@@ -138,8 +143,13 @@
   }
 
   @keyframes wave {
-    0% { background-position: 0 0; }
-    100% { background-position: 300px 0; }
+    0% {
+      background-position: 0 0;
+    }
+
+    100% {
+      background-position: 300px 0;
+    }
   }
 
   .azora-protea {
@@ -199,7 +209,16 @@
   }
 
   @keyframes pulse {
-    0%, 100% { transform: scale(1); opacity: 0.8; }
-    50% { transform: scale(1.2); opacity: 1; }
+
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
   }
 }
