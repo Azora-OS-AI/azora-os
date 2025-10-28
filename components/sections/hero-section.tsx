@@ -88,6 +88,22 @@ export function HeroSection() {
           <Button variant="outline" size="lg" className="bg-white/10 backdrop-blur border border-white/20 text-white hover:bg-white/20 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300">
             📖 Explore Ecosystem
           </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="bg-gradient-to-r from-purple-500/20 to-pink-500/20 backdrop-blur border border-purple-500/30 text-purple-300 hover:bg-purple-500/20 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300"
+            onClick={() => window.open('/stripe-dashboard', '_blank')}
+          >
+            💳 Stripe Dashboard
+          </Button>
+          <Button
+            variant="outline"
+            size="lg"
+            className="bg-gradient-to-r from-orange-500/20 to-red-500/20 backdrop-blur border border-orange-500/30 text-orange-300 hover:bg-orange-500/20 px-8 py-4 text-lg font-semibold rounded-full transition-all duration-300"
+            onClick={() => window.open('/azora-workspace', '_blank')}
+          >
+            🛠️ Azora Workspace
+          </Button>
         </motion.div>
 
         {/* Stats */}
