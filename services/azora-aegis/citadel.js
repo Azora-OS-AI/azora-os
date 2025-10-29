@@ -240,151 +240,151 @@ class AegisCitadel {
                     country,
                     region: data.region,
                     localToken: data.economyStatus.localToken,
-        // Health check
-        this.app.get('/health', (req, res) => {
-            res.json({
-                status: 'operational',
-                service: 'Aegis Citadel',
-                globalGenesisFund: {
-                    available: this.globalGenesisFund.available,
-                    nationsReady: this.countryRegistry.size
-                },
-                griEngine: {
-                    status: 'active',
-                    nationsAssessed: this.griEngine ? 'initialized' : 'pending'
-                },
-                griUnlockQueue: {
-                    pending: this.griUnlockQueue.length,
-                    processing: this.isProcessingQueue
-                },
-                timestamp: new Date().toISOString()
-            });
-        });
-
-        // ========== GRI INTEGRATION ENDPOINTS ==========
-
-        // GRI-based escrow unlock endpoint
-        this.app.post('/api/citadel/gri/unlock', async (req, res) => {
-            const { nationId, unlockType, assessmentData } = req.body;
-
-            if (!nationId || !unlockType) {
-                return res.status(400).json({
-                    error: 'nationId and unlockType required',
-                    required: ['nationId', 'unlockType'],
-                    example: {
-                        nationId: 'nation_zaf',
-                        unlockType: 'seed_grant',
-                        assessmentData: { customCriteria: 'optional' }
-                    }
-                });
-            }
-
-            try {
-                // Calculate current GRI score
-                const griScore = await this.griEngine.calculateGRIScore(nationId);
-
-                // Check if nation meets unlock criteria based on readiness level
-                const unlockResult = this.evaluateGRIUnlock(nationId, unlockType, griScore);
-
-                if (unlockResult.eligible) {
-                    // Add to unlock queue for processing
-                    const unlockRequest = {
-                        id: crypto.randomUUID(),
-                        nationId,
-                        unlockType,
-                        griScore,
-                        assessmentData,
-                        timestamp: new Date().toISOString(),
-                        status: 'queued'
-                    };
-
-                    this.griUnlockQueue.push(unlockRequest);
-
-                    // Start processing queue if not already running
-                    if (!this.isProcessingQueue) {
-                        this.processGRIUnlockQueue();
-                    }
-
-                    res.json({
-                        success: true,
-                        unlockRequest,
-                        griScore,
-                        unlockResult,
-                        queuePosition: this.griUnlockQueue.length,
-                        message: `GRI unlock request queued for ${nationId}`
+                    // Health check
+                    this.app.get('/health', (req, res) => {
+                        res.json({
+                            status: 'operational',
+                            service: 'Aegis Citadel',
+                            globalGenesisFund: {
+                                available: this.globalGenesisFund.available,
+                                nationsReady: this.countryRegistry.size
+                            },
+                            griEngine: {
+                                status: 'active',
+                                nationsAssessed: this.griEngine ? 'initialized' : 'pending'
+                            },
+                            griUnlockQueue: {
+                                pending: this.griUnlockQueue.length,
+                                processing: this.isProcessingQueue
+                            },
+                            timestamp: new Date().toISOString()
+                        });
                     });
-                } else {
-                    res.json({
-                        success: false,
-                        nationId,
-                        griScore,
-                        unlockResult,
-                        message: 'Nation does not meet GRI unlock criteria'
+
+                    // ========== GRI INTEGRATION ENDPOINTS ==========
+
+                    // GRI-based escrow unlock endpoint
+                    this.app.post('/api/citadel/gri/unlock', async (req, res) => {
+                        const { nationId, unlockType, assessmentData } = req.body;
+
+                        if (!nationId || !unlockType) {
+                            return res.status(400).json({
+                                error: 'nationId and unlockType required',
+                                required: ['nationId', 'unlockType'],
+                                example: {
+                                    nationId: 'nation_zaf',
+                                    unlockType: 'seed_grant',
+                                    assessmentData: { customCriteria: 'optional' }
+                                }
+                            });
+                        }
+
+                        try {
+                            // Calculate current GRI score
+                            const griScore = await this.griEngine.calculateGRIScore(nationId);
+
+                            // Check if nation meets unlock criteria based on readiness level
+                            const unlockResult = this.evaluateGRIUnlock(nationId, unlockType, griScore);
+
+                            if (unlockResult.eligible) {
+                                // Add to unlock queue for processing
+                                const unlockRequest = {
+                                    id: crypto.randomUUID(),
+                                    nationId,
+                                    unlockType,
+                                    griScore,
+                                    assessmentData,
+                                    timestamp: new Date().toISOString(),
+                                    status: 'queued'
+                                };
+
+                                this.griUnlockQueue.push(unlockRequest);
+
+                                // Start processing queue if not already running
+                                if (!this.isProcessingQueue) {
+                                    this.processGRIUnlockQueue();
+                                }
+
+                                res.json({
+                                    success: true,
+                                    unlockRequest,
+                                    griScore,
+                                    unlockResult,
+                                    queuePosition: this.griUnlockQueue.length,
+                                    message: `GRI unlock request queued for ${nationId}`
+                                });
+                            } else {
+                                res.json({
+                                    success: false,
+                                    nationId,
+                                    griScore,
+                                    unlockResult,
+                                    message: 'Nation does not meet GRI unlock criteria'
+                                });
+                            }
+
+                        } catch (error) {
+                            console.error('GRI unlock error:', error);
+                            res.status(500).json({
+                                error: 'Failed to process GRI unlock request',
+                                details: error.message
+                            });
+                        }
                     });
-                }
 
-            } catch (error) {
-                console.error('GRI unlock error:', error);
-                res.status(500).json({
-                    error: 'Failed to process GRI unlock request',
-                    details: error.message
-                });
-            }
-        });
-
-        // Get GRI unlock queue status
-        this.app.get('/api/citadel/gri/queue', (req, res) => {
-            res.json({
-                queueLength: this.griUnlockQueue.length,
-                isProcessing: this.isProcessingQueue,
-                pendingRequests: this.griUnlockQueue.map(req => ({
-                    id: req.id,
-                    nationId: req.nationId,
-                    unlockType: req.unlockType,
-                    status: req.status,
-                    timestamp: req.timestamp
-                }))
-            });
-        });
-
-        // Get GRI assessment for a nation
-        this.app.get('/api/citadel/gri/assessment/:nationId', async (req, res) => {
-            const { nationId } = req.params;
-
-            try {
-                const griScore = this.griEngine.getGRIScore(nationId);
-
-                if (!griScore) {
-                    return res.status(404).json({
-                        error: 'GRI assessment not found for nation',
-                        nationId,
-                        message: 'Run assessment first via POST /api/citadel/gri/unlock'
+                    // Get GRI unlock queue status
+                    this.app.get('/api/citadel/gri/queue', (req, res) => {
+                        res.json({
+                            queueLength: this.griUnlockQueue.length,
+                            isProcessing: this.isProcessingQueue,
+                            pendingRequests: this.griUnlockQueue.map(req => ({
+                                id: req.id,
+                                nationId: req.nationId,
+                                unlockType: req.unlockType,
+                                status: req.status,
+                                timestamp: req.timestamp
+                            }))
+                        });
                     });
-                }
 
-                res.json({
-                    nationId,
-                    griScore,
-                    unlockEligibility: this.evaluateGRIUnlock(nationId, 'seed_grant', griScore)
-                });
+                    // Get GRI assessment for a nation
+                    this.app.get('/api/citadel/gri/assessment/:nationId', async (req, res) => {
+                        const { nationId } = req.params;
 
-            } catch (error) {
-                console.error('GRI assessment retrieval error:', error);
-                res.status(500).json({
-                    error: 'Failed to retrieve GRI assessment',
-                    details: error.message
+                        try {
+                            const griScore = this.griEngine.getGRIScore(nationId);
+
+                            if (!griScore) {
+                                return res.status(404).json({
+                                    error: 'GRI assessment not found for nation',
+                                    nationId,
+                                    message: 'Run assessment first via POST /api/citadel/gri/unlock'
+                                });
+                            }
+
+                            res.json({
+                                nationId,
+                                griScore,
+                                unlockEligibility: this.evaluateGRIUnlock(nationId, 'seed_grant', griScore)
+                            });
+
+                        } catch (error) {
+                            console.error('GRI assessment retrieval error:', error);
+                            res.status(500).json({
+                                error: 'Failed to retrieve GRI assessment',
+                                details: error.message
+                            });
+                        }
+                    });
+                }       res.json({
+                    status: 'operational',
+                    service: 'Aegis Citadel',
+                    globalGenesisFund: {
+                        available: this.globalGenesisFund.available,
+                        nationsReady: this.countryRegistry.size
+                    },
+                    timestamp: new Date().toISOString()
                 });
-            }
-        });
-    }       res.json({
-                status: 'operational',
-                service: 'Aegis Citadel',
-                globalGenesisFund: {
-                    available: this.globalGenesisFund.available,
-                    nationsReady: this.countryRegistry.size
-                },
-                timestamp: new Date().toISOString()
-            });
         });
     }
 
@@ -409,270 +409,270 @@ class AegisCitadel {
                     triggerAchieved = true;
                 }
                 break;
-    /**
-     * Evaluate if a nation meets GRI unlock criteria
-     */
-    evaluateGRIUnlock(nationId, unlockType, griScore) {
-        const unlockCriteria = {
-            seed_grant: {
-                critical: true,    // Critical readiness = immediate unlock
-                high: true,        // High readiness = unlock eligible
-                moderate: false,   // Moderate = needs additional conditions
-                low: false,        // Low = not eligible
-                unfavorable: false // Unfavorable = blocked
-            },
-            milestone_funding: {
-                critical: true,
-                high: true,
-                moderate: true,    // Moderate can access milestone funding
-                low: false,
-                unfavorable: false
-            },
-            full_instantiation: {
-                critical: true,
-                high: true,
-                moderate: false,   // Full instantiation requires high readiness
-                low: false,
-                unfavorable: false
-            }
-        };
+                /**
+                 * Evaluate if a nation meets GRI unlock criteria
+                 */
+                evaluateGRIUnlock(nationId, unlockType, griScore) {
+                    const unlockCriteria = {
+                        seed_grant: {
+                            critical: true,    // Critical readiness = immediate unlock
+                            high: true,        // High readiness = unlock eligible
+                            moderate: false,   // Moderate = needs additional conditions
+                            low: false,        // Low = not eligible
+                            unfavorable: false // Unfavorable = blocked
+                        },
+                        milestone_funding: {
+                            critical: true,
+                            high: true,
+                            moderate: true,    // Moderate can access milestone funding
+                            low: false,
+                            unfavorable: false
+                        },
+                        full_instantiation: {
+                            critical: true,
+                            high: true,
+                            moderate: false,   // Full instantiation requires high readiness
+                            low: false,
+                            unfavorable: false
+                        }
+                    };
 
-        const criteria = unlockCriteria[unlockType];
-        if (!criteria) {
-            return {
-                eligible: false,
-                reason: `Unknown unlock type: ${unlockType}`,
-                requiredReadiness: 'critical|high|moderate',
-                currentReadiness: griScore.readinessLevel
-            };
-        }
+                    const criteria = unlockCriteria[unlockType];
+                    if (!criteria) {
+                        return {
+                            eligible: false,
+                            reason: `Unknown unlock type: ${unlockType}`,
+                            requiredReadiness: 'critical|high|moderate',
+                            currentReadiness: griScore.readinessLevel
+                        };
+                    }
 
-        const eligible = criteria[griScore.readinessLevel];
+                    const eligible = criteria[griScore.readinessLevel];
 
-        return {
-            eligible,
-            unlockType,
-            currentReadiness: griScore.readinessLevel,
-            overallScore: griScore.overallScore,
-            reason: eligible ?
-                `Nation meets ${unlockType} criteria with ${griScore.readinessLevel} readiness` :
-                `Nation requires ${Object.keys(criteria).find(level => criteria[level])} readiness for ${unlockType}`,
-            unlockConditions: griScore.unlockConditions,
-            estimatedTimeline: griScore.estimatedTimeline
-        };
-    }
+                    return {
+                        eligible,
+                        unlockType,
+                        currentReadiness: griScore.readinessLevel,
+                        overallScore: griScore.overallScore,
+                        reason: eligible ?
+                            `Nation meets ${unlockType} criteria with ${griScore.readinessLevel} readiness` :
+                            `Nation requires ${Object.keys(criteria).find(level => criteria[level])} readiness for ${unlockType}`,
+                        unlockConditions: griScore.unlockConditions,
+                        estimatedTimeline: griScore.estimatedTimeline
+                    };
+                }
 
     /**
      * Process GRI unlock queue asynchronously
      */
     async processGRIUnlockQueue() {
-        if (this.isProcessingQueue || this.griUnlockQueue.length === 0) {
-            return;
-        }
+                    if (this.isProcessingQueue || this.griUnlockQueue.length === 0) {
+                        return;
+                    }
 
-        this.isProcessingQueue = true;
-        console.log(`🔄 Aegis Citadel: Processing ${this.griUnlockQueue.length} GRI unlock requests`);
+                    this.isProcessingQueue = true;
+                    console.log(`🔄 Aegis Citadel: Processing ${this.griUnlockQueue.length} GRI unlock requests`);
 
-        while (this.griUnlockQueue.length > 0) {
-            const unlockRequest = this.griUnlockQueue.shift();
+                    while (this.griUnlockQueue.length > 0) {
+                        const unlockRequest = this.griUnlockQueue.shift();
 
-            try {
-                console.log(`🔓 Processing GRI unlock for ${unlockRequest.nationId} (${unlockRequest.unlockType})`);
+                        try {
+                            console.log(`🔓 Processing GRI unlock for ${unlockRequest.nationId} (${unlockRequest.unlockType})`);
 
-                // Get country name from nationId (e.g., 'nation_zaf' -> 'South Africa')
-                const countryName = this.getCountryNameFromNationId(unlockRequest.nationId);
+                            // Get country name from nationId (e.g., 'nation_zaf' -> 'South Africa')
+                            const countryName = this.getCountryNameFromNationId(unlockRequest.nationId);
 
-                if (!countryName) {
-                    throw new Error(`Country not found for nationId: ${unlockRequest.nationId}`);
+                            if (!countryName) {
+                                throw new Error(`Country not found for nationId: ${unlockRequest.nationId}`);
+                            }
+
+                            // Execute unlock based on type
+                            const unlockResult = await this.executeGRIUnlock(countryName, unlockRequest);
+
+                            unlockRequest.status = 'completed';
+                            unlockRequest.result = unlockResult;
+
+                            console.log(`✅ GRI unlock completed for ${countryName}: ${unlockResult.message}`);
+
+                            // Broadcast unlock event
+                            this.broadcastGRIUnlockEvent(unlockRequest);
+
+                        } catch (error) {
+                            console.error(`❌ GRI unlock failed for ${unlockRequest.nationId}:`, error);
+                            unlockRequest.status = 'failed';
+                            unlockRequest.error = error.message;
+                        }
+                    }
+
+                    this.isProcessingQueue = false;
+                    console.log(`🏁 Aegis Citadel: GRI unlock queue processing completed`);
                 }
-
-                // Execute unlock based on type
-                const unlockResult = await this.executeGRIUnlock(countryName, unlockRequest);
-
-                unlockRequest.status = 'completed';
-                unlockRequest.result = unlockResult;
-
-                console.log(`✅ GRI unlock completed for ${countryName}: ${unlockResult.message}`);
-
-                // Broadcast unlock event
-                this.broadcastGRIUnlockEvent(unlockRequest);
-
-            } catch (error) {
-                console.error(`❌ GRI unlock failed for ${unlockRequest.nationId}:`, error);
-                unlockRequest.status = 'failed';
-                unlockRequest.error = error.message;
-            }
-        }
-
-        this.isProcessingQueue = false;
-        console.log(`🏁 Aegis Citadel: GRI unlock queue processing completed`);
-    }
 
     /**
      * Execute GRI-based unlock for a country
      */
     async executeGRIUnlock(countryName, unlockRequest) {
-        const countryData = this.countryRegistry.get(countryName);
-        if (!countryData) {
-            throw new Error(`Country ${countryName} not found in registry`);
-        }
+                    const countryData = this.countryRegistry.get(countryName);
+                    if (!countryData) {
+                        throw new Error(`Country ${countryName} not found in registry`);
+                    }
 
-        const { unlockType, griScore } = unlockRequest;
+                    const { unlockType, griScore } = unlockRequest;
 
-        switch (unlockType) {
-            case 'seed_grant':
-                // Release sovereign seed grant based on GRI score
-                if (countryData.sovereignSeedGrant.status !== 'escrowed') {
-                    throw new Error(`Seed grant already ${countryData.sovereignSeedGrant.status}`);
+                    switch (unlockType) {
+                        case 'seed_grant':
+                            // Release sovereign seed grant based on GRI score
+                            if (countryData.sovereignSeedGrant.status !== 'escrowed') {
+                                throw new Error(`Seed grant already ${countryData.sovereignSeedGrant.status}`);
+                            }
+
+                            // Partial release based on readiness level
+                            const releasePercentage = this.getReleasePercentage(griScore.readinessLevel);
+                            const releaseAmount = Math.floor(countryData.sovereignSeedGrant.amount * releasePercentage);
+
+                            countryData.sovereignSeedGrant.status = 'partially_released';
+                            countryData.sovereignSeedGrant.releaseTimestamp = new Date().toISOString();
+                            countryData.sovereignSeedGrant.griUnlockData = {
+                                griScore: griScore.overallScore,
+                                readinessLevel: griScore.readinessLevel,
+                                releasePercentage,
+                                releaseAmount
+                            };
+
+                            // Update global fund
+                            this.globalGenesisFund.allocated += releaseAmount;
+                            this.globalGenesisFund.available -= releaseAmount;
+
+                            return {
+                                success: true,
+                                unlockType: 'seed_grant',
+                                releaseAmount,
+                                releasePercentage,
+                                remainingAmount: countryData.sovereignSeedGrant.amount - releaseAmount,
+                                message: `Released ${releasePercentage * 100}% (${releaseAmount} AZR) of seed grant based on ${griScore.readinessLevel} GRI readiness`
+                            };
+
+                        case 'milestone_funding':
+                            // Release milestone funding tranche
+                            const milestoneAmount = 100000; // 100K AZR milestone funding
+
+                            if (this.globalGenesisFund.available < milestoneAmount) {
+                                throw new Error('Insufficient funds for milestone funding');
+                            }
+
+                            // Update global fund
+                            this.globalGenesisFund.allocated += milestoneAmount;
+                            this.globalGenesisFund.available -= milestoneAmount;
+
+                            // Record milestone funding
+                            if (!countryData.milestoneFunding) {
+                                countryData.milestoneFunding = [];
+                            }
+
+                            countryData.milestoneFunding.push({
+                                amount: milestoneAmount,
+                                unlockDate: new Date().toISOString(),
+                                griScore: griScore.overallScore,
+                                readinessLevel: griScore.readinessLevel,
+                                milestoneType: 'gri_based_unlock'
+                            });
+
+                            return {
+                                success: true,
+                                unlockType: 'milestone_funding',
+                                releaseAmount: milestoneAmount,
+                                message: `Released ${milestoneAmount} AZR milestone funding based on ${griScore.readinessLevel} GRI readiness`
+                            };
+
+                        case 'full_instantiation':
+                            // Execute full instantiation protocol
+                            const instantiationResult = this.executeInstantiationProtocol(countryName, {
+                                confirmed: true,
+                                triggerType: 'gri_based',
+                                triggerData: { griScore, unlockRequest },
+                                confirmationTimestamp: new Date().toISOString(),
+                                confirmationId: crypto.randomUUID()
+                            });
+
+                            if (!instantiationResult.success) {
+                                throw new Error(instantiationResult.error);
+                            }
+
+                            return {
+                                success: true,
+                                unlockType: 'full_instantiation',
+                                instantiationResult,
+                                message: `Full instantiation executed for ${countryName} based on ${griScore.readinessLevel} GRI readiness`
+                            };
+
+                        default:
+                            throw new Error(`Unknown unlock type: ${unlockType}`);
+                    }
                 }
 
-                // Partial release based on readiness level
-                const releasePercentage = this.getReleasePercentage(griScore.readinessLevel);
-                const releaseAmount = Math.floor(countryData.sovereignSeedGrant.amount * releasePercentage);
+                /**
+                 * Get release percentage based on readiness level
+                 */
+                getReleasePercentage(readinessLevel) {
+                    const percentages = {
+                        critical: 1.0,    // 100% release
+                        high: 0.75,       // 75% release
+                        moderate: 0.5,    // 50% release
+                        low: 0.25,        // 25% release
+                        unfavorable: 0.0  // No release
+                    };
 
-                countryData.sovereignSeedGrant.status = 'partially_released';
-                countryData.sovereignSeedGrant.releaseTimestamp = new Date().toISOString();
-                countryData.sovereignSeedGrant.griUnlockData = {
-                    griScore: griScore.overallScore,
-                    readinessLevel: griScore.readinessLevel,
-                    releasePercentage,
-                    releaseAmount
-                };
-
-                // Update global fund
-                this.globalGenesisFund.allocated += releaseAmount;
-                this.globalGenesisFund.available -= releaseAmount;
-
-                return {
-                    success: true,
-                    unlockType: 'seed_grant',
-                    releaseAmount,
-                    releasePercentage,
-                    remainingAmount: countryData.sovereignSeedGrant.amount - releaseAmount,
-                    message: `Released ${releasePercentage * 100}% (${releaseAmount} AZR) of seed grant based on ${griScore.readinessLevel} GRI readiness`
-                };
-
-            case 'milestone_funding':
-                // Release milestone funding tranche
-                const milestoneAmount = 100000; // 100K AZR milestone funding
-
-                if (this.globalGenesisFund.available < milestoneAmount) {
-                    throw new Error('Insufficient funds for milestone funding');
+                    return percentages[readinessLevel] || 0.0;
                 }
 
-                // Update global fund
-                this.globalGenesisFund.allocated += milestoneAmount;
-                this.globalGenesisFund.available -= milestoneAmount;
+                /**
+                 * Convert nationId to country name
+                 */
+                getCountryNameFromNationId(nationId) {
+                    // nation_zaf -> South Africa, etc.
+                    const nationMap = {
+                        'nation_zaf': 'South Africa',
+                        'nation_ken': 'Kenya',
+                        'nation_nga': 'Nigeria',
+                        'nation_sgp': 'Singapore',
+                        'nation_est': 'Estonia',
+                        'nation_chl': 'Chile'
+                        // Add more mappings as needed
+                    };
 
-                // Record milestone funding
-                if (!countryData.milestoneFunding) {
-                    countryData.milestoneFunding = [];
+                    return nationMap[nationId] || null;
                 }
 
-                countryData.milestoneFunding.push({
-                    amount: milestoneAmount,
-                    unlockDate: new Date().toISOString(),
-                    griScore: griScore.overallScore,
-                    readinessLevel: griScore.readinessLevel,
-                    milestoneType: 'gri_based_unlock'
-                });
+                /**
+                 * Broadcast GRI unlock event to connected clients
+                 */
+                broadcastGRIUnlockEvent(unlockRequest) {
+                    const event = {
+                        type: 'gri_unlock_event',
+                        timestamp: new Date().toISOString(),
+                        unlockRequest: {
+                            id: unlockRequest.id,
+                            nationId: unlockRequest.nationId,
+                            unlockType: unlockRequest.unlockType,
+                            status: unlockRequest.status
+                        },
+                        griScore: unlockRequest.griScore,
+                        result: unlockRequest.result
+                    };
 
-                return {
-                    success: true,
-                    unlockType: 'milestone_funding',
-                    releaseAmount: milestoneAmount,
-                    message: `Released ${milestoneAmount} AZR milestone funding based on ${griScore.readinessLevel} GRI readiness`
-                };
+                    let broadcastCount = 0;
+                    this.wss.clients.forEach(client => {
+                        if (client.readyState === WebSocket.OPEN) {
+                            client.send(JSON.stringify(event));
+                            broadcastCount++;
+                        }
+                    });
 
-            case 'full_instantiation':
-                // Execute full instantiation protocol
-                const instantiationResult = this.executeInstantiationProtocol(countryName, {
-                    confirmed: true,
-                    triggerType: 'gri_based',
-                    triggerData: { griScore, unlockRequest },
-                    confirmationTimestamp: new Date().toISOString(),
-                    confirmationId: crypto.randomUUID()
-                });
-
-                if (!instantiationResult.success) {
-                    throw new Error(instantiationResult.error);
+                    if (broadcastCount > 0) {
+                        console.log(`📡 Aegis Citadel: Broadcasted GRI unlock event for ${unlockRequest.nationId} to ${broadcastCount} clients`);
+                    }
                 }
-
-                return {
-                    success: true,
-                    unlockType: 'full_instantiation',
-                    instantiationResult,
-                    message: `Full instantiation executed for ${countryName} based on ${griScore.readinessLevel} GRI readiness`
-                };
-
-            default:
-                throw new Error(`Unknown unlock type: ${unlockType}`);
-        }
-    }
-
-    /**
-     * Get release percentage based on readiness level
-     */
-    getReleasePercentage(readinessLevel) {
-        const percentages = {
-            critical: 1.0,    // 100% release
-            high: 0.75,       // 75% release
-            moderate: 0.5,    // 50% release
-            low: 0.25,        // 25% release
-            unfavorable: 0.0  // No release
-        };
-
-        return percentages[readinessLevel] || 0.0;
-    }
-
-    /**
-     * Convert nationId to country name
-     */
-    getCountryNameFromNationId(nationId) {
-        // nation_zaf -> South Africa, etc.
-        const nationMap = {
-            'nation_zaf': 'South Africa',
-            'nation_ken': 'Kenya',
-            'nation_nga': 'Nigeria',
-            'nation_sgp': 'Singapore',
-            'nation_est': 'Estonia',
-            'nation_chl': 'Chile'
-            // Add more mappings as needed
-        };
-
-        return nationMap[nationId] || null;
-    }
-
-    /**
-     * Broadcast GRI unlock event to connected clients
-     */
-    broadcastGRIUnlockEvent(unlockRequest) {
-        const event = {
-            type: 'gri_unlock_event',
-            timestamp: new Date().toISOString(),
-            unlockRequest: {
-                id: unlockRequest.id,
-                nationId: unlockRequest.nationId,
-                unlockType: unlockRequest.unlockType,
-                status: unlockRequest.status
-            },
-            griScore: unlockRequest.griScore,
-            result: unlockRequest.result
-        };
-
-        let broadcastCount = 0;
-        this.wss.clients.forEach(client => {
-            if (client.readyState === WebSocket.OPEN) {
-                client.send(JSON.stringify(event));
-                broadcastCount++;
-            }
-        });
-
-        if (broadcastCount > 0) {
-            console.log(`📡 Aegis Citadel: Broadcasted GRI unlock event for ${unlockRequest.nationId} to ${broadcastCount} clients`);
-        }
-    }
-            console.log(`🎯 Aegis Citadel: Critical mass event confirmed for ${country} via ${triggerType}`);
+                console.log(`🎯 Aegis Citadel: Critical mass event confirmed for ${country} via ${triggerType}`);
         }
 
         return {

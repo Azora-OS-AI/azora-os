@@ -295,7 +295,7 @@ class GRITestSuite {
      */
     printTestSummary() {
         console.log('\n📋 GRI Test Suite Summary');
-        console.log('=' .repeat(50));
+        console.log('='.repeat(50));
 
         const passed = this.testResults.filter(t => t.status === 'passed').length;
         const failed = this.testResults.filter(t => t.status === 'failed').length;

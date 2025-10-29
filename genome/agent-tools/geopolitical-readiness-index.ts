@@ -182,7 +182,7 @@ You are Elara, the Constitutional AI codifier for Azora's Ubuntu-aligned soverei
         nationName: nation.name,
         region: nation.region,
         population: nation.population.toLocaleString(),
-        gdpPerCapita: `$${nation.gdpPerCapita.toLocaleString()}`,
+        gdpPerCapita: `$${ nation.gdpPerCapita.toLocaleString() }`,
         isoCode: nation.isoCode,
         digitalInfrastructure: "Advanced internet infrastructure with growing blockchain adoption",
         regulatoryClimate: "Progressive crypto regulations with international cooperation",
@@ -241,7 +241,7 @@ You are Elara, the Constitutional AI codifier for Azora's Ubuntu-aligned soverei
   private async calculateGRIScoreFallback(nationId: string): Promise<GRIScore> {
     const nation = this.nations.get(nationId);
     if (!nation) {
-      throw new Error(`Nation ${nationId} not found`);
+      throw new Error(`Nation ${ nationId } not found`);
     }
 
     // Traditional assessment without AI
@@ -318,7 +318,7 @@ Focus on Ubuntu principles: How well does this nation embody collective prosperi
     `);
 
     this.initializeNationDatabase();
-  }onstructor(openaiApiKey: string) {
+  } onstructor(openaiApiKey: string) {
     this.llm = new ChatOpenAI({
       openaiApiKey,
       modelName: "gpt-4-turbo-preview",
@@ -474,7 +474,7 @@ Focus on Ubuntu principles: How well does this nation embody collective prosperi
   getActiveCrises(nationId?: string): CrisisIndicator[] {
     return this.crisisIndicators
       .filter(crisis => crisis.status === 'active' &&
-                       (!nationId || crisis.nationId === nationId))
+        (!nationId || crisis.nationId === nationId))
       .sort((a, b) => b.detectionDate - a.detectionDate);
   }
 

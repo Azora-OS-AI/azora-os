@@ -17,6 +17,13 @@ import psycopg2
 from psycopg2.extras import RealDictCursor
 
 try:
+    import sqlite3
+    SQLITE_AVAILABLE = True
+except ImportError:
+    SQLITE_AVAILABLE = False
+    print("⚠️ SQLite not available")
+
+try:
     from dotenv import load_dotenv
     load_dotenv()  # Load environment variables from .env file
 except ImportError:
