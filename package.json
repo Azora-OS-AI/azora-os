@@ -1,0 +1,35 @@
+{
+  "name": "azora-os",
+  "version": "1.0.0",
+  "description": "Azora OS - Constitutional Operating System with Elazar Control",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "build": "npm run build:web && npm run build:electron",
+    "build:web": "cd web && npm install && npm run build",
+    "build:electron": "cd electron && npm install && npm run build",
+    "build:android": "cd android && ./gradlew assembleRelease",
+    "build:desktop": "npm run build:electron",
+    "deploy": "./deploy-universal.sh",
+    "deploy:vercel": "cd web && npm run deploy",
+    "start": "node server.js",
+    "test": "echo 'Tests would run here'",
+    "lint": "echo 'Linting would run here'"
+  },
+  "keywords": [
+    "operating-system",
+    "cross-platform",
+    "constitutional",
+    "elazar-control",
+    "zero-rated"
+  ],
+  "author": "Azora ES (Pty) Ltd",
+  "license": "PROPRIETARY",
+  "elazar_control": "azora-elazar-control-2025",
+  "constitutional_compliance": true,
+  "zero_rated_enabled": true,
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

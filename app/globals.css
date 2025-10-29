@@ -1,0 +1,224 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96%;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96%;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.75rem;
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 210 40% 6%;
+    /* #0A0F1A */
+    --foreground: 220 20% 90%;
+    /* #E0E7FF */
+    --card: 210 40% 10%;
+    /* rgba(20, 25, 40, 0.7) approx */
+    --card-foreground: 220 20% 90%;
+    --popover: 210 40% 10%;
+    --popover-foreground: 220 20% 90%;
+    --primary: 185 100% 50%;
+    /* #00D9FF */
+    --primary-foreground: 210 40% 6%;
+    --secondary: 210 40% 15%;
+    --secondary-foreground: 220 20% 90%;
+    --muted: 210 40% 15%;
+    --muted-foreground: 215 20% 65%;
+    /* #94A3B8 approx */
+    --accent: 185 100% 50%;
+    --accent-foreground: 210 40% 6%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 224.3 76.3% 94.1%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 94.1%;
+    --sidebar-primary-foreground: 240 5.9% 10%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+}
+
+@layer components {
+  .azora-card {
+    background: rgba(20, 25, 40, 0.7);
+    border-radius: 1.5rem;
+    padding: 1.5rem;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .azora-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, hsl(var(--primary)), #FF6B35);
+    border-radius: 1.5rem 1.5rem 0 0;
+  }
+
+  .azora-header {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: hsl(var(--primary));
+  }
+
+  .azora-value {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin: 0.5rem 0;
+  }
+
+  .azora-label {
+    font-size: 0.9rem;
+    color: hsl(var(--muted-foreground));
+  }
+
+  .azora-progress-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: conic-gradient(hsl(var(--primary)) 0% 92%, hsl(var(--muted)) 92% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto;
+  }
+
+  .azora-progress-circle span {
+    font-size: 1.4rem;
+    font-weight: 700;
+  }
+
+  .azora-wave {
+    height: 60px;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 300 60" preserveAspectRatio="none"><path d="M0,30 Q75,10 150,30 T300,30 L300,60 L0,60 Z" fill="%2300D9FF" opacity="0.3"/></svg>') repeat-x;
+    animation: wave 8s linear infinite;
+  }
+
+  @keyframes wave {
+    0% {
+      background-position: 0 0;
+    }
+
+    100% {
+      background-position: 300px 0;
+    }
+  }
+
+  .azora-protea {
+    width: 80px;
+    height: 80px;
+    margin: 1rem auto;
+    background: radial-gradient(circle at center, #FF6B35, #FF8C42);
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  }
+
+  .azora-chart-line {
+    height: 80px;
+    background: linear-gradient(90deg, transparent, hsl(var(--primary)) 50%, transparent);
+    opacity: 0.2;
+    margin: 1rem 0;
+    position: relative;
+  }
+
+  .azora-chart-line::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url('data:image/svg+xml;utf8,<svg viewBox="0 0 300 80"><path d="M0,60 Q50,40 100,50 T200,30 T300,45" stroke="%23FF6B35" stroke-width="3" fill="none"/></svg>') no-repeat;
+  }
+
+  .azora-btn {
+    background: linear-gradient(135deg, hsl(var(--primary)), #FF6B35);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 15px hsla(var(--primary), 0.3);
+  }
+
+  .azora-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px hsla(var(--primary), 0.5);
+  }
+
+  .azora-logo {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(90deg, hsl(var(--primary)), #FF6B35);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .azora-pulse {
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+
+    0%,
+    100% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+
+    50% {
+      transform: scale(1.2);
+      opacity: 1;
+    }
+  }
+}

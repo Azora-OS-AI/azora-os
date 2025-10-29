@@ -1,0 +1,4 @@
+(await ethers.provider.getBalance("0x0b14F7bbcffe26FB4586197CC3e6467cdD5478BD")).toString()
+(await AZR.balanceOf("0x0b14F7bbcffe26FB4586197CC3e6467cdD5478BD")).toString()
+const AZR = await ethers.getContractAt("AZR", "0x39f8b51367E3528Dab7c2256DdcfF01b1FDe05D0");
+npx hardhat compile

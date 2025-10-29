@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Azora AU Agriculture Pilot - Elazar AI Agricultural Intelligence</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            font-weight: 300;
+        }
+
+        .header p {
+            margin: 10px 0 0 0;
+            opacity: 0.9;
+            font-size: 1.1em;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        input,
+        textarea,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: #4facfe;
+        }
+
+        button {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .recommendations {
+            margin-top: 30px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .recommendation {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #4facfe;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .urgency-high {
+            border-left-color: #ff4757;
+        }
+
+        .urgency-medium {
+            border-left-color: #ffa726;
+        }
+
+        .urgency-low {
+            border-left-color: #4caf50;
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+
+        .confidence {
+            color: #4facfe;
+            font-weight: 600;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #666;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #c3e6cb;
+        }
+
+        .tabs {
+            display: flex;
+            border-bottom: 2px solid #e1e5e9;
+            margin-bottom: 30px;
+        }
+
+        .tab {
+            padding: 15px 25px;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: #4facfe;
+            border-bottom-color: #4facfe;
+        }
+
+        .tab:hover {
+            color: #4facfe;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [activeTab, setActiveTab] = useState('pest');
+            const [farmId, setFarmId] = useState('AU-Farm-001');
+            const [loading, setLoading] = useState(false);
+            const [message, setMessage] = useState(null);
+            const [records, setRecords] = useState([]);
+
+            // Pest control state
+            const [pest, setPest] = useState('');
+            const [pestDescription, setPestDescription] = useState('');
+
+            // Livestock health state
+            const [animalType, setAnimalType] = useState('');
+            const [symptoms, setSymptoms] = useState('');
+            const [herdSize, setHerdSize] = useState('');
+            const [recentChanges, setRecentChanges] = useState('');
+
+            // Plant growth state
+            const [cropType, setCropType] = useState('');
+            const [growthStage, setGrowthStage] = useState('');
+            const [soilData, setSoilData] = useState('');
+
+            // Load existing records on mount and farmId change
+            useEffect(() => {
+                if (farmId) {
+                    loadRecords();
+                }
+            }, [farmId]);
+
+            const loadRecords = async () => {
+                try {
+                    const response = await fetch(`http://localhost:3001/api/farm-records/${farmId}`);
+                    const data = await response.json();
+                    if (data.success) {
+                        setRecords(data.records);
+                    }
+                } catch (error) {
+                    console.error('Error loading records:', error);
+                }
+            };
+
+            const submitPestReport = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                setMessage(null);
+
+                try {
+                    const response = await fetch('http://localhost:3001/api/report-pest', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            farmId,
+                            pest,
+                            description: pestDescription
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        setMessage({ type: 'success', text: `Pest analysis complete! ${data.preview}` });
+                        setPest('');
+                        setPestDescription('');
+                        loadRecords();
+                    } else {
+                        setMessage({ type: 'error', text: data.error || 'Failed to submit report' });
+                    }
+                } catch (error) {
+                    setMessage({ type: 'error', text: 'Network error. Please try again.' });
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const submitLivestockHealth = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                setMessage(null);
+
+                try {
+                    const response = await fetch('http://localhost:3001/api/livestock-health', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            farmId,
+                            animalType,
+                            symptoms,
+                            herdSize,
+                            recentChanges
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        setMessage({ type: 'success', text: `Livestock health analysis complete! Risk: ${data.analysis?.diseaseRisk || 'Assessed'}` });
+                        setAnimalType('');
+                        setSymptoms('');
+                        setHerdSize('');
+                        setRecentChanges('');
+                        loadRecords();
+                    } else {
+                        setMessage({ type: 'error', text: data.error || 'Failed to analyze livestock health' });
+                    }
+                } catch (error) {
+                    setMessage({ type: 'error', text: 'Network error. Please try again.' });
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const submitPlantGrowth = async (e) => {
+                e.preventDefault();
+                setLoading(true);
+                setMessage(null);
+
+                try {
+                    const response = await fetch('http://localhost:3001/api/plant-growth', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            farmId,
+                            cropType,
+                            growthStage,
+                            soilData
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        setMessage({ type: 'success', text: `Plant growth optimization complete! ${data.analysis?.yieldProjection || 'Optimized'}` });
+                        setCropType('');
+                        setGrowthStage('');
+                        setSoilData('');
+                        loadRecords();
+                    } else {
+                        setMessage({ type: 'error', text: data.error || 'Failed to optimize plant growth' });
+                    }
+                } catch (error) {
+                    setMessage({ type: 'error', text: 'Network error. Please try again.' });
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const submitComprehensiveAnalysis = async () => {
+                setLoading(true);
+                setMessage(null);
+
+                try {
+                    const response = await fetch('http://localhost:3001/api/farm-analysis', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            farmId,
+                            analysisTypes: ['pest', 'livestock', 'plant_growth']
+                        }),
+                    });
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        setMessage({ type: 'success', text: `Comprehensive analysis complete! ${data.summary.completed} modules analyzed.` });
+                        loadRecords();
+                    } else {
+                        setMessage({ type: 'error', text: data.error || 'Failed to complete comprehensive analysis' });
+                    }
+                } catch (error) {
+                    setMessage({ type: 'error', text: 'Network error. Please try again.' });
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            const getUrgencyClass = (urgency) => {
+                switch (urgency) {
+                    case 'high': return 'urgency-high';
+                    case 'medium': return 'urgency-medium';
+                    case 'low': return 'urgency-low';
+                    default: return '';
+                }
+            };
+
+            return (
+                <div className="container">
+                    <div className="header">
+                        <h1>🌾 Azora Agriculture Pilot</h1>
+                        <p>Elazar AI: Complete agricultural intelligence for pest control, disease prevention, and growth optimization</p>
+                    </div>
+
+                    <div className="content">
+                        <div className="form-group">
+                            <label htmlFor="farmId">Farm ID:</label>
+                            <input
+                                id="farmId"
+                                type="text"
+                                value={farmId}
+                                onChange={(e) => setFarmId(e.target.value)}
+                                placeholder="Enter your farm ID (e.g., AU-Farm-001)"
+                                required
+                            />
+                        </div>
+
+                        <div className="tabs">
+                            <button
+                                className={`tab ${activeTab === 'pest' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('pest')}
+                            >
+                                🐛 Pest Control
+                            </button>
+                            <button
+                                className={`tab ${activeTab === 'livestock' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('livestock')}
+                            >
+                                🐄 Livestock Health
+                            </button>
+                            <button
+                                className={`tab ${activeTab === 'plant' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('plant')}
+                            >
+                                🌱 Plant Growth
+                            </button>
+                            <button
+                                className={`tab ${activeTab === 'comprehensive' ? 'active' : ''}`}
+                                onClick={() => setActiveTab('comprehensive')}
+                            >
+                                🔬 Full Analysis
+                            </button>
+                        </div>
+
+                        <div className={`tab-content ${activeTab === 'pest' ? 'active' : ''}`}>
+                            <form onSubmit={submitPestReport}>
+                                <h3>🐛 Pest Detection & Control</h3>
+                                <div className="form-group">
+                                    <label htmlFor="pest">Pest Type:</label>
+                                    <select
+                                        id="pest"
+                                        value={pest}
+                                        onChange={(e) => setPest(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select a pest...</option>
+                                        <option value="Armyworm">Armyworm</option>
+                                        <option value="Aphids">Aphids</option>
+                                        <option value="Corn Borer">Corn Borer</option>
+                                        <option value="Cutworm">Cutworm</option>
+                                        <option value="Grasshopper">Grasshopper</option>
+                                        <option value="Locust">Locust</option>
+                                        <option value="Spider Mite">Spider Mite</option>
+                                        <option value="Whitefly">Whitefly</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="pestDescription">Description:</label>
+                                    <textarea
+                                        id="pestDescription"
+                                        value={pestDescription}
+                                        onChange={(e) => setPestDescription(e.target.value)}
+                                        placeholder="Describe the pest infestation (location, severity, crop affected, etc.)"
+                                        rows="4"
+                                        required
+                                    />
+                                </div>
+
+                                <button type="submit" disabled={loading}>
+                                    {loading ? '🔄 Analyzing with Elazar AI...' : '🚀 Analyze Pest Threat'}
+                                </button>
+                            </form>
+                        </div>
+
+                        <div className={`tab-content ${activeTab === 'livestock' ? 'active' : ''}`}>
+                            <form onSubmit={submitLivestockHealth}>
+                                <h3>🐄 Livestock Health Monitoring</h3>
+                                <div className="form-group">
+                                    <label htmlFor="animalType">Animal Type:</label>
+                                    <select
+                                        id="animalType"
+                                        value={animalType}
+                                        onChange={(e) => setAnimalType(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select animal type...</option>
+                                        <option value="Cattle">Cattle</option>
+                                        <option value="Sheep">Sheep</option>
+                                        <option value="Goats">Goats</option>
+                                        <option value="Poultry">Poultry</option>
+                                        <option value="Pigs">Pigs</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="symptoms">Symptoms Observed:</label>
+                                    <textarea
+                                        id="symptoms"
+                                        value={symptoms}
+                                        onChange={(e) => setSymptoms(e.target.value)}
+                                        placeholder="Describe any symptoms, abnormal behavior, or health concerns"
+                                        rows="3"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="herdSize">Herd Size:</label>
+                                    <input
+                                        id="herdSize"
+                                        type="number"
+                                        value={herdSize}
+                                        onChange={(e) => setHerdSize(e.target.value)}
+                                        placeholder="Number of animals"
+                                    />
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="recentChanges">Recent Changes:</label>
+                                    <textarea
+                                        id="recentChanges"
+                                        value={recentChanges}
+                                        onChange={(e) => setRecentChanges(e.target.value)}
+                                        placeholder="Any recent changes in feed, environment, or management"
+                                        rows="3"
+                                    />
+                                </div>
+
+                                <button type="submit" disabled={loading}>
+                                    {loading ? '🔄 Analyzing Health...' : '🏥 Monitor Livestock Health'}
+                                </button>
+                            </form>
+                        </div>
+
+                        <div className={`tab-content ${activeTab === 'plant' ? 'active' : ''}`}>
+                            <form onSubmit={submitPlantGrowth}>
+                                <h3>🌱 Plant Growth Optimization</h3>
+                                <div className="form-group">
+                                    <label htmlFor="cropType">Crop Type:</label>
+                                    <select
+                                        id="cropType"
+                                        value={cropType}
+                                        onChange={(e) => setCropType(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select crop type...</option>
+                                        <option value="Maize">Maize</option>
+                                        <option value="Wheat">Wheat</option>
+                                        <option value="Rice">Rice</option>
+                                        <option value="Soybeans">Soybeans</option>
+                                        <option value="Cotton">Cotton</option>
+                                        <option value="Vegetables">Vegetables</option>
+                                        <option value="Fruits">Fruits</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="growthStage">Growth Stage:</label>
+                                    <select
+                                        id="growthStage"
+                                        value={growthStage}
+                                        onChange={(e) => setGrowthStage(e.target.value)}
+                                        required
+                                    >
+                                        <option value="">Select growth stage...</option>
+                                        <option value="Seedling">Seedling</option>
+                                        <option value="Vegetative">Vegetative</option>
+                                        <option value="Flowering">Flowering</option>
+                                        <option value="Fruiting">Fruiting</option>
+                                        <option value="Maturation">Maturation</option>
+                                        <option value="Harvest">Harvest</option>
+                                    </select>
+                                </div>
+
+                                <div className="form-group">
+                                    <label htmlFor="soilData">Soil Conditions:</label>
+                                    <textarea
+                                        id="soilData"
+                                        value={soilData}
+                                        onChange={(e) => setSoilData(e.target.value)}
+                                        placeholder="Describe soil type, pH, nutrient levels, moisture content"
+                                        rows="3"
+                                    />
+                                </div>
+
+                                <button type="submit" disabled={loading}>
+                                    {loading ? '🔄 Optimizing Growth...' : '🌾 Optimize Plant Growth'}
+                                </button>
+                            </form>
+                        </div>
+
+                        <div className={`tab-content ${activeTab === 'comprehensive' ? 'active' : ''}`}>
+                            <h3>🔬 Comprehensive Farm Analysis</h3>
+                            <p>Run Elazar AI analysis across all agricultural modules for complete farm intelligence.</p>
+                            <button onClick={submitComprehensiveAnalysis} disabled={loading} style={{ width: '100%', marginBottom: '20px' }}>
+                                {loading ? '🔄 Running Full Analysis...' : '🚀 Run Comprehensive Analysis'}
+                            </button>
+                        </div>
+
+                        {message && (
+                            <div className={message.type}>
+                                {message.text}
+                            </div>
+                        )}
+
+                        {records.length > 0 && (
+                            <div className="recommendations">
+                                <h3>📋 Your Farm Records</h3>
+                                {records.slice(0, 10).map((record) => (
+                                    <div key={record.id} className="recommendation">
+                                        <div className="timestamp">
+                                            {new Date(record.createdAt).toLocaleString()}
+                                        </div>
+                                        <strong>Type:</strong> {record.type || 'pest'}<br />
+                                        {record.pest && <><strong>Pest:</strong> {record.pest}<br /></>}
+                                        {record.animalType && <><strong>Animal:</strong> {record.animalType}<br /></>}
+                                        {record.cropType && <><strong>Crop:</strong> {record.cropType}<br /></>}
+                                        {record.analysis?.riskLevel && <><strong>Risk Level:</strong> {record.analysis.riskLevel}<br /></>}
+                                        {record.analysis?.elazarPowered && <div className="confidence">🤖 Elazar AI Powered</div>}
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+
+</html>
