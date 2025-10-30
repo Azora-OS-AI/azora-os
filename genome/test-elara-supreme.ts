@@ -224,13 +224,4 @@ async function testElaraSupreme() {
   }
 }
 
-// Run the test directly since we're using ES modules
-testElaraSupreme()
-  .then(() => {
-    console.log('\n✅ Test completed successfully\n')
-  })
-  .catch((error) => {
-    console.error('\n❌ Test failed:', error)
-  })
-
 export default testElaraSupreme
