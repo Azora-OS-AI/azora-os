@@ -3,7 +3,59 @@
   "name": "azora-os",
   "builds": [
     {
+      "src": "ui/package.json",
+      "use": "@vercel/next"
+    },
+    {
       "src": "api/production-server.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/azure-integration-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/microsoft365-integration-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/google-cloud-integration-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/google-workspace-integration-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/desktop-environment-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/filesystem-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/process-management-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/network-stack-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/security-framework-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/development-tools-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/productivity-suite-service.ts",
+      "use": "@vercel/node"
+    },
+    {
+      "src": "services/compatibility-layers-service.ts",
       "use": "@vercel/node"
     }
   ],
@@ -13,16 +65,80 @@
       "dest": "/api/production-server.ts"
     },
     {
+      "src": "/services/azure/(.*)",
+      "dest": "/services/azure-integration-service.ts"
+    },
+    {
+      "src": "/services/microsoft365/(.*)",
+      "dest": "/services/microsoft365-integration-service.ts"
+    },
+    {
+      "src": "/services/google-cloud/(.*)",
+      "dest": "/services/google-cloud-integration-service.ts"
+    },
+    {
+      "src": "/services/google-workspace/(.*)",
+      "dest": "/services/google-workspace-integration-service.ts"
+    },
+    {
+      "src": "/services/desktop/(.*)",
+      "dest": "/services/desktop-environment-service.ts"
+    },
+    {
+      "src": "/services/filesystem/(.*)",
+      "dest": "/services/filesystem-service.ts"
+    },
+    {
+      "src": "/services/process/(.*)",
+      "dest": "/services/process-management-service.ts"
+    },
+    {
+      "src": "/services/network/(.*)",
+      "dest": "/services/network-stack-service.ts"
+    },
+    {
+      "src": "/services/security/(.*)",
+      "dest": "/services/security-framework-service.ts"
+    },
+    {
+      "src": "/services/development/(.*)",
+      "dest": "/services/development-tools-service.ts"
+    },
+    {
+      "src": "/services/productivity/(.*)",
+      "dest": "/services/productivity-suite-service.ts"
+    },
+    {
+      "src": "/services/compatibility/(.*)",
+      "dest": "/services/compatibility-layers-service.ts"
+    },
+    {
       "src": "/(.*)",
       "dest": "/ui/$1"
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "AZORA_DEPLOYMENT_PLATFORM": "vercel"
   },
   "build": {
     "env": {
-      "NODE_ENV": "production"
+      "NODE_ENV": "production",
+      "AZORA_DEPLOYMENT_PLATFORM": "vercel"
     }
-  }
+  },
+  "functions": {
+    "services/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "memory": 1024,
+      "maxDuration": 30
+    },
+    "api/production-server.ts": {
+      "runtime": "nodejs18.x",
+      "memory": 2048,
+      "maxDuration": 300
+    }
+  },
+  "regions": ["fra1", "iad1", "sfo1"],
+  "outputDirectory": ".next"
 }

@@ -65,7 +65,13 @@
     "funding:report": "tsx scripts/funding-report.ts",
     "withdraw:now": "tsx scripts/withdraw-now.ts",
     "cards:start": "tsx services/virtual-cards/server.ts",
-    "research:auto": "tsx scripts/continuous-research-orchestrator.ts"
+    "research:auto": "tsx scripts/continuous-research-orchestrator.ts",
+    "deploy:all": "tsx deploy-all-platforms.ts",
+    "deploy:vercel": "vercel --prod",
+    "deploy:docker": "docker-compose -f vessels/docker-compose.production.yml up -d --build",
+    "deploy:k8s": "kubectl apply -f infrastructure/k8s/ && kubectl apply -f biome/",
+    "deploy:platforms": "node build-all-platforms.js",
+    "deploy:check": "npm run health:check && npm run lint && npm run test:ci && npm run build:all"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

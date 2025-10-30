@@ -22,7 +22,7 @@ import TechnologicalInnovationResearcher from './research-agent-1.js';
 import EconomicResearchMarketDynamicsAnalyst from './research-agent-2.js';
 import TechnicalImplementationSpecialist from './implementation-agent-1.js';
 import EconomicBusinessImplementationSpecialist from './implementation-agent-2.js';
-import AIMLSystemsArchitect from './ai-ml-systems-architect.js';
+import * as AIMLSystemsArchitect from './ai-ml-systems-architect.js';
 
 interface ImprovementCycle {
   id: string;
@@ -375,7 +375,8 @@ export class ContinuousImprovementOrchestrator {
     this.researchAgent2 = new EconomicResearchMarketDynamicsAnalyst();
     this.implementationAgent1 = new TechnicalImplementationSpecialist();
     this.implementationAgent2 = new EconomicBusinessImplementationSpecialist();
-    this.aiMLArchitect = new AIMLSystemsArchitect();
+    // Use any to accommodate various module export shapes
+    this.aiMLArchitect = new (AIMLSystemsArchitect as any)();
 
     console.log('✅ All agents initialized');
   }
@@ -781,7 +782,7 @@ export class ContinuousImprovementOrchestrator {
 
   public getSystemHealth(): SystemHealthMetrics | null {
     return this.systemHealthHistory.length > 0 ?
-      this.systemHealthHistory[this.systemHealthHistory.length - 1] : null;
+      this.systemHealthHistory[this.systemHealthHistory.length - 1]! : null;
   }
 
   public getSystemStats(): any {
