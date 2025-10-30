@@ -202,6 +202,9 @@ npm run ambient:demo
 
 # Universal Infrastructure Demo (Everything Working Together)
 npm run universal:demo
+
+# Neural-Link Infrastructure Demo (Thoughts Become Reality)
+npm run neural:demo
 ```
 
 ### Windows Batch Files
