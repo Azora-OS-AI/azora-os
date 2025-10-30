@@ -104,8 +104,9 @@ async function main() {
 
     // Authorize data providers for market oracle
     console.log("⏳ Authorizing data providers...");
-    await masterSystem.authorizeDataProvider(oracleAddress);
-    await masterSystem.authorizeDataProvider(deployer.address);
+    const marketOracle = await ethers.getContractAt("AIMarketOracle", marketOracleAddress);
+    await marketOracle.authorizeDataProvider(oracleAddress);
+    await marketOracle.authorizeDataProvider(deployer.address);
     console.log("✅ Data providers authorized");
 
     // Set causal factors for AZR
@@ -117,7 +118,7 @@ async function main() {
         ethers.utils.keccak256(ethers.utils.toUtf8Bytes("technological_innovation"))
     ];
     const azrAssetId = ethers.utils.keccak256(ethers.utils.toUtf8Bytes("AZR"));
-    await masterSystem.setAssetCausalFactors(azrAssetId, azrCausalFactors);
+    await marketOracle.setAssetCausalFactors(azrAssetId, azrCausalFactors);
     console.log("✅ AZR causal factors set");
 
     // === PHASE 4: ACTIVATE THE SYSTEM ===
