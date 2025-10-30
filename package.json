@@ -41,7 +41,17 @@
     "deploy:production": "vercel --prod",
     "deploy:preview": "vercel",
     "automate:all": "tsx scripts/full-system-automation.ts",
-    "integrate:services": "tsx scripts/full-system-automation.ts"
+    "integrate:services": "tsx scripts/full-system-automation.ts",
+    "orchestrator:start": "tsx azora-os-orchestrator.ts",
+    "system:status": "tsx -e \"import { azoraOSOrchestrator } from './azora-os-orchestrator.ts'; azoraOSOrchestrator.getSystemStatus().then(status => console.log(JSON.stringify(status, null, 2)));\"",
+    "upgrade:check": "tsx -e \"import { upgradeManager } from './system-upgrade/upgrade-manager.ts'; upgradeManager.forceUpgradeCheck().then(result => console.log('Upgrade check completed:', result.upgradesAvailable, 'available'));\"",
+    "upgrade:apply": "tsx -e \"import { upgradeManager } from './system-upgrade/upgrade-manager.ts'; upgradeManager.checkForUpgrades().then(result => upgradeManager.applyUpgrades(result.available)).then(applied => console.log('Applied', applied.length, 'upgrades'));\"",
+    "git:commit": "tsx -e \"import { gitManager } from './git-automation/git-manager.ts'; gitManager.commitAndPush(process.argv[2] || 'System update').then(result => console.log('Commit result:', result));\"",
+    "git:status": "tsx -e \"import { gitManager } from './git-automation/git-manager.ts'; gitManager.getGitStatus().then(status => console.log(JSON.stringify(status, null, 2)));\"",
+    "elara:family:status": "tsx -e \"import { elaraFamilyCoordinator } from './elara-family/core/family-coordinator.ts'; elaraFamilyCoordinator.getFamilyStatus().then(status => console.log(JSON.stringify(status, null, 2)));\"",
+    "elara:ide:start": "tsx -e \"import { elaraIDE } from './elara-ide/core/elara-ide-core.ts'; elaraIDE(process.cwd()).then(ide => ide.initialize()).then(() => console.log('Elara IDE initialized'));\"",
+    "integration:full": "tsx scripts/full-system-integration.ts",
+    "integration:check": "tsx -e \"import { runFullSystemIntegration } from './scripts/full-system-integration.ts'; runFullSystemIntegration().then(report => { console.log('Integration Status:', report.success ? '✅ SUCCESS' : '❌ FAILED'); console.log('Duration:', report.duration + 'ms'); console.log('Phases:', report.summary.successfulPhases + '/' + report.summary.totalPhases); if (!report.success) { console.log('Failed phases:'); report.phases.filter(p => !p.success).forEach(p => console.log(' -', p.phase)); } });\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -192,26 +202,4 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
-    "@typescript-eslint/parser": "^8.46.2",
-    "chai": "^6.2.0",
-    "eslint": "^9.38.0",
-    "eslint-plugin-react": "^7.37.5",
-    "eslint-plugin-react-hooks": "^7.0.0",
-    "eslint-plugin-react-refresh": "^0.4.24",
-    "ethers": "^6.15.0",
-    "hardhat": "^3.0.9",
-    "hardhat-gas-reporter": "^2.3.0",
-    "jest": "^29.7.0",
-    "nx": "22.0.1",
-    "postcss": "^8.5",
-    "prettier": "^3.3.3",
-    "solidity-coverage": "^0.8.16",
-    "supertest": "^7.0.0",
-    "tailwindcss": "^4.1.9",
-    "ts-jest": "^29.1.4",
-    "tsx": "^4.20.6",
-    "tw-animate-css": "1.3.3",
-    "typescript": "^5"
-  },
-  "nx": {}
-}
+    "@typescrip

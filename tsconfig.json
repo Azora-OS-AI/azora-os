@@ -33,8 +33,7 @@
       "ES2022",
       "DOM",
       "DOM.Iterable",
-      "WebWorker",
-      "WebAssembly"
+      "WebWorker.ImportScripts"
     ],
     "types": [
       "node",
