@@ -1,10 +1,6 @@
 {
   "compilerOptions": {
-<<<<<<< HEAD
-    "target": "ES2015",
-=======
     "target": "ES2022",
->>>>>>> clean-branch
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
@@ -16,22 +12,6 @@
     "noEmit": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-<<<<<<< HEAD
-    "strict": false,
-    "noUncheckedIndexedAccess": false,
-    "exactOptionalPropertyTypes": false,
-    "allowImportingTsExtensions": true,
-    "lib": [
-      "ESNext",
-      "DOM",
-      "DOM.Iterable"
-    ],
-    "types": [
-      "node"
-    ],
-    "typeRoots": [
-      "./node_modules/@types"
-=======
     "strict": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
@@ -62,20 +42,12 @@
     "typeRoots": [
       "./node_modules/@types",
       "./types"
->>>>>>> clean-branch
     ],
     "allowJs": true,
     "checkJs": false,
     "baseUrl": ".",
     "paths": {
       "@/*": [
-<<<<<<< HEAD
-        "apps/main-app/*",
-        "synapse/shared-ui/*"
-      ]
-    },
-    "incremental": true,
-=======
         "./ui/*",
         "./genome/*",
         "./services/*"
@@ -89,44 +61,25 @@
     },
     "incremental": true,
     "tsBuildInfoFile": ".tsbuildinfo",
->>>>>>> clean-branch
     "plugins": [
       {
         "name": "next"
       }
-<<<<<<< HEAD
-    ]
-=======
     ],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "useDefineForClassFields": true,
     "verbatimModuleSyntax": true
->>>>>>> clean-branch
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-<<<<<<< HEAD
-    ".next/types/**/*.ts"
-=======
     ".next/types/**/*.ts",
     "types/**/*.d.ts"
->>>>>>> clean-branch
   ],
   "exclude": [
     "node_modules",
     "dist",
-<<<<<<< HEAD
-    "services",
-    "synapse",
-    "vite-project",
-    "**/*.css",
-    "apps/main-app/index.css",
-    "*.css",
-    "**/*.js"
-  ]
-=======
     "build",
     "out",
     ".next",
@@ -138,5 +91,4 @@
     "esm": true,
     "experimentalSpecifierResolution": "node"
   }
->>>>>>> clean-branch
 }
