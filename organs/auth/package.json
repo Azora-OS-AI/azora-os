@@ -26,13 +26,15 @@
     "qrcode": "^1.5.3",
     "nodemailer": "^6.9.8",
     "express-rate-limit": "^8.1.0",
+    "express-validator": "^7.0.1",
     "express-session": "^1.18.0",
     "connect-redis": "^7.1.0",
     "crypto": "^1.0.1",
     "uuid": "^10.0.0",
     "winston": "^3.18.3",
     "dotenv": "^17.2.3",
-    "@prisma/client": "^5.22.0"
+    "@prisma/client": "^5.22.0",
+    "cookie-parser": "^1.4.6"
   },
   "devDependencies": {
     "typescript": "^5.0.0",

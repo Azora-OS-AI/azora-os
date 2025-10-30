@@ -18,16 +18,27 @@ module.exports = {
     '**/organs/**/__tests__/**/*.test.ts',
     '**/organs/**/__tests__/**/*.spec.ts',
     '**/organs/**/?(*.)+(spec|test).ts',
-    '**/organs/**/?(*.)+(spec|test).js'
+    '**/organs/**/?(*.)+(spec|test).js',
+    '**/services/**/__tests__/**/*.test.ts',
+    '**/services/**/__tests__/**/*.spec.ts',
+    '**/services/**/?(*.)+(spec|test).ts',
+    '**/services/**/?(*.)+(spec|test).js'
   ],
   collectCoverageFrom: [
     'azora-*/**/*.js',
+    'azora-*/**/*.ts',
     'organs/**/*.js',
+    'organs/**/*.ts',
+    'services/**/*.js',
+    'services/**/*.ts',
     '!azora-*/**/*.d.ts',
     '!organs/**/*.d.ts',
+    '!services/**/*.d.ts',
     '!**/node_modules/**',
     '!**/dist/**',
-    '!**/coverage/**'
+    '!**/coverage/**',
+    '!**/__tests__/**',
+    '!**/test/**'
   ],
   coverageDirectory: 'coverage',
   coverageReporters: ['text', 'lcov', 'html', 'json'],

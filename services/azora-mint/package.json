@@ -22,11 +22,9 @@
   "author": "Azora ES",
   "license": "AZORA PROPRIETARY LICENSE",
   "dependencies": {
-<<<<<<< HEAD
-=======
     "@nomiclabs/hardhat-ethers": "^2.2.3",
     "@nomiclabs/hardhat-waffle": "^2.0.6",
->>>>>>> clean-branch
+
     "axios": "^1.6.2",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -73,11 +71,8 @@
     "@typescript-eslint/eslint-plugin": "^6.15.0",
     "@typescript-eslint/parser": "^6.15.0",
     "eslint": "^8.56.0",
-<<<<<<< HEAD
-    "hardhat": "^2.26.4",
-=======
     "hardhat": "^3.0.9",
->>>>>>> clean-branch
+
     "jest": "^29.7.0",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.3.3"

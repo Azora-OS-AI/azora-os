@@ -16,7 +16,6 @@ import { setupSwagger } from '@/config/swagger';
 import { errorHandler } from '@/middleware/errorHandler';
 import { requestLogger } from '@/middleware/requestLogger';
 import { metricsMiddleware } from '@/middleware/metrics';
-import { authMiddleware } from '@/middleware/auth';
 import recommendationRoutes from '@/routes/recommendations';
 import neuralRoutes from '@/routes/neural';
 import insightRoutes from '@/routes/insights';
@@ -24,14 +23,38 @@ import analysisRoutes from '@/routes/analysis';
 import { logger } from '@/utils/logger';
 import { startMetricsServer } from '@/utils/metrics';
 
+// Import unified authentication system
+import { 
+  initializeAuth, 
+  requireAuth, 
+  optionalAuth, 
+  requireRole,
+  createAuthHealthCheck,
+  createUserInfoEndpoint 
+} from '../../../shared/auth-integration.js';
+
 // Import new agent components
 import { azoraNexusAgent } from '@genome/agent-tools';
 
 const app = express();
 const PORT = process.env.PORT || 3006;
 
+// Set service name for authentication
+process.env.SERVICE_NAME = 'azora-nexus';
+
 // Connect to MongoDB
 connectDB();
+
+// Initialize unified authentication system
+initializeAuth(app, {
+  corsOrigins: [
+    'http://localhost:3000',
+    'https://azora-os.com',
+    process.env.CORS_ORIGIN
+  ].filter(Boolean),
+  rateLimitMax: 500, // Higher limit for AI service
+  rateLimitWindowMs: 15 * 60 * 1000
+});
 
 // Initialize agent tools and systems
 // initializeTools();
@@ -41,7 +64,7 @@ azoraNexusAgent.initialize().catch(error => {
   logger.error('Failed to initialize Azora Nexus Agent', { error: error.message });
 });
 
-// Security middleware
+// Additional security middleware
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
@@ -53,24 +76,6 @@ app.use(helmet({
   },
 }));
 
-// CORS configuration
-app.use(cors({
-  origin: process.env.CORS_ORIGIN || '*',
-  credentials: true,
-}));
-
-// Rate limiting
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // limit each IP to 100 requests per windowMs
-  message: 'Too many requests from this IP, please try again later.',
-});
-app.use('/api/', limiter);
-
-// Body parsing middleware
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
 // Compression
 app.use(compression());
 
@@ -78,8 +83,14 @@ app.use(compression());
 app.use(requestLogger);
 app.use(metricsMiddleware);
 
-// Health check endpoint
-app.get('/health', (req, res) => {
+// Enhanced health check endpoint with auth status
+app.get('/health', createAuthHealthCheck());
+
+// User info endpoint for authenticated users
+app.get('/api/user/me', ...createUserInfoEndpoint());
+
+// Agent status endpoint (public for monitoring)
+app.get('/api/agent/status', optionalAuth, (req, res) => {
   const status = azoraNexusAgent.getStatus();
   res.status(200).json({
     status: 'healthy',
@@ -91,64 +102,88 @@ app.get('/health', (req, res) => {
       tasksCompleted: status.metrics.tasksCompleted,
       activeUsers: status.activeUsers,
       totalProfiles: status.totalProfiles,
-    }
+    },
+    user: req.user ? {
+      id: req.user.id,
+      email: req.user.email,
+      role: req.user.role
+    } : null
   });
 });
 
-// Agent-specific endpoints
-app.post('/api/agent/interact', authMiddleware, async (req, res) => {
+// Agent-specific endpoints (require authentication)
+app.post('/api/agent/interact', requireAuth, async (req, res) => {
   try {
     const { message, userId, context } = req.body;
 
-    // Process user input through the agent
+    // Process user input through the agent using authenticated user ID
     const result = await azoraNexusAgent.processUserInput(
       message,
-      userId || (req as any).user?.id,
+      req.user.id, // Use authenticated user ID
       undefined,
-      context
+      {
+        ...context,
+        userEmail: req.user.email,
+        userRole: req.user.role
+      }
     );
 
-    res.json(result);
+    res.json({
+      ...result,
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        role: req.user.role
+      }
+    });
 
   } catch (error: any) {
-    logger.error('Agent interaction error', { error: error.message });
+    logger.error('Agent interaction error', { 
+      error: error.message, 
+      userId: req.user?.id,
+      userEmail: req.user?.email 
+    });
     res.status(500).json({ error: 'Agent interaction failed' });
   }
 });
 
-app.get('/api/agent/status', authMiddleware, (req, res) => {
-  const status = azoraNexusAgent.getStatus();
-  res.json(status);
-});
-
-app.post('/api/agent/task', authMiddleware, async (req, res) => {
+app.post('/api/agent/task', requireAuth, async (req, res) => {
   try {
-    const { capability, parameters, userId, sessionId } = req.body;
+    const { capability, parameters, sessionId } = req.body;
 
-    // Execute capability directly
+    // Execute capability directly using authenticated user
     const result = await azoraNexusAgent.executeCapability(
       capability,
       parameters,
-      userId || (req as any).user?.id,
-      sessionId || `session-${Date.now()}`
+      req.user.id, // Use authenticated user ID
+      sessionId || `session-${Date.now()}-${req.user.id}`
     );
 
     res.json({
       status: 'executed',
       result,
+      user: {
+        id: req.user.id,
+        email: req.user.email,
+        role: req.user.role
+      }
     });
 
   } catch (error: any) {
-    logger.error('Capability execution error', { error: error.message });
+    logger.error('Capability execution error', { 
+      error: error.message,
+      userId: req.user?.id,
+      capability 
+    });
     res.status(500).json({ error: 'Capability execution failed' });
   }
 });
 
-// API routes
-app.use('/api/recommendations', authMiddleware, recommendationRoutes);
-app.use('/api/neural', authMiddleware, neuralRoutes);
-app.use('/api/insights', authMiddleware, insightRoutes);
-app.use('/api/analysis', authMiddleware, analysisRoutes);
+// API routes with authentication
+app.use('/api/recommendations', requireAuth, recommendationRoutes);
+app.use('/api/neural', requireAuth, neuralRoutes);
+app.use('/api/insights', requireAuth, insightRoutes);
+app.use('/api/analysis', requireAuth, analysisRoutes);
 
 // Swagger documentation
 setupSwagger(app);

@@ -1,0 +1,23 @@
+{
+  "name": "azora-os-auth-tests",
+  "version": "1.0.0",
+  "description": "Authentication integration tests for Azora OS",
+  "main": "auth-integration.test.js",
+  "scripts": {
+    "test": "jest --verbose --detectOpenHandles",
+    "test:auth": "jest auth-integration.test.js --verbose",
+    "test:watch": "jest --watch --verbose"
+  },
+  "dependencies": {
+    "supertest": "^6.3.3",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testTimeout": 30000,
+    "setupFilesAfterEnv": ["<rootDir>/jest.setup.js"]
+  }
+}

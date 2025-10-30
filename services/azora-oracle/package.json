@@ -1,14 +1,8 @@
 {
   "name": "digital-twin-service",
   "version": "1.0.0",
-<<<<<<< HEAD
-  "main": "oracle-service.js",
-  "scripts": {
-    "start": "node oracle-service.js"
-  },
-=======
   "main": "index.js",
->>>>>>> clean-branch
+
   "dependencies": {
     "express": "^4.18.0",
     "ws": "^8.18.3"
