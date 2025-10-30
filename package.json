@@ -51,7 +51,9 @@
     "elara:family:status": "tsx -e \"import { elaraFamilyCoordinator } from './elara-family/core/family-coordinator.ts'; elaraFamilyCoordinator.getFamilyStatus().then(status => console.log(JSON.stringify(status, null, 2)));\"",
     "elara:ide:start": "tsx -e \"import { elaraIDE } from './elara-ide/core/elara-ide-core.ts'; elaraIDE(process.cwd()).then(ide => ide.initialize()).then(() => console.log('Elara IDE initialized'));\"",
     "integration:full": "tsx scripts/full-system-integration.ts",
-    "integration:check": "tsx -e \"import { runFullSystemIntegration } from './scripts/full-system-integration.ts'; runFullSystemIntegration().then(report => { console.log('Integration Status:', report.success ? '✅ SUCCESS' : '❌ FAILED'); console.log('Duration:', report.duration + 'ms'); console.log('Phases:', report.summary.successfulPhases + '/' + report.summary.totalPhases); if (!report.success) { console.log('Failed phases:'); report.phases.filter(p => !p.success).forEach(p => console.log(' -', p.phase)); } });\""
+    "integration:check": "tsx -e \"import { runFullSystemIntegration } from './scripts/full-system-integration.ts'; runFullSystemIntegration().then(report => { console.log('Integration Status:', report.success ? '✅ SUCCESS' : '❌ FAILED'); console.log('Duration:', report.duration + 'ms'); console.log('Phases:', report.summary.successfulPhases + '/' + report.summary.totalPhases); if (!report.success) { console.log('Failed phases:'); report.phases.filter(p => !p.success).forEach(p => console.log(' -', p.phase)); } });\"",
+    "services:upgrade": "tsx scripts/execute-service-upgrades.ts",
+    "services:upgrade:check": "tsx -e \"import { serviceUpgradeOrchestrator } from './services-upgrade/service-upgrade-orchestrator.ts'; serviceUpgradeOrchestrator.executeServiceUpgrades().then(report => { console.log('Upgrade Status:', report.success ? '✅ SUCCESS' : '❌ FAILED'); console.log('Services:', report.successfulUpgrades + '/' + report.totalServices); });\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
