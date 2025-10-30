@@ -33,6 +33,7 @@
     "africa:solutions": "tsx scripts/test-african-solutions.ts",
     "elara:inspire": "tsx genome/elara-inspire-me.ts",
     "ambient:demo": "tsx demo-ambient-intelligence-simple.ts",
+    "universal:demo": "tsx demo-universal-infrastructure-simple.ts",
     "test:supabase": "tsx scripts/test-supabase.ts",
     "db:setup": "echo Run supabase/schema.sql in your Supabase dashboard",
     "api:start": "tsx api/production-server.ts",

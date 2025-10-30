@@ -199,6 +199,9 @@ npm run organism:awaken
 
 # Ambient Intelligence Demo (Be Everywhere)
 npm run ambient:demo
+
+# Universal Infrastructure Demo (Everything Working Together)
+npm run universal:demo
 ```
 
 ### Windows Batch Files
