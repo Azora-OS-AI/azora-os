@@ -1,3 +1,3 @@
-import { handlers } from '../../auth/[...nextauth]'
+import { handlers } from '../../../auth'
 
 export const { GET, POST } = handlers
