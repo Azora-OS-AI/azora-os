@@ -48,9 +48,9 @@ async function runTemporalPredictionDemo() {
       console.log(`      • ${factor}`)
     })
 
-    if (prediction.preventionStrategies.length > 0) {
+    const strategy = prediction.preventionStrategies?.[0]
+    if (strategy) {
       console.log(`   🛡️ Prevention Strategy:`)
-      const strategy = prediction.preventionStrategies[0]
       console.log(`      • ${strategy.description}`)
       console.log(`      • Effectiveness: ${strategy.effectiveness}%`)
       console.log(`      • Cost: $${strategy.cost.toLocaleString()}`)
@@ -131,9 +131,9 @@ async function runTemporalPredictionDemo() {
       console.log(`      • ${factor}`)
     })
 
-    if (prediction.preventionStrategies.length > 0) {
+    const strategy = prediction.preventionStrategies?.[0]
+    if (strategy) {
       console.log(`   🛡️ Prevention Strategy:`)
-      const strategy = prediction.preventionStrategies[0]
       console.log(`      • ${strategy.strategy}`)
       console.log(`      • Effectiveness: ${strategy.effectiveness}%`)
       console.log(`      • Cost: $${strategy.implementationCost.toLocaleString()}`)
