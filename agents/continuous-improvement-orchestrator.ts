@@ -21,6 +21,7 @@ import TechnologicalInnovationResearcher from './research-agent-1.js';
 import EconomicResearchMarketDynamicsAnalyst from './research-agent-2.js';
 import TechnicalImplementationSpecialist from './implementation-agent-1.js';
 import EconomicBusinessImplementationSpecialist from './implementation-agent-2.js';
+import AIMLSystemsArchitect from './ai-ml-systems-architect.js';
 
 interface ImprovementCycle {
   id: string;
@@ -62,6 +63,7 @@ interface SystemHealthMetrics {
   researchAgents: {
     agent1: any;
     agent2: any;
+    aiMLArchitect: any;
   };
   implementationAgents: {
     agent1: any;
@@ -73,6 +75,7 @@ interface SystemHealthMetrics {
     systemStability: number;
     userSatisfaction: number;
     innovationRate: number;
+    mlCapabilities: number;
   };
   alerts: {
     critical: string[];
@@ -86,6 +89,7 @@ export class ContinuousImprovementOrchestrator {
   private researchAgent2: EconomicResearchMarketDynamicsAnalyst;
   private implementationAgent1: TechnicalImplementationSpecialist;
   private implementationAgent2: EconomicBusinessImplementationSpecialist;
+  private aiMLArchitect: AIMLSystemsArchitect;
 
   private improvementCycles: ImprovementCycle[] = [];
   private systemHealthHistory: SystemHealthMetrics[] = [];
@@ -238,25 +242,27 @@ export class ContinuousImprovementOrchestrator {
   private async executeResearchPhase(): Promise<void> {
     console.log('🔬 PHASE 1: Research Phase');
 
-    // Run both research agents in parallel
-    const [research1Promise, research2Promise] = [
+    // Run all research agents in parallel (including AI/ML architect)
+    const [research1Promise, research2Promise, mlPromise] = [
       this.researchAgent1.executeResearchCycle(),
-      this.researchAgent2.executeEconomicAnalysisCycle()
+      this.researchAgent2.executeEconomicAnalysisCycle(),
+      this.aiMLArchitect.executeMLArchitectureCycle()
     ];
 
-    await Promise.all([research1Promise, research2Promise]);
+    await Promise.all([research1Promise, research2Promise, mlPromise]);
 
     // Collect research findings
     const research1Findings = this.researchAgent1.getResearchFindings();
     const research2Insights = this.researchAgent2.getEconomicInsights();
+    const mlInsights = this.aiMLArchitect.getMLStats();
 
     if (this.currentCycle) {
       this.currentCycle.phases.research.completed = new Date();
       this.currentCycle.phases.research.findings = research1Findings.length;
-      this.currentCycle.phases.research.insights = research2Insights.length;
+      this.currentCycle.phases.research.insights = research2Insights.length + (mlInsights.totalCausalModels || 0);
     }
 
-    console.log(`📊 Research completed: ${research1Findings.length} technological findings, ${research2Insights.length} economic insights`);
+    console.log(`📊 Research completed: ${research1Findings.length} technological findings, ${research2Insights.length} economic insights, ${mlInsights.totalCausalModels || 0} ML insights`);
   }
 
   /**
@@ -366,6 +372,7 @@ export class ContinuousImprovementOrchestrator {
     this.researchAgent2 = new EconomicResearchMarketDynamicsAnalyst();
     this.implementationAgent1 = new TechnicalImplementationSpecialist();
     this.implementationAgent2 = new EconomicBusinessImplementationSpecialist();
+    this.aiMLArchitect = new AIMLSystemsArchitect();
 
     console.log('✅ All agents initialized');
   }
@@ -605,7 +612,8 @@ export class ContinuousImprovementOrchestrator {
       timestamp: new Date(),
       researchAgents: {
         agent1: this.researchAgent1.getResearchStats(),
-        agent2: this.researchAgent2.getAnalysisStats()
+        agent2: this.researchAgent2.getAnalysisStats(),
+        aiMLArchitect: this.aiMLArchitect.getMLStats()
       },
       implementationAgents: {
         agent1: this.implementationAgent1.getImplementationStats(),
@@ -616,7 +624,8 @@ export class ContinuousImprovementOrchestrator {
         implementationEfficiency: this.calculateImplementationEfficiency(),
         systemStability: this.calculateSystemStability(),
         userSatisfaction: this.calculateUserSatisfaction(),
-        innovationRate: this.calculateInnovationRate()
+        innovationRate: this.calculateInnovationRate(),
+        mlCapabilities: this.calculateMLCapabilities()
       },
       alerts: {
         critical: [],
@@ -680,6 +689,18 @@ export class ContinuousImprovementOrchestrator {
     const totalFeatures = recentCycles.reduce((sum, cycle) => sum + cycle.outcomes.newFeatures.length, 0);
 
     return recentCycles.length > 0 ? totalFeatures / recentCycles.length : 0;
+  }
+
+  private calculateMLCapabilities(): number {
+    const mlStats = this.aiMLArchitect.getMLStats();
+    const mlScore = (
+      (mlStats.totalCausalModels || 0) * 0.3 +
+      (mlStats.activeRLAgents || 0) * 0.3 +
+      (mlStats.nlpAnalyzers || 0) * 0.2 +
+      (mlStats.consciousnessNetworks || 0) * 0.2
+    ) * 10; // Scale to 0-100
+
+    return Math.min(100, mlScore);
   }
 
   private generateHealthAlerts(healthMetrics: SystemHealthMetrics): void {
