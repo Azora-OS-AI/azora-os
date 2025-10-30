@@ -13,7 +13,7 @@
       "maxDuration": 300
     }
   },
-  "regions": ["fra1", "iad1", "sfo1"],
+  "regions": ["iad1"],
   "rewrites": [
     {
       "source": "/api/(.*)",

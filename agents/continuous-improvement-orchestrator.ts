@@ -14,14 +14,13 @@
  * 4. Continuous learning and adaptation occurs
  */
 
-import { spawn } from 'child_process';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { writeFileSync } from 'fs';
 import { join } from 'path';
 import TechnologicalInnovationResearcher from './research-agent-1.js';
 import EconomicResearchMarketDynamicsAnalyst from './research-agent-2.js';
 import TechnicalImplementationSpecialist from './implementation-agent-1.js';
 import EconomicBusinessImplementationSpecialist from './implementation-agent-2.js';
-import AIMLSystemsArchitect from './ai-ml-systems-architect.js';
+import AIMLSystemsArchitect from './ai-ml-systems-architect';
 
 interface ImprovementCycle {
   id: string;
@@ -102,10 +101,16 @@ export class ContinuousImprovementOrchestrator {
 
   // Runtime state
   private isRunning = false;
-  private cycleTimer: NodeJS.Timeout | null = null;
-  private healthCheckTimer: NodeJS.Timeout | null = null;
+  private cycleTimer: ReturnType<typeof setInterval> | null = null;
+  private healthCheckTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
+    this.researchAgent1 = new TechnologicalInnovationResearcher();
+    this.researchAgent2 = new EconomicResearchMarketDynamicsAnalyst();
+    this.implementationAgent1 = new TechnicalImplementationSpecialist();
+    this.implementationAgent2 = new EconomicBusinessImplementationSpecialist();
+    this.aiMLArchitect = new AIMLSystemsArchitect();
+
     this.initializeAgents();
     this.loadExistingState();
   }
@@ -539,23 +544,25 @@ export class ContinuousImprovementOrchestrator {
   }
 
   private async monitorImplementationPerformance(): Promise<any> {
-    const performanceImprovements = {};
+    const performanceImprovements: Record<string, number> = {};
 
     // Compare current metrics with historical data
     if (this.systemHealthHistory.length > 1) {
       const current = this.systemHealthHistory[this.systemHealthHistory.length - 1];
       const previous = this.systemHealthHistory[this.systemHealthHistory.length - 2];
 
-      // Calculate improvements
-      Object.keys(current.overallHealth).forEach(metric => {
-        const currentValue = current.overallHealth[metric];
-        const previousValue = previous.overallHealth[metric];
-        const improvement = currentValue - previousValue;
+      if (current && previous && current.overallHealth && previous.overallHealth) {
+        // Calculate improvements
+        Object.keys(current.overallHealth).forEach(metric => {
+          const currentValue = current.overallHealth[metric];
+          const previousValue = previous.overallHealth[metric];
+          const improvement = currentValue - previousValue;
 
         if (Math.abs(improvement) > 1) { // Significant change
           performanceImprovements[metric] = improvement;
         }
-      });
+        });
+      }
     }
 
     return performanceImprovements;

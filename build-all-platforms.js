@@ -26,7 +26,7 @@ if (!existsSync(buildDir)) {
 // Constitution alignment check
 console.log('🏛️  CHECKING CONSTITUTIONAL ALIGNMENT...');
 const constitutionPath = join(process.cwd(), 'codex', 'constitution', 'AZORA_CONSTITUTION.md');
-if (!existsSync(conststitutionPath)) {
+if (!existsSync(constitutionPath)) {
   console.error('❌ CONSTITUTION NOT FOUND! Cannot proceed without constitutional alignment.');
   process.exit(1);
 }
