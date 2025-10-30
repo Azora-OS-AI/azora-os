@@ -152,22 +152,42 @@ npm test -- path/to/test.js
 - Use GitHub Discussions for questions
 - Join our community channels
 
-## 🎯 Areas for Contribution
+## 🎯 Current Active Development Areas (November 2025 - Q1 2026)
 
-### High Priority
+### **Immediate Priority: G20 Summit Follow-Up** 🚀
+- [ ] **Diplomatic Outreach**: Help coordinate bilateral meetings with G20 delegations
+- [ ] **Commitment Tracking**: Develop tools for monitoring summit commitments
+- [ ] **Pilot Development**: Assist with pilot program development for interested nations
+- [ ] **Funding Coordination**: Help secure and deploy implementation funding
+
+### **Infrastructure & Quality Enhancement** 🔧
+- [ ] **Dependabot Updates**: Merge 15 pending dependency security updates
+- [ ] **Code Quality**: Enable ESLint/Prettier strict mode and fix warnings
+- [ ] **Service Testing**: Implement actual API endpoints beyond current mocks
+- [ ] **Docker Optimization**: Reduce image sizes and add health checks
+- [ ] **Database Setup**: Configure PostgreSQL with pgvector for production
+- [ ] **Microsoft 365 Integration**: Establish business infrastructure
+
+### **Core Service Implementation** ⚙️
+- [ ] **Aegis Citadel API**: Complete sovereign seed grant management endpoints
+- [ ] **Azora Sapiens Platform**: Build education enrollment and assessment system
+- [ ] **Azora Mint Engine**: Implement Proof-of-Knowledge reward distribution
+- [ ] **Azora Oracle Service**: Deploy exchange rate streaming and knowledge ingestion
+
+### **Community & Collaboration** 🤝
+- [ ] **Discord Setup**: Help establish Discord server for real-time collaboration
+- [ ] **Forum Platform**: Launch forum.azora.world for technical discussions
+- [ ] **Issue Templates**: Create detailed contribution templates
+- [ ] **Good First Issues**: Label and create beginner-friendly tasks
+
+### **Legacy High Priority**
 - [ ] Performance optimization
 - [ ] Security hardening
 - [ ] Test coverage improvement
 - [ ] Documentation enhancement
 - [ ] Bug fixes
 
-### Medium Priority
-- [ ] New feature development
-- [ ] UI/UX improvements
-- [ ] API enhancements
-- [ ] Integration testing
-
-### Future Opportunities
+### **Future Opportunities**
 - [ ] Mobile app development
 - [ ] Multi-language support
 - [ ] Advanced AI features

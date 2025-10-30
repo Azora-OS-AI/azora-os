@@ -38,6 +38,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Subscription System**: Monthly contributor subscription with automatic renewal
 - **Analytics**: Enhanced system metrics including Citadel Development Fund tracking
 
+### Upcoming (November 2025 - Q1 2026)
+- **G20 Summit Follow-Up**: Diplomatic outreach, commitment tracking, pilot program development
+- **Infrastructure Enhancement**: 15 Dependabot PR merges, code quality improvements, Docker optimization
+- **Service Implementation**: Complete Aegis Citadel API, Azora Sapiens platform, Azora Mint engine
+- **Database Setup**: PostgreSQL with pgvector configuration for production
+- **Microsoft 365 Integration**: Business email and collaboration infrastructure establishment
+- **Community Building**: Discord server setup, forum platform launch, contribution templates
+
 ## [1.0.0] - 2025-10-24
 
 ### Added
