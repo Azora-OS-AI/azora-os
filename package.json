@@ -64,7 +64,8 @@
     "research:ingest": "tsx scripts/research-ingestion.ts",
     "funding:report": "tsx scripts/funding-report.ts",
     "withdraw:now": "tsx scripts/withdraw-now.ts",
-    "cards:start": "tsx services/virtual-cards/server.ts"
+    "cards:start": "tsx services/virtual-cards/server.ts",
+    "research:auto": "tsx scripts/continuous-research-orchestrator.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",

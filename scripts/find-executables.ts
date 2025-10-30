@@ -45,10 +45,16 @@ const executables = findExecutables(rootDir);
 if (executables.length > 0) {
   console.log(`✅ Found ${executables.length} executable(s):\n`);
   executables.forEach((exe, index) => {
-    const size = statSync(exe).size;
-    const sizeKB = (size / 1024).toFixed(2);
-    console.log(`${index + 1}. ${exe}`);
-    console.log(`   Size: ${sizeKB} KB\n`);
+    try {
+      const stat = statSync(exe);
+      const size = stat.size;
+      const sizeKB = (size / 1024).toFixed(2);
+      console.log(`${index + 1}. ${exe}`);
+      console.log(`   Size: ${sizeKB} KB\n`);
+    } catch {
+      console.log(`${index + 1}. ${exe}`);
+      console.log(`   ⚠️  File inaccessible or deleted\n`);
+    }
   });
 } else {
   console.log('⚠️  No executables found in repository.');
