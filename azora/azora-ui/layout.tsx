@@ -1,10 +1,8 @@
 /* 
 AZORA PROPRIETARY LICENSE 
 Copyright (c) 2025 Azora ES (Pty) Ltd. All Rights Reserved. 
-ECHO is off.
 See LICENSE file for details. 
 */ 
-ECHO is off.
 import type React from "react"
 import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"

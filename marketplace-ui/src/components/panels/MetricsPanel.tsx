@@ -1,10 +1,8 @@
 /* 
 AZORA PROPRIETARY LICENSE 
 Copyright (c) 2025 Azora ES (Pty) Ltd. All Rights Reserved. 
-ECHO is off.
 See LICENSE file for details. 
 */ 
-ECHO is off.
 import { useQuery } from '@tanstack/react-query'
 import { TrendingUp, TrendingDown, Activity, Shield, AlertTriangle, CheckCircle } from 'lucide-react'
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts'

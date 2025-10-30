@@ -1,10 +1,8 @@
 /* 
 AZORA PROPRIETARY LICENSE 
 Copyright (c) 2025 Azora ES (Pty) Ltd. All Rights Reserved. 
-ECHO is off.
 See LICENSE file for details. 
 */ 
-ECHO is off.
 // Additional RPC endpoints for various chains
 // Used by Chainlist.org for extended RPC coverage
 

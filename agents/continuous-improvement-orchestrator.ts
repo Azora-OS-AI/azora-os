@@ -1,10 +1,8 @@
 /* 
 AZORA PROPRIETARY LICENSE 
 Copyright (c) 2025 Azora ES (Pty) Ltd. All Rights Reserved. 
-ECHO is off.
 See LICENSE file for details. 
 */ 
-ECHO is off.
 /**
  * CONTINUOUS IMPROVEMENT ORCHESTRATOR
  *
@@ -22,7 +20,6 @@ ECHO is off.
  */
 
 import { writeFileSync } from 'fs';
-import { join } from 'path';
 import TechnologicalInnovationResearcher from './research-agent-1.js';
 import EconomicResearchMarketDynamicsAnalyst from './research-agent-2.js';
 import TechnicalImplementationSpecialist from './implementation-agent-1.js';
