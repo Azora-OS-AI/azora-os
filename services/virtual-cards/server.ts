@@ -11,7 +11,20 @@ app.use(express.json());
 
 app.post('/api/virtual-cards', (req, res) => {
   const { currency, brand, spendLimitZAR, metadata } = req.body || {};
-  const card = virtualCardService.create(currency, brand, spendLimitZAR, metadata);
+  const allowedCurrencies = ['ZAR', 'USD', 'EUR'];
+  const allowedBrands = ['VISA', 'MASTERCARD'];
+
+  const cur = typeof currency === 'string' ? currency.toUpperCase() : undefined;
+  const br = typeof brand === 'string' ? brand.toUpperCase() : undefined;
+
+  if (!cur || !allowedCurrencies.includes(cur)) {
+    return res.status(400).json({ error: 'Invalid currency', allowed: allowedCurrencies });
+  }
+  if (!br || !allowedBrands.includes(br)) {
+    return res.status(400).json({ error: 'Invalid brand', allowed: allowedBrands });
+  }
+
+  const card = virtualCardService.create(cur as 'ZAR'|'USD'|'EUR', br as 'VISA'|'MASTERCARD', spendLimitZAR, metadata);
   res.json(card);
 });
 

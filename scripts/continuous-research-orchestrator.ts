@@ -4,6 +4,9 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 */
 
 import { execSync } from 'child_process';
+import { writeFileSync, unlinkSync } from 'fs';
+import { join } from 'path';
+import os from 'os';
 
 function run(cmd: string) {
   try {
@@ -22,7 +25,14 @@ function commitAndPush(message: string) {
   run('git add -A');
   const diff = run('git status --porcelain');
   if (!diff.trim()) return;
-  run(`git commit -m "${message}"`);
+  // Write message to a temporary file to avoid shell escaping issues
+  const tmpPath = join(os.tmpdir(), `azora-commit-${Date.now()}.txt`);
+  try {
+    writeFileSync(tmpPath, message, { encoding: 'utf8' });
+    run(`git commit -F "${tmpPath}"`);
+  } finally {
+    try { unlinkSync(tmpPath); } catch {}
+  }
   run('git push origin clean-branch');
 }
 
