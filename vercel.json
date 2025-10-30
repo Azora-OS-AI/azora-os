@@ -1,0 +1,20 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
+  "env": {
+    "NODE_ENV": "production",
+    "AZORA_DEPLOYMENT_PLATFORM": "vercel"
+  },
+  "regions": ["iad1"],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/production-server.ts"
+    },
+    {
+      "source": "/services/(.*)",
+      "destination": "/api/services.ts"
+    }
+  ]
+}

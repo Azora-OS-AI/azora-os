@@ -1,0 +1,353 @@
+{
+  "timestamp": "2025-10-30T00:23:41.143Z",
+  "apis": [
+    {
+      "endpoint": "/api/courses",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\courses\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": false,
+      "hasSupabase": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "endpoint": "/api/elara",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\elara\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": true,
+      "hasSupabase": false,
+      "status": "GOOD"
+    },
+    {
+      "endpoint": "/api/elara/compliance",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\elara\\compliance\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": true,
+      "hasSupabase": false,
+      "status": "GOOD"
+    },
+    {
+      "endpoint": "/api/elara/education",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\elara\\education\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": true,
+      "hasSupabase": false,
+      "status": "GOOD"
+    },
+    {
+      "endpoint": "/api/elara/recommend",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\elara\\recommend\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": true,
+      "hasSupabase": false,
+      "status": "GOOD"
+    },
+    {
+      "endpoint": "/api/enroll",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\enroll\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": false,
+      "hasSupabase": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "endpoint": "/api/enrollments",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\enrollments\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": true,
+      "hasSupabase": false,
+      "status": "GOOD"
+    },
+    {
+      "endpoint": "/api/payment/register",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\payment\\register\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": true,
+      "hasSupabase": true,
+      "status": "GOOD"
+    },
+    {
+      "endpoint": "/api/users/[userId]/progress",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\users\\[userId]\\progress\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": false,
+      "hasSupabase": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "endpoint": "/api/users/[userId]/rewards",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\users\\[userId]\\rewards\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": false,
+      "hasSupabase": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "endpoint": "/api/users/[userId]/stats",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\users\\[userId]\\stats\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": false,
+      "hasSupabase": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "endpoint": "/api/withdraw",
+      "file": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\api\\withdraw\\route.ts",
+      "hasErrorHandling": true,
+      "hasValidation": true,
+      "hasSupabase": true,
+      "status": "GOOD"
+    }
+  ],
+  "services": [
+    {
+      "name": "african-solutions-hub.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\african-solutions-hub.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "device-security-tracker.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\device-security-tracker.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "elara-ai-tutor.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\elara-ai-tutor.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "founder-onboarding-api.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\founder-onboarding-api.ts",
+      "hasExports": true,
+      "hasEventEmitter": false,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "founder-onboarding.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\founder-onboarding.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "name": "i18n-service.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\i18n-service.ts",
+      "hasExports": true,
+      "hasEventEmitter": false,
+      "hasErrorHandling": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "name": "master-orchestrator.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\master-orchestrator.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "master-system-integrator.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\master-system-integrator.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "pok-api.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\pok-api.ts",
+      "hasExports": true,
+      "hasEventEmitter": false,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "proof-of-knowledge-engine.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\proof-of-knowledge-engine.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "self-healing-orchestrator.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\self-healing-orchestrator.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": false,
+      "status": "NEEDS_WORK"
+    },
+    {
+      "name": "sms-learning.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\sms-learning.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "supabase-client.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\supabase-client.ts",
+      "hasExports": true,
+      "hasEventEmitter": false,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "teacher-parent-services.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\teacher-parent-services.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "ubo-distributor.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\ubo-distributor.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    },
+    {
+      "name": "video-learning-platform.ts",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\services\\video-learning-platform.ts",
+      "hasExports": true,
+      "hasEventEmitter": true,
+      "hasErrorHandling": true,
+      "status": "GOOD"
+    }
+  ],
+  "dashboards": [
+    {
+      "type": "founder",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\dashboard\\founder\\page.tsx",
+      "hasState": true,
+      "hasAPI": false,
+      "hasUI": true,
+      "status": "GOOD"
+    },
+    {
+      "type": "student",
+      "path": "C:\\Users\\sizwe\\OneDrive\\Desktop\\azora-os\\ui\\app\\dashboard\\student\\page.tsx",
+      "hasState": true,
+      "hasAPI": true,
+      "hasUI": true,
+      "status": "GOOD"
+    }
+  ],
+  "revenueStreams": [
+    "Staking fees - advanced-mint-mine.ts",
+    "Conversion fees - bank-integration.ts",
+    "Loan interest - bank-integration.ts",
+    "Staking fees - blockchain-ledger.ts",
+    "Conversion fees - direct-bank-withdrawal.ts",
+    "Staking fees - enhanced-mint-core.ts",
+    "Staking fees - osEconomyService.ts",
+    "Staking fees - stakingService.ts"
+  ],
+  "integrations": [
+    {
+      "name": "Supabase",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "Luno API",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "OpenAI",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "AssemblyAI",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "Alchemy",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "Etherscan",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "UXCam",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "Datadog",
+      "status": "CONFIGURED",
+      "file": ".env.production"
+    },
+    {
+      "name": "Supabase",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    },
+    {
+      "name": "Luno API",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    },
+    {
+      "name": "OpenAI",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    },
+    {
+      "name": "AssemblyAI",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    },
+    {
+      "name": "Alchemy",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    },
+    {
+      "name": "Etherscan",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    },
+    {
+      "name": "UXCam",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    },
+    {
+      "name": "Datadog",
+      "status": "CONFIGURED",
+      "file": ".env.supabase"
+    }
+  ],
+  "issues": [
+    "Missing validation: /api/courses",
+    "Missing validation: /api/enroll",
+    "Missing validation: /api/users/[userId]/progress",
+    "Missing validation: /api/users/[userId]/rewards",
+    "Missing validation: /api/users/[userId]/stats"
+  ],
+  "scores": {
+    "api": 58.333333333333336,
+    "service": 81.25,
+    "overall": 69.79166666666667
+  }
+}

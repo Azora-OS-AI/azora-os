@@ -1,0 +1,43 @@
+{
+  "_format": "hh3-sol-build-info-1",
+  "id": "solc-0_8_20-e9f901091674ea87b1ab6445b8a1a6a6acce4bc9",
+  "solcVersion": "0.8.20",
+  "solcLongVersion": "0.8.20+commit.a1b79de6",
+  "userSourceNameMap": {
+    "contracts/MockERC20.sol": "project/contracts/MockERC20.sol",
+    "contracts/Redemption.sol": "project/contracts/Redemption.sol"
+  },
+  "input": {
+    "language": "Solidity",
+    "settings": {
+      "evmVersion": "shanghai",
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "outputSelection": {
+        "*": {
+          "": [
+            "ast"
+          ],
+          "*": [
+            "abi",
+            "evm.bytecode",
+            "evm.deployedBytecode",
+            "evm.methodIdentifiers",
+            "metadata"
+          ]
+        }
+      },
+      "remappings": []
+    },
+    "sources": {
+      "project/contracts/MockERC20.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\n/**\n * @title MockERC20\n * @dev Mock ERC20 token for testing\n */\ncontract MockERC20 {\n    string public name;\n    string public symbol;\n    uint8 public decimals = 18;\n    uint256 public totalSupply;\n\n    mapping(address => uint256) public balanceOf;\n    mapping(address => mapping(address => uint256)) public allowance;\n\n    event Transfer(address indexed from, address indexed to, uint256 value);\n    event Approval(address indexed owner, address indexed spender, uint256 value);\n\n    constructor(string memory _name, string memory _symbol, uint256 _initialSupply) {\n        name = _name;\n        symbol = _symbol;\n        totalSupply = _initialSupply;\n        balanceOf[msg.sender] = _initialSupply;\n        emit Transfer(address(0), msg.sender, _initialSupply);\n    }\n\n    function transfer(address to, uint256 amount) external returns (bool) {\n        require(balanceOf[msg.sender] >= amount, \"Insufficient balance\");\n        balanceOf[msg.sender] -= amount;\n        balanceOf[to] += amount;\n        emit Transfer(msg.sender, to, amount);\n        return true;\n    }\n\n    function approve(address spender, uint256 amount) external returns (bool) {\n        allowance[msg.sender][spender] = amount;\n        emit Approval(msg.sender, spender, amount);\n        return true;\n    }\n\n    function transferFrom(address from, address to, uint256 amount) external returns (bool) {\n        require(balanceOf[from] >= amount, \"Insufficient balance\");\n        require(allowance[from][msg.sender] >= amount, \"Insufficient allowance\");\n\n        balanceOf[from] -= amount;\n        balanceOf[to] += amount;\n        allowance[from][msg.sender] -= amount;\n\n        emit Transfer(from, to, amount);\n        return true;\n    }\n\n    function mint(address to, uint256 amount) external {\n        totalSupply += amount;\n        balanceOf[to] += amount;\n        emit Transfer(address(0), to, amount);\n    }\n}"
+      },
+      "project/contracts/Redemption.sol": {
+        "content": "// SPDX-License-Identifier: MIT\npragma solidity ^0.8.20;\n\n/**\n * @title Redemption Contract\n * @dev Escrow contract for AZR token redemption to fiat currency\n * @notice This contract holds AZR tokens in escrow until bank transfer is confirmed\n */\ncontract Redemption {\n    // AZR token contract\n    IERC20 public immutable azrToken;\n\n    // Admin (Gnosis Safe)\n    address public immutable admin;\n\n    // Treasury address for completed redemptions\n    address public treasury;\n\n    // Redemption request structure\n    struct RedemptionRequest {\n        address requester;\n        uint256 amount;\n        string bankDetails;\n        uint256 requestedAt;\n        bool completed;\n        string bankRef;\n        address completedTreasury;\n    }\n\n    // Redemption requests mapping\n    mapping(uint256 => RedemptionRequest) public redemptions;\n\n    // Next redemption ID\n    uint256 public nextRedemptionId = 1;\n\n    // Events\n    event RedeemRequested(uint256 indexed id, address indexed requester, uint256 amount, string bankDetails);\n    event RedeemCompleted(uint256 indexed id, address indexed treasury, string bankRef);\n\n    // Modifiers\n    modifier onlyAdmin() {\n        require(msg.sender == admin, \"Only admin can call this function\");\n        _;\n    }\n\n    /**\n     * @dev Constructor\n     * @param _azrToken Address of the AZR token contract\n     * @param _admin Address of the admin (Gnosis Safe)\n     */\n    constructor(address _azrToken, address _admin) {\n        require(_azrToken != address(0), \"Invalid AZR token address\");\n        require(_admin != address(0), \"Invalid admin address\");\n\n        azrToken = IERC20(_azrToken);\n        admin = _admin;\n    }\n\n    /**\n     * @dev Request a redemption (escrow AZR tokens)\n     * @param amount Amount of AZR to redeem\n     * @param bankDetails Bank details or invoice ID for payout\n     */\n    function requestRedeem(uint256 amount, string calldata bankDetails) external {\n        require(amount > 0, \"Amount must be greater than 0\");\n        require(bytes(bankDetails).length > 0, \"Bank details required\");\n\n        // Transfer AZR tokens to this contract\n        require(azrToken.transferFrom(msg.sender, address(this), amount), \"Transfer failed\");\n\n        uint256 redemptionId = nextRedemptionId++;\n\n        redemptions[redemptionId] = RedemptionRequest({\n            requester: msg.sender,\n            amount: amount,\n            bankDetails: bankDetails,\n            requestedAt: block.timestamp,\n            completed: false,\n            bankRef: \"\",\n            completedTreasury: address(0)\n        });\n\n        emit RedeemRequested(redemptionId, msg.sender, amount, bankDetails);\n    }\n\n    /**\n     * @dev Complete a redemption (transfer tokens to treasury)\n     * @param id Redemption request ID\n     * @param _treasury Treasury address to receive the tokens\n     * @param bankRef Bank reference for the completed payment\n     */\n    function completeRedeem(uint256 id, address _treasury, string calldata bankRef) external onlyAdmin {\n        require(_treasury != address(0), \"Invalid treasury address\");\n        require(bytes(bankRef).length > 0, \"Bank reference required\");\n\n        RedemptionRequest storage request = redemptions[id];\n        require(request.requester != address(0), \"Redemption request not found\");\n        require(!request.completed, \"Redemption already completed\");\n\n        // Mark as completed\n        request.completed = true;\n        request.bankRef = bankRef;\n        request.completedTreasury = _treasury;\n\n        // Transfer AZR tokens to treasury\n        require(azrToken.transfer(_treasury, request.amount), \"Transfer to treasury failed\");\n\n        emit RedeemCompleted(id, _treasury, bankRef);\n    }\n\n    /**\n     * @dev Get redemption request details\n     * @param id Redemption request ID\n     */\n    function getRedemption(uint256 id) external view returns (\n        address requester,\n        uint256 amount,\n        string memory bankDetails,\n        uint256 requestedAt,\n        bool completed,\n        string memory bankRef,\n        address completedTreasury\n    ) {\n        RedemptionRequest memory request = redemptions[id];\n        return (\n            request.requester,\n            request.amount,\n            request.bankDetails,\n            request.requestedAt,\n            request.completed,\n            request.bankRef,\n            request.completedTreasury\n        );\n    }\n\n    /**\n     * @dev Emergency function to update treasury address (only admin)\n     * @param _treasury New treasury address\n     */\n    function setTreasury(address _treasury) external onlyAdmin {\n        require(_treasury != address(0), \"Invalid treasury address\");\n        treasury = _treasury;\n    }\n}\n\n// ERC20 interface\ninterface IERC20 {\n    function transfer(address to, uint256 amount) external returns (bool);\n    function transferFrom(address from, address to, uint256 amount) external returns (bool);\n    function balanceOf(address account) external view returns (uint256);\n    function approve(address spender, uint256 amount) external returns (bool);\n}"
+      }
+    }
+  }
+}
