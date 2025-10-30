@@ -62,6 +62,12 @@ export interface Action {
   status: 'pending' | 'in_progress' | 'completed'
 }
 
+export interface LifeEvent {
+  description: string
+  timestamp: number
+  type: 'education' | 'career' | 'health' | 'relationship' | 'financial' | string
+}
+
 export interface AlternativeScenario {
   description: string
   probability: number
@@ -170,6 +176,7 @@ export interface TechnologicalBreakthrough {
 }
 
 export class TemporalPredictionEngine extends EventEmitter {
+  declare emit: (event: string, ...args: any[]) => boolean
   private constitutionalOversight: ConstitutionalAIOversight
   private activePredictions: Map<string, DisasterPrediction[]> = new Map()
   private economicPredictions: EconomicPrediction[] = []

@@ -1,3 +1,4 @@
+/// <reference types="node" />
 /**
  * CONTINUOUS IMPROVEMENT ORCHESTRATOR
  *
@@ -15,7 +16,7 @@
  */
 
 import { spawn } from 'child_process';
-import { readFileSync, writeFileSync, existsSync } from 'fs';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import TechnologicalInnovationResearcher from './research-agent-1.js';
 import EconomicResearchMarketDynamicsAnalyst from './research-agent-2.js';
@@ -85,11 +86,11 @@ interface SystemHealthMetrics {
 }
 
 export class ContinuousImprovementOrchestrator {
-  private researchAgent1: TechnologicalInnovationResearcher;
-  private researchAgent2: EconomicResearchMarketDynamicsAnalyst;
-  private implementationAgent1: TechnicalImplementationSpecialist;
-  private implementationAgent2: EconomicBusinessImplementationSpecialist;
-  private aiMLArchitect: AIMLSystemsArchitect;
+  private researchAgent1!: TechnologicalInnovationResearcher;
+  private researchAgent2!: EconomicResearchMarketDynamicsAnalyst;
+  private implementationAgent1!: TechnicalImplementationSpecialist;
+  private implementationAgent2!: EconomicBusinessImplementationSpecialist;
+  private aiMLArchitect!: AIMLSystemsArchitect;
 
   private improvementCycles: ImprovementCycle[] = [];
   private systemHealthHistory: SystemHealthMetrics[] = [];
@@ -102,8 +103,8 @@ export class ContinuousImprovementOrchestrator {
 
   // Runtime state
   private isRunning = false;
-  private cycleTimer: NodeJS.Timeout | null = null;
-  private healthCheckTimer: NodeJS.Timeout | null = null;
+  private cycleTimer: ReturnType<typeof setInterval> | null = null;
+  private healthCheckTimer: ReturnType<typeof setInterval> | null = null;
 
   constructor() {
     this.initializeAgents();
@@ -277,7 +278,9 @@ export class ContinuousImprovementOrchestrator {
 
     // Get implementation candidates from research agents
     const techCandidates = this.researchAgent1.getImplementationCandidates();
-    const economicCandidates = this.researchAgent2.getEconomicImplementations();
+    const economicCandidates = (this.researchAgent2 as any).getEconomicImplementations
+      ? (this.researchAgent2 as any).getEconomicImplementations()
+      : (this.researchAgent2 as any).getEconomicInsights?.() || [];
 
     // Prioritize and select implementations
     const selectedImplementations = this.selectPriorityImplementations([
@@ -539,23 +542,24 @@ export class ContinuousImprovementOrchestrator {
   }
 
   private async monitorImplementationPerformance(): Promise<any> {
-    const performanceImprovements = {};
+    const performanceImprovements: Record<string, number> = {};
 
     // Compare current metrics with historical data
     if (this.systemHealthHistory.length > 1) {
       const current = this.systemHealthHistory[this.systemHealthHistory.length - 1];
       const previous = this.systemHealthHistory[this.systemHealthHistory.length - 2];
-
-      // Calculate improvements
-      Object.keys(current.overallHealth).forEach(metric => {
-        const currentValue = current.overallHealth[metric];
-        const previousValue = previous.overallHealth[metric];
-        const improvement = currentValue - previousValue;
-
-        if (Math.abs(improvement) > 1) { // Significant change
-          performanceImprovements[metric] = improvement;
-        }
-      });
+      if (current && previous) {
+        const currentHealth = current.overallHealth as Record<string, number>;
+        const previousHealth = previous.overallHealth as Record<string, number>;
+        Object.keys(currentHealth).forEach(metric => {
+          const currentValue = currentHealth[metric] ?? 0;
+          const previousValue = previousHealth[metric] ?? 0;
+          const improvement = currentValue - previousValue;
+          if (Math.abs(improvement) > 1) {
+            performanceImprovements[metric] = improvement;
+          }
+        });
+      }
     }
 
     return performanceImprovements;
@@ -741,25 +745,19 @@ export class ContinuousImprovementOrchestrator {
       lastSaved: new Date()
     };
 
-    const fs = require('fs');
-    const path = require('path');
-    const dataDir = path.join(process.cwd(), 'data');
-
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
+    const dataDir = join(process.cwd(), 'data');
+    if (!existsSync(dataDir)) {
+      mkdirSync(dataDir, { recursive: true });
     }
-
     writeFileSync(
-      path.join(dataDir, 'continuous-improvement-orchestrator.json'),
+      join(dataDir, 'continuous-improvement-orchestrator.json'),
       JSON.stringify(state, null, 2)
     );
   }
 
   private loadExistingState(): void {
     try {
-      const fs = require('fs');
-      const path = require('path');
-      const state = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'continuous-improvement-orchestrator.json'), 'utf8'));
+      const state = JSON.parse(readFileSync(join(process.cwd(), 'data', 'continuous-improvement-orchestrator.json'), 'utf8'));
 
       this.improvementCycles = state.improvementCycles || [];
       this.systemHealthHistory = state.systemHealthHistory || [];
@@ -869,3 +867,4 @@ export class ContinuousImprovementOrchestrator {
 
 // Export for use by the main system
 export default ContinuousImprovementOrchestrator;
+
