@@ -6,7 +6,7 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 See LICENSE file for details.
 */
 
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import DomainListing, { DomainBid, DomainWatchlist } from '../models/Domain';
 import { customMetrics } from '../middleware/metrics';
 import { biddingRateLimiter, watchlistRateLimiter } from '../middleware/rateLimiter';
@@ -18,7 +18,7 @@ const router = Router();
 type AuthenticatedRequest = Request;
 
 // Middleware for bidding rate limiting
-const biddingRateLimitMiddleware = async (req: AuthenticatedRequest, res: Response, next: Function) => {
+const biddingRateLimitMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id || req.ip || 'anonymous';
     await biddingRateLimiter.consume(userId);
@@ -35,7 +35,7 @@ const biddingRateLimitMiddleware = async (req: AuthenticatedRequest, res: Respon
 };
 
 // Middleware for watchlist rate limiting
-const watchlistRateLimitMiddleware = async (req: AuthenticatedRequest, res: Response, next: Function) => {
+const watchlistRateLimitMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id || req.ip || 'anonymous';
     await watchlistRateLimiter.consume(userId);

@@ -7,7 +7,7 @@ See LICENSE file for details.
 */
 
 import { Router, Request, Response } from 'express';
-const { body, param, validationResult } = require('express-validator');
+import { body, param, validationResult } from 'express-validator';
 import { Category } from '../models/Listing';
 import logger from '../middleware/requestLogger';
 

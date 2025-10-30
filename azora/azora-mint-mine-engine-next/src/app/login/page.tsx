@@ -79,7 +79,7 @@ export default function LoginPage() {
 
           <div className="mt-6 text-center">
             <p className="text-white/70 text-sm">
-              Don't have an account? <button className="text-blue-400 hover:text-blue-300">Sign up</button>
+              Don&apos;t have an account? <button className="text-blue-400 hover:text-blue-300">Sign up</button>
             </p>
           </div>
         </div>
