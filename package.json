@@ -76,7 +76,10 @@
     "deploy:docker": "docker-compose -f vessels/docker-compose.production.yml up -d --build",
     "deploy:k8s": "kubectl apply -f infrastructure/k8s/ && kubectl apply -f biome/",
     "deploy:platforms": "node build-all-platforms.js",
-    "deploy:check": "npm run health:check && npm run lint && npm run test:ci && npm run build:all"
+    "deploy:check": "npm run health:check && npm run lint && npm run test:ci && npm run build:all",
+    "monitor:integration": "tsx scripts/continuous-integration-monitor.ts",
+    "monitor:start": "npm run monitor:integration",
+    "status:integration": "tsx -e \"import { monitor } from './scripts/continuous-integration-monitor.ts'; console.log(JSON.stringify(monitor.getStatus(), null, 2));\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
