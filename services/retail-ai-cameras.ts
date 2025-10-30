@@ -20,7 +20,31 @@ See LICENSE file for details.
  * - Integration with security systems
  */
 
-import { GPSCoordinate, IoTDevice, CommunityAlert } from './ambient-intelligence'
+// Define interfaces locally to avoid circular imports
+interface GPSCoordinate {
+  latitude: number
+  longitude: number
+  altitude?: number
+}
+
+interface IoTDevice {
+  id: string
+  type: string
+  location: GPSCoordinate
+  capabilities: string[]
+  status: string
+}
+
+interface CommunityAlert {
+  id: string
+  type: string
+  severity: string
+  location: GPSCoordinate
+  description: string
+  affectedRadius: number
+  timestamp: number
+  responders: string[]
+}
 
 export interface CameraConfig {
   id: string

@@ -21,16 +21,66 @@ See LICENSE file for details.
  * - Emergency routing optimization
  */
 
-import {
-  ElaraGPSInsights,
-  GPSCoordinate,
-  RouteOption,
-  RouteRisk,
-  TrafficIncident,
-  TrafficFlow,
-  RiskZone,
-  AmbientContext
-} from './ambient-intelligence'
+// Define interfaces locally to avoid circular imports
+interface GPSCoordinate {
+  latitude: number
+  longitude: number
+  altitude?: number
+}
+
+interface RouteOption {
+  path: GPSCoordinate[]
+  estimatedTime: number
+  distance: number
+  confidence: number
+  riskScore: number
+  reason: string
+}
+
+interface RouteRisk {
+  type: string
+  severity: string
+  location: GPSCoordinate
+  description: string
+  alternativeRoutes: number[]
+}
+
+interface TrafficIncident {
+  id: string
+  type: string
+  location: GPSCoordinate
+  severity: string
+  estimatedClearance: number
+  impact: any
+}
+
+interface TrafficFlow {
+  segment: any
+  speed: number
+  congestionLevel: number
+  trend: string
+}
+
+interface RiskZone {
+  type: string
+  boundary: GPSCoordinate[]
+  riskLevel: number
+  activeHours: string[]
+  description: string
+}
+
+interface ElaraGPSInsights {
+  currentRoute: any
+  trafficIntelligence: any
+  safetyOverlay: any
+  environmentalContext: any
+}
+
+interface AmbientContext {
+  location: any
+  activity?: any
+  time?: any
+}
 
 export class ElaraGPSInsightsService {
   private trafficData: Map<string, TrafficFlow[]> = new Map()

@@ -20,7 +20,40 @@ See LICENSE file for details.
  * - Environmental and infrastructure monitoring
  */
 
-import { GPSCoordinate, IoTDevice, CommunityAlert, EnvironmentalData } from './ambient-intelligence'
+// Define interfaces locally to avoid circular imports
+interface GPSCoordinate {
+  latitude: number
+  longitude: number
+  altitude?: number
+}
+
+interface IoTDevice {
+  id: string
+  type: string
+  location: GPSCoordinate
+  capabilities: string[]
+  status: string
+}
+
+interface CommunityAlert {
+  id: string
+  type: string
+  severity: string
+  location: GPSCoordinate
+  description: string
+  affectedRadius: number
+  timestamp: number
+  responders: string[]
+}
+
+interface EnvironmentalData {
+  airQuality: any
+  temperature: number
+  humidity: number
+  noiseLevel: number
+  lightLevel: number
+  vibration?: number
+}
 import { retailAICameras } from './retail-ai-cameras'
 
 export interface NeighborhoodNode {
