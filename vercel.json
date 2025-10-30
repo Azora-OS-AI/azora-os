@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "rootDirectory": "learn-ui",
+  "rootDirectory": "ui/learn-ui",
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": null,
