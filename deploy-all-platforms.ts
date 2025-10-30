@@ -283,14 +283,134 @@ class UniversalDeploymentOrchestrator {
   private async deployToCloud(platform: string): Promise<void> {
     switch (platform) {
       case 'Azure Cloud':
-        // Deploy to Azure Container Instances or App Service
-        console.log('   Deploying to Azure Cloud...');
+        await this.deployToAzure();
         break;
       case 'Google Cloud':
-        // Deploy to Google Cloud Run or App Engine
-        console.log('   Deploying to Google Cloud...');
+        await this.deployToGoogleCloud();
         break;
+      default:
+        throw new Error(`Unsupported cloud platform: ${platform}`);
     }
+  }
+
+  private async deployToAzure(): Promise<void> {
+    console.log('   🚀 Deploying to Azure Cloud...');
+
+    let cliAvailable = false;
+    let loggedIn = false;
+
+    // Check if Azure CLI is available
+    try {
+      await this.runCommand('az', ['--version']);
+      cliAvailable = true;
+      console.log('   ✅ Azure CLI available');
+    } catch (error) {
+      console.log('   ⚠️  Azure CLI not found - will use container deployment');
+    }
+
+    // Check if logged in (only if CLI is available)
+    if (cliAvailable) {
+      try {
+        await this.runCommand('az', ['account', 'show']);
+        loggedIn = true;
+        console.log('   ✅ Azure CLI authenticated');
+      } catch (error) {
+        console.log('   ⚠️  Not logged into Azure CLI');
+      }
+    }
+
+    if (cliAvailable && loggedIn) {
+      // Deploy using Azure CLI
+      console.log('   📦 Creating Azure Container Instance...');
+      try {
+        await this.runCommand('az', [
+          'container', 'create',
+          '--resource-group', 'azora-rg',
+          '--name', 'azora-container',
+          '--image', 'azora-os:latest',
+          '--ports', '80', '443',
+          '--dns-name-label', 'azora-os',
+          '--location', 'eastus'
+        ]);
+        console.log('   ✅ Azure Container Instance created successfully');
+      } catch (error) {
+        console.log('   ⚠️  Azure CLI deployment failed, falling back to manual setup');
+        this.logAzureManualInstructions();
+      }
+    } else {
+      // Manual deployment required
+      console.log('   📝 Manual Azure deployment required:');
+      this.logAzureManualInstructions();
+    }
+  }
+
+  private async deployToGoogleCloud(): Promise<void> {
+    console.log('   🚀 Deploying to Google Cloud...');
+
+    let sdkAvailable = false;
+    let authenticated = false;
+
+    // Check if Google Cloud SDK is available
+    try {
+      await this.runCommand('gcloud', ['--version']);
+      sdkAvailable = true;
+      console.log('   ✅ Google Cloud SDK available');
+    } catch (error) {
+      console.log('   ⚠️  Google Cloud SDK not found - will use container deployment');
+    }
+
+    // Check if authenticated (only if SDK is available)
+    if (sdkAvailable) {
+      try {
+        await this.runCommand('gcloud', ['auth', 'list']);
+        authenticated = true;
+        console.log('   ✅ Google Cloud authenticated');
+      } catch (error) {
+        console.log('   ⚠️  Not authenticated with Google Cloud');
+      }
+    }
+
+    if (sdkAvailable && authenticated) {
+      // Deploy using Cloud SDK
+      console.log('   📦 Deploying to Google Cloud Run...');
+      try {
+        await this.runCommand('gcloud', [
+          'run', 'deploy', 'azora-os',
+          '--source', '.',
+          '--platform', 'managed',
+          '--region', 'us-central1',
+          '--allow-unauthenticated',
+          '--port', '3000'
+        ]);
+        console.log('   ✅ Google Cloud Run deployment successful');
+      } catch (error) {
+        console.log('   ⚠️  Cloud Run deployment failed, falling back to manual setup');
+        this.logGoogleCloudManualInstructions();
+      }
+    } else {
+      // Manual deployment required
+      console.log('   📝 Manual Google Cloud deployment required:');
+      this.logGoogleCloudManualInstructions();
+    }
+  }
+
+  private logAzureManualInstructions(): void {
+    console.log('      1. Install Azure CLI: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli');
+    console.log('      2. Login: az login');
+    console.log('      3. Create resource group: az group create --name azora-rg --location eastus');
+    console.log('      4. Deploy container:');
+    console.log('         az container create --resource-group azora-rg --name azora-container \\');
+    console.log('           --image azora-os:latest --ports 80 443 --dns-name-label azora-os');
+    console.log('      5. Get URL: az container show --resource-group azora-rg --name azora-container --query ipAddress.fqdn');
+  }
+
+  private logGoogleCloudManualInstructions(): void {
+    console.log('      1. Install Google Cloud SDK: https://cloud.google.com/sdk/docs/install');
+    console.log('      2. Login: gcloud auth login');
+    console.log('      3. Set project: gcloud config set project YOUR_PROJECT_ID');
+    console.log('      4. Enable APIs: gcloud services enable run.googleapis.com containerregistry.googleapis.com');
+    console.log('      5. Deploy: gcloud run deploy azora-os --source . --platform managed --region us-central1 --allow-unauthenticated');
+    console.log('      6. Get URL from deployment output');
   }
 
   private generateDeploymentReport(): DeploymentResult {
@@ -341,70 +461,4 @@ class UniversalDeploymentOrchestrator {
 
 Deployment Summary:
 • Total Targets: ${result.summary.total}
-• Successful: ${result.summary.successful}
-• Failed: ${result.summary.failed}
-• Total Time: ${(result.totalTime / 1000).toFixed(2)} seconds
-
-Deployment Results:
-${result.targets.map(target => {
-  const status = target.status === 'completed' ? '✅' : target.status === 'failed' ? '❌' : '⏳';
-  const url = target.url ? ` (${target.url})` : '';
-  const error = target.error ? ` - Error: ${target.error}` : '';
-  return `${status} ${target.name}${url}${error}`;
-}).join('\n')}
-
-Live URLs:
-${result.targets
-  .filter(t => t.status === 'completed' && t.url)
-  .map(t => `• ${t.name}: ${t.url}`)
-  .join('\n')}
-
-Next Steps:
-1. Configure custom domains
-2. Set up monitoring and alerts
-3. Configure SSL certificates
-4. Test all functionality
-5. Share with first users!
-
-================================================================================
-🚀 AZORA OS IS NOW LIVE ON ALL PLATFORMS!
-================================================================================
-`;
-
-    console.log(summary);
-
-    // Save deployment report
-    const reportPath = path.join(process.cwd(), 'DEPLOYMENT_REPORT.txt');
-    fs.writeFileSync(reportPath, summary);
-
-    console.log(`📄 Deployment report saved to: ${reportPath}\n`);
-  }
-}
-
-// Main execution function
-async function main() {
-  try {
-    const orchestrator = new UniversalDeploymentOrchestrator();
-    const result = await orchestrator.deployAll();
-
-    if (result.success) {
-      console.log('🎊 ALL DEPLOYMENTS COMPLETED SUCCESSFULLY!');
-      console.log('🌍 Azora OS is now live on all platforms');
-      process.exit(0);
-    } else {
-      console.log('⚠️  Some deployments failed. Check the report above.');
-      process.exit(1);
-    }
-
-  } catch (error) {
-    console.error('💥 DEPLOYMENT FAILED:', error);
-    process.exit(1);
-  }
-}
-
-// Run if called directly
-if (import.meta.url === `file://${process.argv[1]}`) {
-  main();
-}
-
-export { UniversalDeploymentOrchestrator };
+• Successful: ${result.summary.succe

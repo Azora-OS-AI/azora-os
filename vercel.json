@@ -11,11 +11,6 @@
       "runtime": "nodejs18.x",
       "memory": 2048,
       "maxDuration": 300
-    },
-    "services/**/*.ts": {
-      "runtime": "nodejs18.x",
-      "memory": 1024,
-      "maxDuration": 30
     }
   },
   "regions": ["fra1", "iad1", "sfo1"],
@@ -25,52 +20,8 @@
       "destination": "/api/production-server.ts"
     },
     {
-      "source": "/services/azure/(.*)",
-      "destination": "/api/services/azure-integration"
-    },
-    {
-      "source": "/services/microsoft365/(.*)",
-      "destination": "/api/services/microsoft365-integration"
-    },
-    {
-      "source": "/services/google-cloud/(.*)",
-      "destination": "/api/services/google-cloud-integration"
-    },
-    {
-      "source": "/services/google-workspace/(.*)",
-      "destination": "/api/services/google-workspace-integration"
-    },
-    {
-      "source": "/services/desktop/(.*)",
-      "destination": "/api/services/desktop-environment"
-    },
-    {
-      "source": "/services/filesystem/(.*)",
-      "destination": "/api/services/filesystem"
-    },
-    {
-      "source": "/services/process/(.*)",
-      "destination": "/api/services/process-management"
-    },
-    {
-      "source": "/services/network/(.*)",
-      "destination": "/api/services/network-stack"
-    },
-    {
-      "source": "/services/security/(.*)",
-      "destination": "/api/services/security-framework"
-    },
-    {
-      "source": "/services/development/(.*)",
-      "destination": "/api/services/development-tools"
-    },
-    {
-      "source": "/services/productivity/(.*)",
-      "destination": "/api/services/productivity-suite"
-    },
-    {
-      "source": "/services/compatibility/(.*)",
-      "destination": "/api/services/compatibility-layers"
+      "source": "/services/(.*)",
+      "destination": "/api/services.ts"
     }
   ]
 }
