@@ -16,6 +16,10 @@ See LICENSE file for details.
 import { EventEmitter } from 'events';
 import { logger } from '../../genome/utils/logger';
 import { elara } from '../../genome/agent-tools/elara-core';
+import { ResearchAgent1 } from '../technical/research-agent-1';
+import { ResearchAgent2 } from '../technical/research-agent-2';
+import { ImplementationAgent1 } from '../technical/implementation-agent-1';
+import { ImplementationAgent2 } from '../technical/implementation-agent-2';
 import {
   ElaraFamilyAgent,
   BaseAgent,
@@ -154,6 +158,36 @@ export class ElaraFamilyCoordinator {
         name: 'Alex Rivera',
         role: AgentRole.AI_ENGINEER,
         specialization: 'AI Model Development & Deployment',
+        reportingTo: 'cto-elara'
+      },
+      // Research Agents
+      {
+        id: 'research-agent-1',
+        name: 'Dr. Aria Chen',
+        role: AgentRole.RESEARCH_ANALYST,
+        specialization: 'AI/ML Research & Algorithm Innovation',
+        reportingTo: 'cio-elara'
+      },
+      {
+        id: 'research-agent-2',
+        name: 'Dr. Marcus Rivera',
+        role: AgentRole.RESEARCH_ANALYST,
+        specialization: 'Systems Research & Implementation Science',
+        reportingTo: 'cio-elara'
+      },
+      // Implementation Agents
+      {
+        id: 'implementation-agent-1',
+        name: 'Lena Park',
+        role: AgentRole.IMPLEMENTATION_SPECIALIST,
+        specialization: 'Full-Stack Development & DevOps',
+        reportingTo: 'cto-elara'
+      },
+      {
+        id: 'implementation-agent-2',
+        name: 'Victor Kane',
+        role: AgentRole.IMPLEMENTATION_SPECIALIST,
+        specialization: 'Enterprise Architecture & System Integration',
         reportingTo: 'cto-elara'
       }
     ];
