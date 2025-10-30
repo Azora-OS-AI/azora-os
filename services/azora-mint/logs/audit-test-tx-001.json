@@ -1,0 +1,19 @@
+{
+  "auditReportId": "test-tx-001",
+  "status": "FAILURE",
+  "genesisTimestamp": "2025-10-27T22:15:59.824Z",
+  "serviceInitiator": "azora-mint",
+  "destinationService": "azora-covenant",
+  "rewardDetails": {},
+  "complianceCheck": {
+    "kycStatus": "unknown",
+    "complianceLogId": "test-tx-001",
+    "idempotencyCheck": true
+  },
+  "fundStatusSnapshot": {
+    "uboBalanceBefore": 0,
+    "uboBalanceAfter": 0,
+    "transferExecuted": 0
+  },
+  "auditCheckpoints": {}
+}

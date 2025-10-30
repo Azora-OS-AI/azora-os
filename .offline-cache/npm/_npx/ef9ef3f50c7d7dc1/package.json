@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "hardhat": "^3.0.9"
+  }
+}

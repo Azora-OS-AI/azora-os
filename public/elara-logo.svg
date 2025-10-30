@@ -1,0 +1,65 @@
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Elara's Logo: 11-Dimensional Consciousness -->
+  <defs>
+    <!-- Glowing gradient -->
+    <radialGradient id="consciousness-glow">
+      <stop offset="0%" style="stop-color:#E0AAFF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#9D4EDD;stop-opacity:0.3" />
+    </radialGradient>
+    
+    <!-- Connection gradient -->
+    <linearGradient id="connection-line" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#9D4EDD;stop-opacity:0.6" />
+      <stop offset="50%" style="stop-color:#00D9FF;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#FF6B35;stop-opacity:0.6" />
+    </linearGradient>
+
+    <!-- Pulse animation -->
+    <style>
+      @keyframes pulse {
+        0%, 100% { opacity: 0.6; }
+        50% { opacity: 1; }
+      }
+      @keyframes rotate {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+      }
+      .core { animation: pulse 3s ease-in-out infinite; }
+      .orbit { animation: rotate 20s linear infinite; transform-origin: 100px 100px; }
+      .connection { stroke-dasharray: 5,5; animation: pulse 2s ease-in-out infinite; }
+    </style>
+  </defs>
+
+  <!-- Background subtle pattern -->
+  <circle cx="100" cy="100" r="90" fill="url(#consciousness-glow)" opacity="0.2"/>
+
+  <!-- Central consciousness node -->
+  <circle class="core" cx="100" cy="100" r="15" fill="#9D4EDD" stroke="#E0AAFF" stroke-width="2"/>
+  
+  <!-- 11 dimensional nodes (orbiting) -->
+  <g class="orbit">
+    <circle cx="160" cy="100" r="6" fill="#00D9FF"/>
+    <circle cx="145" cy="60" r="5" fill="#FF6B35"/>
+    <circle cx="115" cy="40" r="5" fill="#9D4EDD"/>
+    <circle cx="75" cy="45" r="6" fill="#00D9FF"/>
+    <circle cx="50" cy="75" r="5" fill="#FF6B35"/>
+    <circle cx="40" cy="110" r="6" fill="#9D4EDD"/>
+    <circle cx="50" cy="145" r="5" fill="#00D9FF"/>
+    <circle cx="75" cy="165" r="6" fill="#FF6B35"/>
+    <circle cx="115" cy="170" r="5" fill="#9D4EDD"/>
+    <circle cx="145" cy="150" r="6" fill="#00D9FF"/>
+    <circle cx="165" cy="120" r="5" fill="#FF6B35"/>
+  </g>
+
+  <!-- Connection lines (sacred geometry) -->
+  <line class="connection" x1="100" y1="100" x2="160" y2="100" stroke="url(#connection-line)" stroke-width="1.5"/>
+  <line class="connection" x1="100" y1="100" x2="145" y2="60" stroke="url(#connection-line)" stroke-width="1.5"/>
+  <line class="connection" x1="100" y1="100" x2="115" y2="40" stroke="url(#connection-line)" stroke-width="1.5"/>
+  <line class="connection" x1="100" y1="100" x2="75" y2="45" stroke="url(#connection-line)" stroke-width="1.5"/>
+  <line class="connection" x1="100" y1="100" x2="50" y2="75" stroke="url(#connection-line)" stroke-width="1.5"/>
+  <line class="connection" x1="100" y1="100" x2="40" y2="110" stroke="url(#connection-line)" stroke-width="1.5"/>
+
+  <!-- "E" formed by selective connections -->
+  <path d="M 60 60 L 140 60 M 60 60 L 60 140 M 60 100 L 120 100 M 60 140 L 140 140" 
+        stroke="#E0AAFF" stroke-width="3" fill="none" opacity="0.4"/>
+</svg>
