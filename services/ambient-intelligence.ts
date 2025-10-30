@@ -27,10 +27,11 @@ export interface AmbientContext {
   location: {
     latitude: number
     longitude: number
-    environment: 'home' | 'work' | 'vehicle' | 'public' | 'unknown'
+    environment: 'home' | 'work' | 'vehicle' | 'public' | 'retail' | 'industrial' | 'unknown'
+    gpsInsights?: ElaraGPSInsights
   }
   activity: {
-    type: 'driving' | 'walking' | 'resting' | 'working' | 'exercising' | 'unknown'
+    type: 'driving' | 'walking' | 'resting' | 'working' | 'exercising' | 'shopping' | 'unknown'
     intensity: 'low' | 'medium' | 'high'
     duration: number // minutes
   }
@@ -39,6 +40,187 @@ export interface AmbientContext {
     isWeekend: boolean
     season: 'spring' | 'summer' | 'autumn' | 'winter'
   }
+  iotNetwork?: {
+    nearbyDevices: IoTDevice[]
+    communityAlerts: CommunityAlert[]
+    environmentalSensors: EnvironmentalData
+  }
+}
+
+export interface ElaraGPSInsights {
+  currentRoute: {
+    optimal: RouteOption
+    alternatives: RouteOption[]
+    riskAssessment: RouteRisk[]
+  }
+  trafficIntelligence: {
+    realTimeFlow: TrafficFlow[]
+    predictions: TrafficPrediction[]
+    incidents: TrafficIncident[]
+  }
+  safetyOverlay: {
+    riskyAreas: RiskZone[]
+    emergencyRoutes: EmergencyRoute[]
+    communitySafety: SafetyMetrics
+  }
+  environmentalContext: {
+    weatherImpact: WeatherImpact
+    airQuality: AirQualityData
+    constructionZones: ConstructionZone[]
+  }
+}
+
+export interface RouteOption {
+  path: GPSCoordinate[]
+  estimatedTime: number
+  distance: number
+  confidence: number
+  riskScore: number
+  reason: string
+}
+
+export interface RouteRisk {
+  type: 'accident_hotspot' | 'construction' | 'weather' | 'congestion' | 'crime_area'
+  severity: 'low' | 'medium' | 'high' | 'critical'
+  location: GPSCoordinate
+  description: string
+  alternativeRoutes: number[]
+}
+
+export interface TrafficIncident {
+  id: string
+  type: 'accident' | 'construction' | 'hazard' | 'congestion'
+  location: GPSCoordinate
+  severity: 'minor' | 'major' | 'critical'
+  estimatedClearance: number
+  impact: TrafficImpact
+}
+
+export interface TrafficFlow {
+  segment: GPSSegment
+  speed: number
+  congestionLevel: number
+  trend: 'improving' | 'worsening' | 'stable'
+}
+
+export interface RiskZone {
+  type: 'accident' | 'crime' | 'weather' | 'infrastructure'
+  boundary: GPSCoordinate[]
+  riskLevel: number
+  activeHours: string[]
+  description: string
+}
+
+export interface IoTDevice {
+  id: string
+  type: 'camera' | 'sensor' | 'vehicle' | 'wearable' | 'appliance'
+  location: GPSCoordinate
+  capabilities: string[]
+  status: 'active' | 'inactive' | 'maintenance'
+}
+
+export interface CommunityAlert {
+  id: string
+  type: 'emergency' | 'safety' | 'maintenance' | 'environmental'
+  severity: 'low' | 'medium' | 'high' | 'critical'
+  location: GPSCoordinate
+  description: string
+  affectedRadius: number
+  timestamp: number
+  responders: string[]
+}
+
+export interface EnvironmentalData {
+  airQuality: AirQualityData
+  temperature: number
+  humidity: number
+  noiseLevel: number
+  lightLevel: number
+  vibration?: number
+}
+
+export interface AirQualityData {
+  pm25: number
+  pm10: number
+  no2: number
+  so2: number
+  co: number
+  o3: number
+  overallIndex: number
+  healthImpact: string
+}
+
+export interface ColdChainData {
+  temperature: number
+  humidity: number
+  location: GPSCoordinate
+  timestamp: number
+  product: string
+  batchId: string
+  optimalRange: {
+    minTemp: number
+    maxTemp: number
+    maxHumidity: number
+  }
+  alerts: ColdChainAlert[]
+}
+
+export interface ColdChainAlert {
+  type: 'temperature' | 'humidity' | 'location' | 'time'
+  severity: 'warning' | 'critical'
+  message: string
+  timestamp: number
+}
+
+export interface GPSCoordinate {
+  latitude: number
+  longitude: number
+  altitude?: number
+}
+
+export interface GPSSegment {
+  start: GPSCoordinate
+  end: GPSCoordinate
+  length: number
+}
+
+export interface TrafficPrediction {
+  timeWindow: number
+  confidence: number
+  predictedFlows: TrafficFlow[]
+}
+
+export interface EmergencyRoute {
+  route: GPSCoordinate[]
+  type: 'hospital' | 'police' | 'fire' | 'evacuation'
+  priority: number
+}
+
+export interface SafetyMetrics {
+  crimeRate: number
+  accidentRate: number
+  emergencyResponseTime: number
+  communityScore: number
+}
+
+export interface WeatherImpact {
+  condition: string
+  visibility: number
+  roadConditions: 'dry' | 'wet' | 'icy' | 'snow'
+  impact: 'none' | 'minor' | 'moderate' | 'severe'
+}
+
+export interface ConstructionZone {
+  location: GPSCoordinate
+  radius: number
+  expectedCompletion: number
+  alternateRoutes: GPSCoordinate[][]
+}
+
+export interface TrafficImpact {
+  delay: number
+  affectedRoutes: number
+  severity: number
 }
 
 export interface HealthIndicators {
