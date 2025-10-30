@@ -15,7 +15,7 @@ app.use('/api', kycAmlApi);
 
 app.get('/health', (req, res) => res.json({ status: 'ok' }));
 
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 4099;
 app.listen(PORT, () => {
   console.log(`KYC AML Service running on port ${PORT}`);
 });

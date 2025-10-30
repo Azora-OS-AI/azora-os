@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "build": "tsc",
-    "start": "node citadel.js",
+    "start": "node dist/index.js",
     "citadel": "node citadel.js",
     "guardian": "node guardian.js",
     "prisma:migrate": "prisma migrate dev --name init",
@@ -25,6 +25,8 @@
     "ws": "^8.18.3"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^3.0.0",
+    "@types/minimatch": "^6.0.0",
     "prisma": "^5.0.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.0.0"

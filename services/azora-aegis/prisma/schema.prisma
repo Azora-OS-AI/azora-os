@@ -32,3 +32,13 @@ model AuditLog {
   createdAt DateTime @default(now())
   userId    String?
 }
+
+model SecurityEvent {
+  id        String   @id @default(cuid())
+  eventType String
+  details   Json
+  severity  String
+  userId    String?
+  cameraId  String?
+  timestamp DateTime @default(now())
+}
