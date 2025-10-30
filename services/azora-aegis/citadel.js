@@ -921,3 +921,8 @@ class AegisCitadel {
 const aegisCitadel = new AegisCitadel();
 
 module.exports = aegisCitadel;
+
+// Start server if run directly
+if (require.main === module) {
+  aegisCitadel.start(process.env.PORT ? Number(process.env.PORT) : 4099);
+}

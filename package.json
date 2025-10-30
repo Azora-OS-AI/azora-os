@@ -5,8 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "next dev",
+    "dev:all": "concurrently -n WEB,Aegis,Sapiens,Mint,Oracle -c green,blue,magenta,yellow,cyan \"npm run dev\" \"npm --prefix services/azora-aegis run dev\" \"npm --prefix services/azora-sapiens run dev\" \"npm --prefix services/azora-mint run dev\" \"npm --prefix services/azora-oracle run start\"",
     "build": "next build",
+    "build:services": "npm --prefix services/azora-aegis run build && npm --prefix services/azora-mint run build",
     "start": "next start",
+    "start:all": "concurrently -n WEB,Aegis,Sapiens,Mint,Oracle -c green,blue,magenta,yellow,cyan \"npm start\" \"npm --prefix services/azora-aegis start\" \"npm --prefix services/azora-sapiens start\" \"npm --prefix services/azora-mint start\" \"npm --prefix services/azora-oracle run start\"",
+    "install:services": "npm --prefix services/azora-aegis install && npm --prefix services/azora-sapiens install && npm --prefix services/azora-mint install && npm --prefix services/azora-oracle install",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
@@ -104,6 +108,7 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
+    "concurrently": "^9.0.1",
     "@nomicfoundation/hardhat-chai-matchers": "^2.1.0",
     "@nomicfoundation/hardhat-ethers": "^4.0.2",
     "@nomicfoundation/hardhat-network-helpers": "^3.0.1",

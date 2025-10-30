@@ -36,7 +36,7 @@ import { LiquidityService } from './services/LiquidityService';
 import { authenticateToken } from './middleware/auth.js';
 
 // Configuration
-const PORT = process.env.PORT || 3005;
+const PORT = process.env.PORT || 4300;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/azora_mint';
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
 
