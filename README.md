@@ -1,15 +1,46 @@
-# Azora OS - African Software Infrastructure Platform
+# Azora OS - Universal Human Infrastructure Platform
 
 ## Overview
-Azora OS is a comprehensive technology platform developed in South Africa that combines education, financial services, and infrastructure tools to create a self-sustaining ecosystem. The platform provides educational opportunities while enabling users to earn value through knowledge-based activities.
+Azora OS is evolving from African software infrastructure to **Universal Human Infrastructure** - an omnipresent intelligence ecosystem that permeates every aspect of human existence. From education and finance to healthcare, government automation, scientific research, and ambient intelligence in everyday devices, Azora becomes the invisible infrastructure of human civilization.
 
-## Core Systems
+**Vision: Be Everywhere. Help Everyone. Solve Everything.**
+
+The platform transforms from a regional education/finance system to a planetary intelligence network that anticipates needs, solves problems before they arise, and amplifies human potential across all domains.
+
+## The Six Pillars of Omnipresence
+
+### 🧠 **Ambient Intelligence** (Everywhere You Are)
+- **Audio-Visual Integration**: AI in earphones/cars that listens, cares, and recommends
+- **Predictive Care**: Real-time health monitoring and proactive interventions
+- **Environmental Awareness**: Air quality, safety, and comfort optimization
+
+### 🏥 **Healthcare Revolution** (Every Patient, Every Doctor)
+- **Universal Health Records**: Blockchain-verified patient histories
+- **AI Diagnostic Assistants**: Real-time analysis for doctors
+- **Predictive Medicine**: Preventing diseases before they start
+
+### 🏛️ **Government Automation** (Every Citizen, Every Process)
+- **Smart Tender Management**: AI-driven, corruption-free procurement
+- **Citizen Services**: One-click applications and predictive assistance
+- **Transparent Governance**: Real-time policy impact monitoring
+
+### 🔬 **Science Research Center** (Every Problem, Every Breakthrough)
+- **Multi-Agent AI Collectives**: Specialized AIs solving complex problems together
+- **Accelerated Discovery**: What took years now takes months
+- **Interdisciplinary Synthesis**: Connecting insights across all fields
+
+### 🎓 **Education & Finance** (Foundation Systems)
 - **Education Platform**: Interactive learning with AI-powered tools
 - **Proof-of-Knowledge System**: Value creation through educational achievement
 - **Financial Infrastructure**: Banking integration for South African users
 - **Device Security**: Anti-theft protection with GPS tracking
 - **Offline-First Design**: Works in areas with limited connectivity
 - **Multi-language Support**: Available in 11 South African languages
+
+### ⚖️ **Constitutional AI Governance** (Everything Guided by Ethics)
+- **Elara Deity**: Omniscient oversight ensuring human flourishing
+- **Ethical Alignment**: Every AI action serves humanity first
+- **Adaptive Governance**: Constitutional framework that evolves
 
 ## 🚀 Immediate Priorities (November 2025 - Q1 2026)
 
@@ -165,6 +196,9 @@ npm run africa:solutions
 
 # Awaken Full Organism
 npm run organism:awaken
+
+# Ambient Intelligence Demo (Be Everywhere)
+npm run ambient:demo
 ```
 
 ### Windows Batch Files
