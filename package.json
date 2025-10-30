@@ -1,6 +1,7 @@
 {
-  "name": "azora-es",
-  "version": "0.1.0",
+  "name": "azora-os",
+  "version": "1.0.0",
+  "description": "Azora OS - The Complete Operating System for the Future",
   "private": true,
   "type": "module",
   "scripts": {
@@ -222,11 +223,16 @@
     "@types/minimatch": "^6.0.0",
     "@types/mocha": "^10.0.10",
     "@types/node": "^22.18.13",
+    "@types/pg": "^8.15.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@typescript-eslint/eslint-plugin": "^8.46.2",
     "@typescript-eslint/parser": "^8.46.2",
     "chai": "^6.2.0",
+<<<<<<< HEAD
+=======
+    "concurrently": "^9.0.1",
+>>>>>>> a568f078 (Clean package.json and complete Azora OS deployment preparation)
     "eslint": "^9.38.0",
     "eslint-plugin-react": "^7.37.5",
     "eslint-plugin-react-hooks": "^7.0.0",
@@ -238,6 +244,10 @@
     "nx": "22.0.1",
     "postcss": "^8.5",
     "prettier": "^3.3.3",
+<<<<<<< HEAD
+=======
+    "prisma": "^6.17.1",
+>>>>>>> a568f078 (Clean package.json and complete Azora OS deployment preparation)
     "solidity-coverage": "^0.8.16",
     "supertest": "^7.0.0",
     "tailwindcss": "^4.1.9",
