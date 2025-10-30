@@ -23,6 +23,14 @@ See LICENSE file for details.
 import { EventEmitter } from 'events'
 import { ConstitutionalAIOversight } from './constitutional-ai-governance'
 
+export interface Intervention {
+  type: string
+  priority: string
+  message: string
+  reasoning: string
+  confidence: number
+}
+
 export interface AmbientContext {
   location: {
     latitude: number
@@ -232,17 +240,6 @@ export interface HealthIndicators {
   healthRisks: string[] // ['dehydration', 'high_stress', 'fatigue']
 }
 
-export interface Intervention {
-  type: 'gentle_reminder' | 'urgent_alert' | 'proactive_suggestion' | 'emergency_response'
-  priority: 'low' | 'medium' | 'high' | 'critical'
-  message: string
-  action?: {
-    type: 'audio_cue' | 'vibration' | 'visual_alert' | 'call_emergency' | 'adjust_environment'
-    parameters: any
-  }
-  reasoning: string
-  confidence: number // 0-100
-}
 
 export class AmbientIntelligenceService extends EventEmitter {
   private constitutionalOversight: ConstitutionalAIOversight

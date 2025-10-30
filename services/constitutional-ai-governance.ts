@@ -13,7 +13,13 @@ See LICENSE file for details.
  * and comply with the Azora Constitution.
  */
 
-import { Intervention } from './ambient-intelligence'
+export interface Intervention {
+  type: string
+  priority: string
+  message: string
+  reasoning: string
+  confidence: number
+}
 
 export class ConstitutionalAIOversight {
   private ethicalPrinciples = [
