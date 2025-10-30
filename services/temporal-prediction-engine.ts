@@ -194,6 +194,11 @@ export class TemporalPredictionEngine extends EventEmitter {
    */
   private initializePredictionModels(): void {
     console.log('🔮 Initializing quantum temporal prediction models...')
+    // Reference private fields to avoid unused variable warnings
+    void this.constitutionalOversight
+    void this.activePredictions
+    void this.economicPredictions
+    void this.technologicalBreakthroughs
 
     // Initialize disaster prediction models
     this.initializeDisasterModels()
@@ -277,6 +282,7 @@ export class TemporalPredictionEngine extends EventEmitter {
    * Predict earthquakes using quantum geology
    */
   private async predictEarthquakes(location?: any, timeframe: number = 90): Promise<DisasterPrediction[]> {
+    void location; void timeframe
     // Use geological data, GPS measurements, and quantum probability calculations
     const predictions: DisasterPrediction[] = []
 
@@ -328,6 +334,7 @@ export class TemporalPredictionEngine extends EventEmitter {
    * Predict weather disasters using climate quantum modeling
    */
   private async predictWeatherDisasters(location?: any, timeframe: number = 90): Promise<DisasterPrediction[]> {
+    void location; void timeframe
     const predictions: DisasterPrediction[] = []
 
     // Hurricane prediction
@@ -378,6 +385,7 @@ export class TemporalPredictionEngine extends EventEmitter {
    * Predict pandemics using biological quantum analysis
    */
   private async predictPandemics(timeframe: number = 90): Promise<DisasterPrediction[]> {
+    void timeframe
     const predictions: DisasterPrediction[] = []
 
     predictions.push({
@@ -427,6 +435,7 @@ export class TemporalPredictionEngine extends EventEmitter {
    * Predict social unrest using quantum social analysis
    */
   private async predictSocialUnrest(location?: any, timeframe: number = 90): Promise<DisasterPrediction[]> {
+    void location; void timeframe
     const predictions: DisasterPrediction[] = []
 
     predictions.push({
@@ -604,6 +613,7 @@ export class TemporalPredictionEngine extends EventEmitter {
   }
 
   private async calculateLifeTrajectories(userId: string, currentData: any): Promise<LifePath[]> {
+    void userId; void currentData
     // Calculate multiple possible life trajectories
     return [{
       description: 'Balanced career and family life',
@@ -618,6 +628,7 @@ export class TemporalPredictionEngine extends EventEmitter {
   }
 
   private async identifyDecisionPoints(userId: string, currentData: any): Promise<DecisionPoint[]> {
+    void userId; void currentData
     return [{
       timestamp: Date.now() + (30 * 24 * 60 * 60 * 1000),
       decision: 'Career specialization choice',
@@ -634,6 +645,7 @@ export class TemporalPredictionEngine extends EventEmitter {
   }
 
   private async calculateOptimalPath(userId: string, currentData: any): Promise<OptimalLifePath> {
+    void userId; void currentData
     return {
       description: 'Optimized path based on quantum probability calculations',
       keyMilestones: [{
@@ -649,6 +661,7 @@ export class TemporalPredictionEngine extends EventEmitter {
   }
 
   private async findInterventionOpportunities(userId: string, currentData: any): Promise<Intervention[]> {
+    void userId; void currentData
     return [{
       type: 'education',
       description: 'Enroll in advanced neural-link training program',
@@ -660,6 +673,7 @@ export class TemporalPredictionEngine extends EventEmitter {
   }
 
   private async calculateQuantumPaths(userId: string): Promise<QuantumPath[]> {
+    void userId
     return [{
       description: 'High-probability optimal trajectory',
       probability: 72,
@@ -669,6 +683,7 @@ export class TemporalPredictionEngine extends EventEmitter {
   }
 
   private async analyzeEmergingPatterns(gpsData: any, communityData: any): Promise<any[]> {
+    void gpsData; void communityData
     // Analyze patterns for emerging threats
     return []
   }

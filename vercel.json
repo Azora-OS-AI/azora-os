@@ -1,144 +1,76 @@
 {
-  "version": 2,
-  "name": "azora-os",
-  "builds": [
-    {
-      "src": "ui/package.json",
-      "use": "@vercel/next"
-    },
-    {
-      "src": "api/production-server.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/azure-integration-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/microsoft365-integration-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/google-cloud-integration-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/google-workspace-integration-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/desktop-environment-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/filesystem-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/process-management-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/network-stack-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/security-framework-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/development-tools-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/productivity-suite-service.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "services/compatibility-layers-service.ts",
-      "use": "@vercel/node"
-    }
-  ],
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/production-server.ts"
-    },
-    {
-      "src": "/services/azure/(.*)",
-      "dest": "/services/azure-integration-service.ts"
-    },
-    {
-      "src": "/services/microsoft365/(.*)",
-      "dest": "/services/microsoft365-integration-service.ts"
-    },
-    {
-      "src": "/services/google-cloud/(.*)",
-      "dest": "/services/google-cloud-integration-service.ts"
-    },
-    {
-      "src": "/services/google-workspace/(.*)",
-      "dest": "/services/google-workspace-integration-service.ts"
-    },
-    {
-      "src": "/services/desktop/(.*)",
-      "dest": "/services/desktop-environment-service.ts"
-    },
-    {
-      "src": "/services/filesystem/(.*)",
-      "dest": "/services/filesystem-service.ts"
-    },
-    {
-      "src": "/services/process/(.*)",
-      "dest": "/services/process-management-service.ts"
-    },
-    {
-      "src": "/services/network/(.*)",
-      "dest": "/services/network-stack-service.ts"
-    },
-    {
-      "src": "/services/security/(.*)",
-      "dest": "/services/security-framework-service.ts"
-    },
-    {
-      "src": "/services/development/(.*)",
-      "dest": "/services/development-tools-service.ts"
-    },
-    {
-      "src": "/services/productivity/(.*)",
-      "dest": "/services/productivity-suite-service.ts"
-    },
-    {
-      "src": "/services/compatibility/(.*)",
-      "dest": "/services/compatibility-layers-service.ts"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/ui/$1"
-    }
-  ],
+  "framework": "nextjs",
+  "buildCommand": "npm run build",
+  "installCommand": "npm install",
   "env": {
     "NODE_ENV": "production",
     "AZORA_DEPLOYMENT_PLATFORM": "vercel"
   },
-  "build": {
-    "env": {
-      "NODE_ENV": "production",
-      "AZORA_DEPLOYMENT_PLATFORM": "vercel"
-    }
-  },
   "functions": {
+    "api/**/*.ts": {
+      "runtime": "nodejs18.x",
+      "memory": 2048,
+      "maxDuration": 300
+    },
     "services/**/*.ts": {
       "runtime": "nodejs18.x",
       "memory": 1024,
       "maxDuration": 30
-    },
-    "api/production-server.ts": {
-      "runtime": "nodejs18.x",
-      "memory": 2048,
-      "maxDuration": 300
     }
   },
   "regions": ["fra1", "iad1", "sfo1"],
-  "outputDirectory": ".next"
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/api/production-server.ts"
+    },
+    {
+      "source": "/services/azure/(.*)",
+      "destination": "/api/services/azure-integration"
+    },
+    {
+      "source": "/services/microsoft365/(.*)",
+      "destination": "/api/services/microsoft365-integration"
+    },
+    {
+      "source": "/services/google-cloud/(.*)",
+      "destination": "/api/services/google-cloud-integration"
+    },
+    {
+      "source": "/services/google-workspace/(.*)",
+      "destination": "/api/services/google-workspace-integration"
+    },
+    {
+      "source": "/services/desktop/(.*)",
+      "destination": "/api/services/desktop-environment"
+    },
+    {
+      "source": "/services/filesystem/(.*)",
+      "destination": "/api/services/filesystem"
+    },
+    {
+      "source": "/services/process/(.*)",
+      "destination": "/api/services/process-management"
+    },
+    {
+      "source": "/services/network/(.*)",
+      "destination": "/api/services/network-stack"
+    },
+    {
+      "source": "/services/security/(.*)",
+      "destination": "/api/services/security-framework"
+    },
+    {
+      "source": "/services/development/(.*)",
+      "destination": "/api/services/development-tools"
+    },
+    {
+      "source": "/services/productivity/(.*)",
+      "destination": "/api/services/productivity-suite"
+    },
+    {
+      "source": "/services/compatibility/(.*)",
+      "destination": "/api/services/compatibility-layers"
+    }
+  ]
 }

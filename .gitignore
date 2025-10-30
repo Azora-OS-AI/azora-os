@@ -188,3 +188,5 @@ test-*.cjs
 tmp/
 temp/
 *.tmp
+
+.vercel
