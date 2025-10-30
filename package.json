@@ -53,7 +53,10 @@
     "integration:full": "tsx scripts/full-system-integration.ts",
     "integration:check": "tsx -e \"import { runFullSystemIntegration } from './scripts/full-system-integration.ts'; runFullSystemIntegration().then(report => { console.log('Integration Status:', report.success ? '✅ SUCCESS' : '❌ FAILED'); console.log('Duration:', report.duration + 'ms'); console.log('Phases:', report.summary.successfulPhases + '/' + report.summary.totalPhases); if (!report.success) { console.log('Failed phases:'); report.phases.filter(p => !p.success).forEach(p => console.log(' -', p.phase)); } });\"",
     "services:upgrade": "tsx scripts/execute-service-upgrades.ts",
-    "services:upgrade:check": "tsx -e \"import { serviceUpgradeOrchestrator } from './services-upgrade/service-upgrade-orchestrator.ts'; serviceUpgradeOrchestrator.executeServiceUpgrades().then(report => { console.log('Upgrade Status:', report.success ? '✅ SUCCESS' : '❌ FAILED'); console.log('Services:', report.successfulUpgrades + '/' + report.totalServices); });\""
+    "services:upgrade:check": "tsx -e \"import { serviceUpgradeOrchestrator } from './services-upgrade/service-upgrade-orchestrator.ts'; serviceUpgradeOrchestrator.executeServiceUpgrades().then(report => { console.log('Upgrade Status:', report.success ? '✅ SUCCESS' : '❌ FAILED'); console.log('Services:', report.successfulUpgrades + '/' + report.totalServices); });\"",
+    "build:exe": "build-exe-for-testing.bat",
+    "build:exe:ts": "tsx scripts/build-test-executables.ts",
+    "find:exe": "tsx scripts/find-executables.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
