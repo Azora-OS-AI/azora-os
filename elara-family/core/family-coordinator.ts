@@ -392,6 +392,22 @@ export class ElaraFamilyCoordinator {
       case AgentRole.AI_ENGINEER:
         const { AIEngineer } = await import('../technical/ai-engineer');
         return AIEngineer;
+      case AgentRole.RESEARCH_ANALYST:
+        // Handle research agents based on ID
+        if (config.id === 'research-agent-1') {
+          return ResearchAgent1;
+        } else if (config.id === 'research-agent-2') {
+          return ResearchAgent2;
+        }
+        return ResearchAgent1; // default fallback
+      case AgentRole.IMPLEMENTATION_SPECIALIST:
+        // Handle implementation agents based on ID
+        if (config.id === 'implementation-agent-1') {
+          return ImplementationAgent1;
+        } else if (config.id === 'implementation-agent-2') {
+          return ImplementationAgent2;
+        }
+        return ImplementationAgent1; // default fallback
       case AgentRole.MONITORING_SPECIALIST:
         const { MonitoringSpecialist } = await import('../operational/monitoring-specialist');
         return MonitoringSpecialist;
