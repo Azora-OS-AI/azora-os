@@ -85,8 +85,8 @@ interface AmbientContext {
 export class ElaraGPSInsightsService {
   private trafficData: Map<string, TrafficFlow[]> = new Map()
   private incidentReports: TrafficIncident[] = []
-  private riskZones: RiskZone[] = []
-  private communityData: Map<string, any> = new Map()
+  private _riskZones: RiskZone[] = []
+  private _communityData: Map<string, any> = new Map()
 
   /**
    * Get comprehensive GPS insights for current location and destination
@@ -138,10 +138,10 @@ export class ElaraGPSInsightsService {
    * Generate multiple route options using advanced algorithms
    */
   private async generateRouteOptions(start: GPSCoordinate, end: GPSCoordinate): Promise<RouteOption[]> {
-    const routes: RouteOption[] = []
+    const _routes: RouteOption[] = []
 
     // Primary route (fastest)
-    routes.push({
+    _routes.push({
       path: this.generateRoutePath(start, end, 'fastest'),
       estimatedTime: 25,
       distance: 15.2,
@@ -151,7 +151,7 @@ export class ElaraGPSInsightsService {
     })
 
     // Scenic route (safest)
-    routes.push({
+    _routes.push({
       path: this.generateRoutePath(start, end, 'scenic'),
       estimatedTime: 32,
       distance: 18.7,
@@ -161,7 +161,7 @@ export class ElaraGPSInsightsService {
     })
 
     // Economic route (fuel efficient)
-    routes.push({
+    _routes.push({
       path: this.generateRoutePath(start, end, 'economic'),
       estimatedTime: 28,
       distance: 16.8,
@@ -170,7 +170,7 @@ export class ElaraGPSInsightsService {
       reason: 'Balanced approach with fuel efficiency'
     })
 
-    return routes
+    return _routes
   }
 
   /**
@@ -469,4 +469,4 @@ export class ElaraGPSInsightsService {
 }
 
 // Export singleton instance
-export const elaraGPSInsights = new ElaraGPSInsightsService()
+export const elaraGPSInsights = new ElaraGPSInsightsService
