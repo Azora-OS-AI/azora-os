@@ -1,11 +1,8 @@
-/*
-AZORA PROPRIETARY LICENSE
-Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
-*/
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface GlassmorphicLayoutProps {
   children: React.ReactNode;
@@ -14,73 +11,67 @@ interface GlassmorphicLayoutProps {
 
 export default function GlassmorphicLayout({ children, className = '' }: GlassmorphicLayoutProps) {
   const [isMounted, setIsMounted] = useState(false);
+  const mousePos = useRef({ x: 0, y: 0 });
 
   useEffect(() => {
     setIsMounted(true);
+    const handleMouseMove = (event: MouseEvent) => {
+      mousePos.current = { x: event.clientX, y: event.clientY };
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
   }, []);
 
-  if (!isMounted) {
-    return <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100" />;
-  }
-
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 relative overflow-hidden">
-      {/* Background visualization elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        {/* Animated particles */}
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-blue-200 opacity-20 animate-pulse"
-            style={{
-              width: `${Math.random() * 100 + 20}px`,
-              height: `${Math.random() * 100 + 20}px`,
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animationDuration: `${Math.random() * 5 + 3}s`,
-            }}
-          />
-        ))}
-        
-        {/* Service visualization nodes */}
-        <div className="absolute top-1/4 left-1/4 w-16 h-16 rounded-full bg-green-300 opacity-30 blur-xl animate-pulse" />
-        <div className="absolute top-1/3 right-1/3 w-20 h-20 rounded-full bg-purple-300 opacity-30 blur-xl animate-pulse" />
-        <div className="absolute bottom-1/4 left-1/3 w-24 h-24 rounded-full bg-yellow-300 opacity-30 blur-xl animate-pulse" />
-        <div className="absolute bottom-1/3 right-1/4 w-18 h-18 rounded-full bg-red-300 opacity-30 blur-xl animate-pulse" />
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-blue-900 text-white relative overflow-hidden">
+      <AnimatePresence>
+        {isMounted && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="absolute inset-0 z-0"
+          >
+            {[...Array(15)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute rounded-full bg-blue-500"
+                style={{
+                  width: `${Math.random() * 150 + 50}px`,
+                  height: `${Math.random() * 150 + 50}px`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: Math.random() * 0.1 + 0.05,
+                }}
+                animate={{
+                  x: [0, Math.random() * 100 - 50, 0],
+                  y: [0, Math.random() * 100 - 50, 0],
+                }}
+                transition={{
+                  duration: Math.random() * 20 + 15,
+                  repeat: Infinity,
+                  repeatType: 'reverse',
+                }}
+              />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-      {/* Main content with glassmorphic effect */}
-      <div className={`relative z-10 min-h-screen backdrop-blur-sm ${className}`}>
-        <div className="absolute inset-0 bg-white bg-opacity-10 backdrop-blur-lg rounded-xl border border-white border-opacity-20 shadow-xl" />
-        <div className="relative z-20">
-          {children}
-        </div>
+      <div className={`relative z-10 min-h-screen flex items-center justify-center p-4 ${className}`}>
+        <motion.div
+          className="w-full max-w-4xl bg-white/10 backdrop-blur-2xl rounded-2xl border border-white/20 shadow-2xl overflow-hidden"
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+        >
+          <div className="p-8">
+            {children}
+          </div>
+        </motion.div>
       </div>
-
-      {/* Connection lines between services */}
-      <svg className="absolute inset-0 w-full h-full pointer-events-none z-5">
-        <line 
-          x1="25%" y1="25%" 
-          x2="66%" y2="33%" 
-          stroke="rgba(99, 102, 241, 0.3)" 
-          strokeWidth="1" 
-          strokeDasharray="5,5"
-        />
-        <line 
-          x1="66%" y1="33%" 
-          x2="25%" y2="75%" 
-          stroke="rgba(99, 102, 241, 0.3)" 
-          strokeWidth="1" 
-          strokeDasharray="5,5"
-        />
-        <line 
-          x1="25%" y1="75%" 
-          x2="75%" y2="66%" 
-          stroke="rgba(99, 102, 241, 0.3)" 
-          strokeWidth="1" 
-          strokeDasharray="5,5"
-        />
-      </svg>
     </div>
   );
 }

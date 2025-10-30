@@ -1,3 +1,4 @@
+
 /*
 AZORA PROPRIETARY LICENSE
 
@@ -7,6 +8,7 @@ See LICENSE file for details.
 */
 
 import { EventEmitter } from 'events';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { logger } from '../utils/logger';
 import { MemorySystem } from '../agent-tools/memory-system';
 import { LLMReasoningEngine } from '../agent-tools/llm-reasoning';
@@ -111,6 +113,8 @@ export class ElaraCore {
     private llmEngine: LLMReasoningEngine;
     private constitutionalGovernor: ConstitutionalGovernor;
     private eventEmitter: EventEmitter;
+    private generativeAI: GoogleGenerativeAI;
+
 
     // Core AI Engines
     private fractalEngine: FractalDepthEngine;
@@ -126,6 +130,7 @@ export class ElaraCore {
     constructor(config: ElaraConfig) {
         this.config = config;
         this.eventEmitter = new EventEmitter();
+        this.generativeAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY as string);
 
         // Initialize core systems
         this.memorySystem = new MemorySystem();
@@ -442,14 +447,38 @@ export class ElaraCore {
     private async measureOutcomes(): Promise<any> { /* Implementation */ }
     private updatePerformanceMetrics(): void { /* Implementation */ }
     private async handleProcessingError(error: any): Promise<void> { /* Implementation */ }
-    private async generateIntelligentResponse(analysis: any, context: UserContext): Promise<ElaraResponse> {
-        // Implementation placeholder
-        return {
-            response: 'Intelligent response based on analysis',
-            confidence: 0.85,
-            requiresApproval: false,
-            ethicalConcerns: []
-        };
+    private async generateIntelligentResponse(analysis: QueryAnalysis, context: UserContext): Promise<ElaraResponse> {
+        try {
+            const model = this.generativeAI.getGenerativeModel({ model: "gemini-pro" });
+            const prompt = `Azora OS Constitution: ${JSON.stringify(this.config.ethicalFramework, null, 2)}
+
+` +
+                `User Query: ${analysis.intent}
+` +
+                `User Context: ${JSON.stringify(context, null, 2)}
+
+` +
+                `Elara, as the AI CEO of Azora OS, your task is to generate a comprehensive, intelligent, and constitutionally-aligned response. Your response should not only address the user's query but also reflect your strategic thinking and deep understanding of the Azora ecosystem. Provide actionable insights and maintain a professional, authoritative, and visionary tone.`;
+
+            const result = await model.generateContent(prompt);
+            const response = await result.response;
+            const text = response.text();
+
+            return {
+                response: text,
+                confidence: 0.95,
+                requiresApproval: false,
+                ethicalConcerns: []
+            };
+        } catch (error) {
+            logger.error('Error generating intelligent response:', error);
+            return {
+                response: 'I am currently unable to provide a fully intelligent response. My cognitive functions are being optimized. Please try again later.',
+                confidence: 0.5,
+                requiresApproval: true,
+                ethicalConcerns: ['Language model processing error.']
+            };
+        }
     }
     private async executeEmergencyProtocols(): Promise<void> { /* Implementation */ }
     private async publishEmergencyEvent(reason: string): Promise<void> { /* Implementation */ }
@@ -474,7 +503,7 @@ export class FractalDepthEngine {
     async analyzeQuery(query: string, context: UserContext): Promise<QueryAnalysis> {
         // Implement query analysis with fractal depth
         return {
-            intent: 'query',
+            intent: query,
             patterns: [],
             context: context,
             confidence: 0.85
