@@ -6,13 +6,6 @@
     "NODE_ENV": "production",
     "AZORA_DEPLOYMENT_PLATFORM": "vercel"
   },
-  "functions": {
-    "api/**/*.ts": {
-      "runtime": "nodejs18.x",
-      "memory": 2048,
-      "maxDuration": 300
-    }
-  },
   "regions": ["iad1"],
   "rewrites": [
     {
