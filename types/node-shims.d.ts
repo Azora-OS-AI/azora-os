@@ -13,4 +13,22 @@ declare module 'events' {
   export { EventEmitter };
 }
 
+declare module 'child_process' {
+  export const spawn: any;
+}
+
+declare module 'fs' {
+  export const readFileSync: any;
+  export const writeFileSync: any;
+  export const existsSync: any;
+  export const mkdirSync: any;
+}
+
+declare module 'path' {
+  export const join: (...args: any[]) => string;
+}
+
+declare const process: any;
+declare function require(name: string): any;
+
 
