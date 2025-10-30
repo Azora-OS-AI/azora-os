@@ -24,7 +24,7 @@ import TechnologicalInnovationResearcher from './research-agent-1.js';
 import EconomicResearchMarketDynamicsAnalyst from './research-agent-2.js';
 import TechnicalImplementationSpecialist from './implementation-agent-1.js';
 import EconomicBusinessImplementationSpecialist from './implementation-agent-2.js';
-import AIMLSystemsArchitect from './ai-ml-systems-architect';
+import AIMLSystemsArchitect from './ai-ml-systems-architect.ts';
 
 interface ImprovementCycle {
   id: string;
