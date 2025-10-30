@@ -95,7 +95,7 @@ const trustScoreSchema = new mongoose.Schema({
 const CreditApplication = mongoose.model('CreditApplication', creditApplicationSchema);
 const Loan = mongoose.model('Loan', loanSchema);
 const Repayment = mongoose.model('Repayment', repaymentSchema);
-const TrustScore = mongoose.model('TrustScore', trustScoreSchema);
+const TrustScoreModel = mongoose.model('TrustScore', trustScoreSchema);
 
 export class CreditService {
   private openai: OpenAI;
@@ -300,7 +300,7 @@ export class CreditService {
    * Calculate or retrieve trust score
    */
   async getTrustScore(userId: string): Promise<any> {
-    let trustScore = await TrustScore.findOne({ userId });
+    let trustScore = await TrustScoreModel.findOne({ userId });
 
     if (!trustScore || (Date.now() - trustScore.lastUpdated.getTime()) > 24 * 60 * 60 * 1000) {
       // Calculate new trust score
@@ -320,7 +320,7 @@ export class CreditService {
         trustScore.lastUpdated = new Date();
         await trustScore.save();
       } else {
-        trustScore = new TrustScore({
+        trustScore = new TrustScoreModel({
           userId,
           overall,
           factors

@@ -1,7 +1,7 @@
 // Additional RPC endpoints for various chains
 // Used by Chainlist.org for extended RPC coverage
 
-export const extraRpcs = {
+const extraRpcs = {
     // Azora Mainnet additional RPCs (if needed in future)
     195: {
         rpcs: [
@@ -15,3 +15,5 @@ export const extraRpcs = {
         ]
     }
 };
+
+module.exports = { extraRpcs };

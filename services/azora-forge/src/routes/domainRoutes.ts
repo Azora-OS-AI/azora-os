@@ -6,7 +6,7 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 See LICENSE file for details.
 */
 
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import DomainListing from '../models/Domain';
 import { customMetrics } from '../middleware/metrics';
 import { registrationRateLimiter } from '../middleware/rateLimiter';
@@ -22,7 +22,7 @@ const router = Router();
 type AuthenticatedRequest = Request;
 
 // Middleware for registration rate limiting
-const registrationRateLimitMiddleware = async (req: AuthenticatedRequest, res: Response, next: Function) => {
+const registrationRateLimitMiddleware = async (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id || req.ip || 'anonymous';
     await registrationRateLimiter.consume(userId);

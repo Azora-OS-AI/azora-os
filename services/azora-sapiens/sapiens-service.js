@@ -1149,7 +1149,7 @@ class AzoraSapiens {
         console.log(`📱 Aegis: Message from ${clientId}:`, data.type);
 
         switch (data.type) {
-            case 'device_locked':
+            case 'device_locked': {
                 // Device successfully locked for exam
                 const exam = Array.from(this.activeExams.values())
                     .find(e => e.userId === clientId && e.aegisStatus === 'authenticated');
@@ -1158,6 +1158,7 @@ class AzoraSapiens {
                     console.log(`📚 Exam ${exam.id} now active with Aegis protection`);
                 }
                 break;
+            }
 
             case 'anomaly_detected':
                 // Handle security violations

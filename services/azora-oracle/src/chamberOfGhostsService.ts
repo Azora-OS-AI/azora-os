@@ -937,6 +937,7 @@ class FutureSimulator {
         regulatoryChanges: {},
         competitorAnalysis: {}
       };
+    // eslint-disable-next-line no-unreachable
     } catch (error) {
       this.logger.warn('Failed to gather external data:', error);
       return {};

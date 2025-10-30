@@ -24,7 +24,7 @@ export const errorHandler = (
   let statusCode = error.statusCode || 500;
   let message = error.message || 'Internal server error';
   let code = error.code || 'INTERNAL_ERROR';
-  let details = error.details;
+  const details = error.details;
 
   // Log the error
   logger.error('Error occurred:', {

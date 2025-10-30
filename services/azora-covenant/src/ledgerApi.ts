@@ -8,6 +8,7 @@ See LICENSE file for details.
 
 import express from 'express';
 import cors from 'cors';
+import crypto from 'crypto';
 
 const router = express.Router();
 
@@ -112,13 +113,11 @@ class LedgerService {
   }
 
   private static calculateStateHash(): string {
-    const crypto = require('crypto');
     const stateData = JSON.stringify(Array.from(this.ledger.entries()).sort());
     return crypto.createHash('sha256').update(stateData).digest('hex');
   }
 
   private static hashEntry(key: string, value: string): string {
-    const crypto = require('crypto');
     const data = JSON.stringify({ key, value, timestamp: Date.now() });
     return crypto.createHash('sha256').update(data).digest('hex');
   }
