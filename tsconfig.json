@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2015",
+    "target": "ES2022",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
@@ -12,51 +12,85 @@
     "noEmit": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "strict": false,
-    "noUncheckedIndexedAccess": false,
-    "exactOptionalPropertyTypes": false,
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "allowImportingTsExtensions": true,
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "noImplicitThis": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "strictNullChecks": true,
+    "strictFunctionTypes": true,
+    "strictBindCallApply": true,
+    "strictPropertyInitialization": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
     "lib": [
-      "ESNext",
+      "ES2022",
       "DOM",
-      "DOM.Iterable"
+      "DOM.Iterable",
+      "WebWorker",
+      "WebAssembly"
     ],
     "types": [
-      "node"
+      "node",
+      "jest",
+      "vitest/globals"
     ],
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./types"
     ],
     "allowJs": true,
     "checkJs": false,
     "baseUrl": ".",
     "paths": {
       "@/*": [
-        "apps/main-app/*",
-        "synapse/shared-ui/*"
-      ]
+        "./ui/*",
+        "./genome/*",
+        "./services/*"
+      ],
+      "@/components/*": ["./ui/components/*"],
+      "@/lib/*": ["./ui/lib/*"],
+      "@/hooks/*": ["./ui/hooks/*"],
+      "@/types/*": ["./types/*"],
+      "@/services/*": ["./services/*"],
+      "@/genome/*": ["./genome/*"]
     },
     "incremental": true,
+    "tsBuildInfoFile": ".tsbuildinfo",
     "plugins": [
       {
         "name": "next"
       }
-    ]
+    ],
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "useDefineForClassFields": true,
+    "verbatimModuleSyntax": true
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "types/**/*.d.ts"
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "services",
-    "synapse",
-    "vite-project",
-    "**/*.css",
-    "apps/main-app/index.css",
-    "*.css",
-    "**/*.js"
-  ]
+    "build",
+    "out",
+    ".next",
+    "coverage",
+    "**/*.min.js",
+    "**/*.bundle.js"
+  ],
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  }
 }
