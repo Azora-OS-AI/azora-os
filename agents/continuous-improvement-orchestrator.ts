@@ -14,13 +14,14 @@
  * 4. Continuous learning and adaptation occurs
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
+import { spawn } from 'child_process';
+import { readFileSync, writeFileSync, existsSync } from 'fs';
 import { join } from 'path';
 import TechnologicalInnovationResearcher from './research-agent-1.js';
 import EconomicResearchMarketDynamicsAnalyst from './research-agent-2.js';
 import TechnicalImplementationSpecialist from './implementation-agent-1.js';
 import EconomicBusinessImplementationSpecialist from './implementation-agent-2.js';
-// AIMLSystemsArchitect will be required dynamically in initializeAgents()
+import AIMLSystemsArchitect from './ai-ml-systems-architect.js';
 
 interface ImprovementCycle {
   id: string;
@@ -84,11 +85,11 @@ interface SystemHealthMetrics {
 }
 
 export class ContinuousImprovementOrchestrator {
-  private researchAgent1!: TechnologicalInnovationResearcher;
-  private researchAgent2!: EconomicResearchMarketDynamicsAnalyst;
-  private implementationAgent1!: TechnicalImplementationSpecialist;
-  private implementationAgent2!: EconomicBusinessImplementationSpecialist;
-  private aiMLArchitect!: any;
+  private researchAgent1: TechnologicalInnovationResearcher;
+  private researchAgent2: EconomicResearchMarketDynamicsAnalyst;
+  private implementationAgent1: TechnicalImplementationSpecialist;
+  private implementationAgent2: EconomicBusinessImplementationSpecialist;
+  private aiMLArchitect: AIMLSystemsArchitect;
 
   private improvementCycles: ImprovementCycle[] = [];
   private systemHealthHistory: SystemHealthMetrics[] = [];
@@ -101,8 +102,8 @@ export class ContinuousImprovementOrchestrator {
 
   // Runtime state
   private isRunning = false;
-  private cycleTimer: ReturnType<typeof setInterval> | null = null;
-  private healthCheckTimer: ReturnType<typeof setInterval> | null = null;
+  private cycleTimer: NodeJS.Timeout | null = null;
+  private healthCheckTimer: NodeJS.Timeout | null = null;
 
   constructor() {
     this.initializeAgents();
@@ -295,7 +296,6 @@ export class ContinuousImprovementOrchestrator {
           return this.implementationAgent2.adjustIncentiveMechanism(impl.domain, {});
         }
       }
-      return null;
     });
 
     const results = await Promise.allSettled(implementationPromises);
@@ -372,13 +372,7 @@ export class ContinuousImprovementOrchestrator {
     this.researchAgent2 = new EconomicResearchMarketDynamicsAnalyst();
     this.implementationAgent1 = new TechnicalImplementationSpecialist();
     this.implementationAgent2 = new EconomicBusinessImplementationSpecialist();
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const mod = require('./ai-ml-systems-architect.js');
-      this.aiMLArchitect = new (mod.default || mod)();
-    } catch {
-      this.aiMLArchitect = {};
-    }
+    this.aiMLArchitect = new AIMLSystemsArchitect();
 
     console.log('✅ All agents initialized');
   }
