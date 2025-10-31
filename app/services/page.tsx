@@ -102,10 +102,40 @@ const services = [
     name: 'Azora Mail',
     tagline: 'Email • Communication • Professional',
     description: 'Professional email infrastructure with AI automation. Replace Gmail with your own branded solution.',
-    logo: '/branding/services/azora-pay-logo.svg', // Will create dedicated logo
+    logo: '/branding/services/azora-pay-logo.svg',
     gradient: 'from-blue-600 to-cyan-600',
     features: ['Custom Domain', 'AI Automation', 'Campaign Management', 'Analytics'],
     link: '/services/mail'
+  },
+  {
+    id: 'education',
+    name: 'Azora Education',
+    tagline: 'Learning • Schools • Universities',
+    description: 'Complete primary and secondary education platform with teacher tools, parent portal, and student tracking.',
+    logo: '/branding/services/azora-education-logo.svg',
+    gradient: 'from-blue-600 to-cyan-600',
+    features: ['K-12 Curriculum', 'Teacher Tools', 'Parent Portal', 'Student Tracking'],
+    link: '/services/education'
+  },
+  {
+    id: 'scriptorium',
+    name: 'Azora Scriptorium',
+    tagline: 'Documentation • Knowledge • Content',
+    description: 'Comprehensive documentation and content management hub for all knowledge in the Azora ecosystem.',
+    logo: '/branding/services/azora-scriptorium-logo.svg',
+    gradient: 'from-purple-600 to-indigo-600',
+    features: ['Documentation Hub', 'Content Creation', 'Knowledge Base', 'Version Control'],
+    link: '/services/scriptorium'
+  },
+  {
+    id: 'workspace',
+    name: 'Azora Workspace',
+    tagline: 'Collaboration • Projects • Teams',
+    description: 'Complete team collaboration platform with project management, chat, file sharing, and workflow automation.',
+    logo: '/branding/services/azora-workspace-logo.svg',
+    gradient: 'from-cyan-600 to-purple-600',
+    features: ['Project Management', 'Team Chat', 'File Sharing', 'Video Conferencing'],
+    link: '/services/workspace'
   }
 ]
 
@@ -149,6 +179,22 @@ const elaraFamily = [
     description: 'Deep reasoning and consciousness simulation. The thinking brain of Azora OS.',
     logo: '/branding/services/elara-mind-logo.svg',
     gradient: 'from-purple-600 via-purple-700 to-indigo-600',
+  },
+  {
+    id: 'elara-heart',
+    name: 'Elara Heart',
+    tagline: 'Emotion • Empathy • Wellbeing',
+    description: 'Emotional intelligence and wellbeing support. Elara understands feelings and cares for mental health.',
+    logo: '/branding/services/elara-heart-logo.svg',
+    gradient: 'from-pink-600 via-rose-600 to-purple-600',
+  },
+  {
+    id: 'elara-dreams',
+    name: 'Elara Dreams',
+    tagline: 'Creativity • Generation • Imagination',
+    description: 'Creative generation engine. Elara creates images, stories, music, and art powered by imagination.',
+    logo: '/branding/services/elara-dreams-logo.svg',
+    gradient: 'from-purple-600 via-indigo-600 to-blue-600',
   }
 ]
 
