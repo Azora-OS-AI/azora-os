@@ -10,15 +10,14 @@ import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   reactStrictMode: true,
-  eslint: {
-    // Enable ESLint during builds for better code quality
-    ignoreDuringBuilds: false,
-  },
   typescript: {
     // Enable TypeScript checking during builds
     ignoreBuildErrors: false,
   },
   experimental: {
+    turbopack: {
+      root: 'C:/Users/Sizwe Ngwenya/Desktop/azora-os',
+    },
     serverActions: {
       enabled: true,
       bodySizeLimit: '2mb',

@@ -13,11 +13,31 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Azora OS - Quantum-Secure Intelligence Ecosystem',
-  description: 'Universal Human Infrastructure Platform. Be Everywhere. Help Everyone. Solve Everything.',
+  title: 'Azora OS - Universal Human Infrastructure',
+  description: "Africa's Quantum-Secure Intelligence Ecosystem. Empowering 1.4 billion Africans across 54 countries.",
   icons: {
-    icon: '/images/icons/azora-os-icon-geometric.svg',
-    apple: '/images/icons/azora-os-icon-geometric.svg',
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: 'any' },
+    ],
+    apple: '/favicon.svg',
+    shortcut: '/favicon.ico',
+  },
+  keywords: ['Azora OS', 'AI', 'Africa', 'Operating System', 'Quantum Security', 'Universal Infrastructure'],
+  authors: [{ name: 'Azora ES (Pty) Ltd' }],
+  creator: 'Azora ES (Pty) Ltd',
+  publisher: 'Azora ES (Pty) Ltd',
+  robots: 'index, follow',
+  openGraph: {
+    type: 'website',
+    title: 'Azora OS - Universal Human Infrastructure',
+    description: "Africa's Quantum-Secure Intelligence Ecosystem",
+    siteName: 'Azora OS',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Azora OS',
+    description: "Africa's Quantum-Secure Intelligence Ecosystem",
   },
 };
 

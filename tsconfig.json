@@ -3,7 +3,7 @@
     "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
-    "jsx": "preserve",
+    "jsx": "react-jsx",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "downlevelIteration": true,
@@ -47,12 +47,27 @@
         "./genome/*",
         "./services/*"
       ],
-      "@/components/*": ["./components/*", "./ui/components/*"],
-      "@/lib/*": ["./lib/*", "./ui/lib/*"],
-      "@/hooks/*": ["./hooks/*", "./ui/hooks/*"],
-      "@/types/*": ["./types/*"],
-      "@/services/*": ["./services/*"],
-      "@/genome/*": ["./genome/*"]
+      "@/components/*": [
+        "./components/*",
+        "./ui/components/*"
+      ],
+      "@/lib/*": [
+        "./lib/*",
+        "./ui/lib/*"
+      ],
+      "@/hooks/*": [
+        "./hooks/*",
+        "./ui/hooks/*"
+      ],
+      "@/types/*": [
+        "./types/*"
+      ],
+      "@/services/*": [
+        "./services/*"
+      ],
+      "@/genome/*": [
+        "./genome/*"
+      ]
     },
     "incremental": true,
     "tsBuildInfoFile": ".tsbuildinfo",
@@ -70,7 +85,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "types/**/*.d.ts"
+    "types/**/*.d.ts",
+    ".next/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules",

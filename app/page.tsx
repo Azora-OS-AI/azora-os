@@ -91,6 +91,9 @@ export default function Home() {
           </div>
           
           <div className="flex items-center space-x-6">
+            <Link href="/services" className="text-gray-300 hover:text-white transition">
+              Services
+            </Link>
             <Link href="#features" className="text-gray-300 hover:text-white transition">
               Features
             </Link>
