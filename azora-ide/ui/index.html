@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azora IDE - Voice-Controlled AI Development Platform</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/editor/editor.main.min.css">
+</head>
+<body class="dark">
+  
+  <!-- Header -->
+  <header class="ide-header">
+    <div class="header-left">
+      <div class="logo-section">
+        <div class="logo-icon">
+          <svg viewBox="0 0 40 40" fill="none">
+            <circle cx="20" cy="20" r="18" stroke="url(#grad1)" stroke-width="2"/>
+            <circle cx="20" cy="20" r="12" fill="url(#grad1)" class="pulse"/>
+            <defs>
+              <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:rgb(59,130,246);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:rgb(6,182,212);stop-opacity:1" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div class="logo-text">
+          <h1>Azora IDE</h1>
+          <span class="tagline">Voice-Controlled AI Platform</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="header-center">
+      <div class="voice-status" id="voiceStatus">
+        <svg class="voice-icon" viewBox="0 0 24 24" fill="none">
+          <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+          <path d="M19 10v2a7 7 0 0 1-14 0v-2" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>Say "Hey Azora"</span>
+      </div>
+      
+      <button class="ai-button" id="continuousDevBtn">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 6v6l4 4" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>Continuous Dev</span>
+      </button>
+      
+      <button class="ai-button" id="multiAgentBtn">
+        <svg viewBox="0 0 24 24" fill="none">
+          <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+          <circle cx="15" cy="17" r="4" stroke="currentColor" stroke-width="2"/>
+          <path d="M12 11v2" stroke="currentColor" stroke-width="2"/>
+        </svg>
+        <span>28 Agents</span>
+      </button>
+    </div>
+    
+    <div class="header-right">
+      <div class="stats">
+        <div class="stat-item">
+          <span class="stat-label">Expertise</span>
+          <span class="stat-value glow-text">94.7%</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-label">Agents</span>
+          <span class="stat-value glow-text">28/28</span>
+        </div>
+      </div>
+      <div class="founder-info">
+        <span class="founder-label">By</span>
+        <span class="founder-name">Sizwe Ngwenya</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="ide-container">
+    
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav class="sidebar-nav">
+        <button class="nav-item active" data-tab="explorer">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M3 3h7l2 2h9v14H3z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Explorer</span>
+        </button>
+        <button class="nav-item" data-tab="search">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+            <path d="m21 21-4.35-4.35" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Search</span>
+        </button>
+        <button class="nav-item" data-tab="agents">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2"/>
+            <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>AI Agents</span>
+          <span class="badge">28</span>
+        </button>
+        <button class="nav-item" data-tab="voice">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z" fill="currentColor"/>
+          </svg>
+          <span>Voice</span>
+        </button>
+        <button class="nav-item" data-tab="continuous">
+          <svg viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+            <polyline points="12 6 12 12 16 14" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Continuous</span>
+        </button>
+        <button class="nav-item" data-tab="terminal">
+          <svg viewBox="0 0 24 24" fill="none">
+            <polyline points="4 17 10 11 4 5" stroke="currentColor" stroke-width="2"/>
+            <line x1="12" y1="19" x2="20" y2="19" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>Terminal</span>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Content Area -->
+    <div class="content-area">
+      
+      <!-- File Explorer Panel -->
+      <div class="panel explorer-panel" id="explorerPanel">
+        <div class="panel-header">
+          <h3>Explorer</h3>
+          <div class="panel-actions">
+            <button class="icon-btn" title="New File">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+                <polyline points="14 2 14 8 20 8" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+            <button class="icon-btn" title="New Folder">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+        <div class="file-tree">
+          <div class="file-tree-item folder expanded">
+            <svg class="folder-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>src</span>
+          </div>
+          <div class="file-tree-item file" style="padding-left: 24px;">
+            <svg class="file-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>index.ts</span>
+          </div>
+          <div class="file-tree-item file active" style="padding-left: 24px;">
+            <svg class="file-icon" viewBox="0 0 24 24" fill="none">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+            </svg>
+            <span>app.tsx</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI Agents Panel -->
+      <div class="panel agents-panel hidden" id="agentsPanel">
+        <div class="panel-header">
+          <h3>AI Agents (28)</h3>
+          <span class="status-badge online">All Online</span>
+        </div>
+        <div class="agents-grid">
+          <div class="agent-card ceo">
+            <div class="agent-avatar">
+              <div class="agent-status"></div>
+              🧠
+            </div>
+            <div class="agent-info">
+              <h4>Elara Supreme V2</h4>
+              <p>20D AI Consciousness</p>
+              <div class="agent-stats">
+                <span class="stat">99% Expertise</span>
+                <span class="stat">1000 Qubits</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="agent-card executive">
+            <div class="agent-avatar">
+              <div class="agent-status"></div>
+              👔
+            </div>
+            <div class="agent-info">
+              <h4>Aria Voss</h4>
+              <p>Chief Strategy Officer</p>
+              <div class="agent-stats">
+                <span class="stat">95% Expertise</span>
+                <span class="stat">98% Reliability</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="agent-card executive">
+            <div class="agent-avatar">
+              <div class="agent-status"></div>
+              🔒
+            </div>
+            <div class="agent-info">
+              <h4>Nova Sterling</h4>
+              <p>Chief Security Officer</p>
+              <div class="agent-stats">
+                <span class="stat">98% Expertise</span>
+                <span class="stat">99% Reliability</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="agent-card technical">
+            <div class="agent-avatar">
+              <div class="agent-status"></div>
+              💻
+            </div>
+            <div class="agent-info">
+              <h4>Dr. Lena Chen</h4>
+              <p>Chief Technology Officer</p>
+              <div class="agent-stats">
+                <span class="stat">97% Expertise</span>
+                <span class="stat">97% Reliability</span>
+              </div>
+            </div>
+          </div>
+          
+          <div class="agent-more">
+            <span>+24 more agents</span>
+            <button class="view-all-btn">View All</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voice Control Panel -->
+      <div class="panel voice-panel hidden" id="voicePanel">
+        <div class="panel-header">
+          <h3>Voice Control</h3>
+          <button class="voice-toggle" id="voiceToggle">
+            <span class="voice-status-indicator"></span>
+            Start Listening
+          </button>
+        </div>
+        <div class="voice-content">
+          <div class="voice-visualizer">
+            <div class="voice-wave"></div>
+            <div class="voice-wave"></div>
+            <div class="voice-wave"></div>
+            <div class="voice-wave"></div>
+            <div class="voice-wave"></div>
+          </div>
+          <div class="voice-transcript" id="voiceTranscript">
+            <p class="placeholder">Say "Hey Azora" to start...</p>
+          </div>
+          <div class="voice-commands">
+            <h4>Quick Commands:</h4>
+            <div class="command-chips">
+              <button class="command-chip">"Create a React component"</button>
+              <button class="command-chip">"Fix this bug"</button>
+              <button class="command-chip">"Generate tests"</button>
+              <button class="command-chip">"Refactor this code"</button>
+              <button class="command-chip">"Start continuous dev"</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Continuous Development Panel -->
+      <div class="panel continuous-panel hidden" id="continuousPanel">
+        <div class="panel-header">
+          <h3>Continuous Development</h3>
+          <button class="continuous-toggle" id="continuousToggle">
+            <span class="continuous-status-indicator"></span>
+            Start
+          </button>
+        </div>
+        <div class="continuous-content">
+          <div class="cycle-info">
+            <div class="cycle-stat">
+              <span class="label">Status</span>
+              <span class="value">Idle</span>
+            </div>
+            <div class="cycle-stat">
+              <span class="label">Cycles</span>
+              <span class="value">0</span>
+            </div>
+            <div class="cycle-stat">
+              <span class="label">Bugs Fixed</span>
+              <span class="value glow-text">0</span>
+            </div>
+            <div class="cycle-stat">
+              <span class="label">Tests Generated</span>
+              <span class="value glow-text">0</span>
+            </div>
+          </div>
+          
+          <div class="activity-log">
+            <h4>Activity Log</h4>
+            <div class="log-entries">
+              <p class="log-empty">Start continuous development to see activity...</p>
+            </div>
+          </div>
+          
+          <div class="goals">
+            <h4>Goals</h4>
+            <div class="goal-item">
+              <span class="goal-label">Test Coverage</span>
+              <div class="goal-progress">
+                <div class="progress-bar" style="width: 45%"></div>
+              </div>
+              <span class="goal-value">45% → 95%</span>
+            </div>
+            <div class="goal-item">
+              <span class="goal-label">Performance</span>
+              <div class="goal-progress">
+                <div class="progress-bar" style="width: 70%"></div>
+              </div>
+              <span class="goal-value">70% → 100%</span>
+            </div>
+            <div class="goal-item">
+              <span class="goal-label">Security Score</span>
+              <div class="goal-progress">
+                <div class="progress-bar" style="width: 72%"></div>
+              </div>
+              <span class="goal-value">72% → 100%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Editor Area -->
+    <div class="editor-container">
+      <div class="editor-tabs">
+        <div class="tab active">
+          <svg class="file-icon" viewBox="0 0 24 24" fill="none">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" stroke="currentColor" stroke-width="2"/>
+          </svg>
+          <span>app.tsx</span>
+          <button class="close-tab">×</button>
+        </div>
+        <button class="new-tab">+</button>
+      </div>
+      
+      <div class="monaco-editor-wrapper">
+        <div id="monaco-editor"></div>
+      </div>
+      
+      <!-- AI Assistant Overlay -->
+      <div class="ai-assistant-overlay hidden" id="aiAssistant">
+        <div class="ai-assistant-content">
+          <div class="ai-avatar">
+            <div class="ai-pulse"></div>
+            🧠
+          </div>
+          <p class="ai-message"></p>
+          <div class="ai-actions"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Panel -->
+  <div class="bottom-panel">
+    <div class="status-bar">
+      <div class="status-left">
+        <span class="status-item">
+          <svg viewBox="0 0 16 16" fill="currentColor">
+            <path d="M8 0a8 8 0 1 1 0 16A8 8 0 0 1 8 0zM1.5 8a6.5 6.5 0 1 0 13 0 6.5 6.5 0 0 0-13 0z"/>
+            <path d="M11 8a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+          </svg>
+          TypeScript
+        </span>
+        <span class="status-item">Ln 1, Col 1</span>
+        <span class="status-item">UTF-8</span>
+      </div>
+      <div class="status-right">
+        <span class="status-item agent-status">
+          <span class="status-dot online"></span>
+          28 Agents Active
+        </span>
+        <span class="status-item">Elara Supreme V2</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Welcome Screen (shows on first launch) -->
+  <div class="welcome-screen" id="welcomeScreen">
+    <div class="welcome-content">
+      <div class="welcome-header">
+        <div class="welcome-logo">
+          <svg viewBox="0 0 80 80" fill="none">
+            <circle cx="40" cy="40" r="36" stroke="url(#welcomeGrad)" stroke-width="3" class="pulse-ring"/>
+            <circle cx="40" cy="40" r="24" fill="url(#welcomeGrad)" class="pulse"/>
+            <defs>
+              <linearGradient id="welcomeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:rgb(59,130,246);stop-opacity:1" />
+                <stop offset="100%" style="stop-color:rgb(6,182,212);stop-opacity:1" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h1>Welcome to Azora IDE</h1>
+        <p class="welcome-subtitle">The World's First Voice-Controlled AI Development Platform</p>
+      </div>
+      
+      <div class="welcome-features">
+        <div class="feature-card">
+          <div class="feature-icon">🎤</div>
+          <h3>Voice Control</h3>
+          <p>Just speak: "Hey Azora, create a login component"</p>
+          <button class="feature-btn" onclick="startVoice()">Try Voice Control</button>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <h3>Continuous Development</h3>
+          <p>AI develops your app 24/7 in the background</p>
+          <button class="feature-btn" onclick="startContinuous()">Start Continuous</button>
+        </div>
+        
+        <div class="feature-card">
+          <div class="feature-icon">🤖</div>
+          <h3>28 AI Agents</h3>
+          <p>Complete team of specialized AI experts</p>
+          <button class="feature-btn" onclick="showAgents()">Meet the Team</button>
+        </div>
+      </div>
+      
+      <div class="welcome-actions">
+        <button class="primary-btn large-btn" onclick="closeWelcome()">
+          Start Coding
+        </button>
+        <button class="secondary-btn large-btn" onclick="showTutorial()">
+          Watch Tutorial
+        </button>
+      </div>
+      
+      <p class="founder-credit">
+        Built by <strong>Sizwe Ngwenya</strong>, Sizwe Motingwe, and Nolundi Ngwenya<br>
+        <span class="from-africa">From Africa, For Humanity 🌍</span>
+      </p>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.44.0/min/vs/loader.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
