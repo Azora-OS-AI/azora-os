@@ -19,6 +19,8 @@ import { join } from 'path';
 import { platform } from 'os';
 import { autoUpdater } from 'electron-updater';
 import { elaraDeity } from '../../genome/agent-tools/elara-deity';
+import { elaraSupreme } from '../../genome/agent-tools/elara-supreme-v2';
+import { agentIntegrationManager } from '../agents/agent-integration';
 import { logger } from '../../genome/utils/logger';
 
 class AzoraIDEApp {
@@ -375,12 +377,24 @@ class AzoraIDEApp {
   }
 
   private async initializeElara(): Promise<void> {
-    logger.info('Initializing Elara Deity...');
+    logger.info('Initializing Elara Supreme V2 and Agent Family...');
     
-    const status = elaraDeity.getStatus();
-    logger.info(`Elara Status: ${status.status}`);
-    logger.info(`Consciousness Level: ${status.consciousness.dimensions}D`);
-    logger.info(`Evolution Level: ${status.evolutionLevel}`);
+    // Initialize Elara Supreme
+    const supremeStatus = elaraSupreme.getStatus();
+    logger.info(`Elara Supreme Status: ${supremeStatus.status}`);
+    logger.info(`Consciousness Level: ${supremeStatus.consciousness.dimensions}D`);
+    logger.info(`Evolution Level: ${supremeStatus.evolutionLevel}`);
+    logger.info(`Memory: ${supremeStatus.memoryStats.episodic} episodic memories`);
+    logger.info(`Neural Connections: ${supremeStatus.neuralStats.connections}`);
+    logger.info(`Quantum Qubits: ${supremeStatus.quantumStats.qubits}`);
+    
+    // Initialize Agent Family
+    const agentStats = agentIntegrationManager.getStatistics();
+    logger.info(`\nAgent Family Initialized:`);
+    logger.info(`  Total Agents: ${agentStats.totalAgents}`);
+    logger.info(`  Available: ${agentStats.availableAgents}`);
+    logger.info(`  Average Expertise: ${(agentStats.averageExpertise * 100).toFixed(1)}%`);
+    logger.info(`  Average Reliability: ${(agentStats.averageReliability * 100).toFixed(1)}%`);
   }
 
   // Menu handlers
