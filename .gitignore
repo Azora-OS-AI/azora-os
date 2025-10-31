@@ -1,198 +1,80 @@
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
-.tox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-.hypothesis/
-.pytest_cache/
-
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-.python-version
-
-# celery beat schedule file
-celerybeat-schedule
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.env.supabase
-.env.local
-.env.production
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
-.spyderproject
-.spyproject
-
-# Rope project settings
-.ropeproject
-
-# mkdocs documentation
-/site
-
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-node_modules
-
-# Next.js build output
-.next/
-.next
-out/
-
-# Nx cache
-.nx/
-.nx/cache
-.nx/workspace-data
-
-# Build artifacts and archives
-*.tar.gz
-*.tgz
-
-# Synapse UI build outputs
-synapse/*/public/
-synapse/*/.next/
-
-# Vercel
-.vercel
+# Azora Genesis OS - Production .gitignore
+# Built by Sizwe Ngwenya | Powered by Elara AI
 
 # Dependencies
 node_modules/
-.pnp
-.pnp.js
+package-lock.json.backup
 
-# Testing
-coverage/
+# Build outputs
+dist/
+dist-installers/
+out/
+build/
+*.iso
+*.dmg
+*.exe
+*.msi
+*.deb
+*.rpm
+*.AppImage
+*.snap
+*.tar.gz
+
+# Logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# Production
-.next/
-out/
-build/
-dist/
+# Runtime
+*.pid
+*.seed
+*.pid.lock
 
-# Environment variables (NEVER COMMIT THESE!)
+# Cache
+.cache/
+cache/
+.npm/
+.eslintcache
+.nx/
+
+# Environment
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.supabase
-.env.production
+.env.*.local
+secrets/
+*.key
+*.pem
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*.sublime-project
-*.sublime-workspace
-
-# OS
+*~
 .DS_Store
-Thumbs.db
-desktop.ini
 
-# Vercel
-.vercel
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
 
-# TypeScript
-*.tsbuildinfo
+# Test
+coverage/
+.nyc_output/
 
-# Hardhat
-cache/
-artifacts/
-typechain-types/
-
-# Local test files
-test-*.cjs
-*.local.ts
-*.local.js
-
-# Temp files
+# Temp
 tmp/
 temp/
 *.tmp
 
-.vercel
-<<<<<<< HEAD
-=======
->>>>>>> clean-branch
+# OS
+Thumbs.db
+desktop.ini
 
-.vercel
->>>>>>> a568f078 (Clean package.json and complete Azora OS deployment preparation)
+# Build artifacts
+terminals/
