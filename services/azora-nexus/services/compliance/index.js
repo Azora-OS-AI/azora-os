@@ -34,7 +34,6 @@ const httpRequestsTotal = new promClient.Counter({
   registers: [register],
 })
 
-
 app.use(helmet())
 app.use(cors({ origin: process.env.CORS_ORIGIN || '*', credentials: true }))
 const limiter = rateLimit({
@@ -59,11 +58,6 @@ const logger = {
     console.error(`[${timestamp}] [ERROR] ${msg}`, Object.keys(meta).length > 0 ? meta : '')
   },
 }
-
-app.use((req, res, next) => {
-  logger.info(`${req.method} ${req.path}`, { ip: req.ip, userAgent: req.get('user-agent') })
-  next()
-})
 
 // Request logging middleware
 app.use((req, res, next) => {

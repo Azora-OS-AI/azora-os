@@ -11,6 +11,8 @@ const helmet = require('helmet')
 const cors = require('cors')
 const rateLimit = require('express-rate-limit')
 const promClient = require('prom-client')
+const swaggerJsdoc = require('swagger-jsdoc')
+const swaggerUi = require('swagger-ui-express')
 
 const app = express()
 
@@ -90,6 +92,37 @@ app.use((req, res, next) => {
   })
   next()
 })
+
+// Swagger/OpenAPI documentation
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.0',
+    info: {
+      title: 'Azora Nexus Wallet Service API',
+      version: '1.0.0',
+      description: 'API documentation for wallet service',
+    },
+    servers: [
+      {
+        url: `http://localhost:${process.env.PORT || 4100}`,
+        description: 'Development server',
+      },
+    ],
+    components: {
+      securitySchemes: {
+        bearerAuth: {
+          type: 'http',
+          scheme: 'bearer',
+          bearerFormat: 'JWT',
+        },
+      },
+    },
+  },
+  apis: ['./index.js'],
+}
+
+const swaggerSpec = swaggerJsdoc(swaggerOptions)
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec))
 
 // Prometheus metrics endpoint
 app.get('/metrics', async (req, res) => {
