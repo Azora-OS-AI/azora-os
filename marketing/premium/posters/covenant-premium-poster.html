@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azora Covenant - Blockchain & Ledger</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #1A1A1A;
+      color: #F5F5F5;
+      overflow: hidden;
+      width: 1920px;
+      height: 1080px;
+    }
+    
+    .poster {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      background: linear-gradient(135deg, #1A1A1A 0%, #6C5CE715 50%, #1A1A1A 100%);
+      overflow: hidden;
+    }
+    
+    /* Animated Quantum Grid Background */
+    .quantum-grid {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        linear-gradient(#00D9FF20 1px, transparent 1px),
+        linear-gradient(90deg, #00D9FF20 1px, transparent 1px);
+      background-size: 80px 80px;
+      animation: gridMove 20s linear infinite;
+      opacity: 0.3;
+    }
+    
+    @keyframes gridMove {
+      0% { transform: translate(0, 0); }
+      100% { transform: translate(80px, 80px); }
+    }
+    
+    /* Floating Particles */
+    .particles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #00D9FF;
+      border-radius: 50%;
+      opacity: 0.6;
+      animation: float 15s infinite ease-in-out;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+      10% { opacity: 0.6; }
+      90% { opacity: 0.6; }
+      50% { transform: translateY(-100px) translateX(50px); opacity: 1; }
+    }
+    
+    .content {
+      position: relative;
+      z-index: 10;
+      padding: 120px 100px;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+    }
+    
+    .brand-badge {
+      position: absolute;
+      top: 60px;
+      right: 80px;
+      font-size: 24px;
+      font-weight: 700;
+      color: #00D9FF;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+    }
+    
+    .service-name {
+      font-size: 140px;
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #6C5CE7, #00D9FF);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 80px #6C5CE740;
+      letter-spacing: -4px;
+    }
+    
+    .tagline {
+      font-size: 56px;
+      font-weight: 700;
+      color: #00D9FF;
+      margin-bottom: 50px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    
+    .description {
+      font-size: 36px;
+      line-height: 1.6;
+      color: #F5F5F5CC;
+      margin-bottom: 40px;
+      max-width: 1000px;
+      font-weight: 400;
+    }
+    
+    .vision {
+      font-size: 32px;
+      font-weight: 600;
+      color: #00D9FF;
+      font-style: italic;
+      margin-top: 60px;
+      padding-left: 40px;
+      border-left: 4px solid #00D9FF;
+      max-width: 900px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 40px;
+      margin-top: 80px;
+      width: 100%;
+      max-width: 1400px;
+    }
+    
+    .feature-card {
+      padding: 40px;
+      background: #6C5CE715;
+      border: 2px solid #00D9FF40;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      transition: transform 0.3s ease, border-color 0.3s ease;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-5px);
+      border-color: #00D9FF;
+    }
+    
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+    
+    .feature-title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #00D9FF;
+      margin-bottom: 10px;
+    }
+    
+    .feature-desc {
+      font-size: 18px;
+      color: #F5F5F5AA;
+      line-height: 1.5;
+    }
+    
+    .footer {
+      position: absolute;
+      bottom: 60px;
+      left: 100px;
+      right: 100px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 24px;
+      color: #F5F5F580;
+    }
+    
+    .tagline-line {
+      font-size: 32px;
+      font-weight: 600;
+      color: #00D9FF;
+      letter-spacing: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <div class="quantum-grid"></div>
+    
+    <div class="particles">
+      <div class="particle" style="left: 14.12539961966688%; top: 7.534823883085551%; animation-delay: 11.321904591850528s;"></div><div class="particle" style="left: 74.49551135162804%; top: 92.55872459547302%; animation-delay: 6.552896333597565s;"></div><div class="particle" style="left: 40.84061289473695%; top: 39.90086771048797%; animation-delay: 2.1724268868465693s;"></div><div class="particle" style="left: 95.3551258509566%; top: 86.728883490714%; animation-delay: 9.00017327298938s;"></div><div class="particle" style="left: 75.87117579063516%; top: 65.35426363953465%; animation-delay: 8.518579519034851s;"></div><div class="particle" style="left: 97.31522570586344%; top: 97.06614689199375%; animation-delay: 6.392008822590853s;"></div><div class="particle" style="left: 97.21174751005289%; top: 30.504976020230433%; animation-delay: 4.6015834268052105s;"></div><div class="particle" style="left: 81.80678868444014%; top: 50.87396045436752%; animation-delay: 6.120045002105781s;"></div><div class="particle" style="left: 53.527920100597505%; top: 3.98732327443978%; animation-delay: 7.203898386627699s;"></div><div class="particle" style="left: 88.40916839335723%; top: 65.60687714295044%; animation-delay: 8.71680170892793s;"></div><div class="particle" style="left: 8.463765988312222%; top: 28.796002680865307%; animation-delay: 11.115932252746248s;"></div><div class="particle" style="left: 97.2648269028471%; top: 45.312347575691916%; animation-delay: 11.094330332753888s;"></div><div class="particle" style="left: 58.94353800929635%; top: 28.62241728999768%; animation-delay: 2.9049878069616577s;"></div><div class="particle" style="left: 99.0382733449994%; top: 79.14744645892775%; animation-delay: 13.082293702687345s;"></div><div class="particle" style="left: 18.880631288434756%; top: 78.3367294633083%; animation-delay: 4.555322006680511s;"></div><div class="particle" style="left: 40.23872475206105%; top: 77.58498099326103%; animation-delay: 14.603267931258051s;"></div><div class="particle" style="left: 52.29183111684388%; top: 11.936311536184485%; animation-delay: 4.419729376019431s;"></div><div class="particle" style="left: 37.031603380024734%; top: 22.20877620742041%; animation-delay: 4.796972068410716s;"></div><div class="particle" style="left: 96.36996536024014%; top: 87.4969538572459%; animation-delay: 12.503271076072192s;"></div><div class="particle" style="left: 84.17343934533916%; top: 24.136212459701056%; animation-delay: 0.3648518156239733s;"></div>
+    </div>
+    
+    <div class="brand-badge">AZORA OS</div>
+    
+    <div class="content">
+      <h1 class="service-name">Azora Covenant</h1>
+      <div class="tagline">Blockchain & Ledger</div>
+      <div class="description">Proof of Compliance & Smart Contracts</div>
+      
+      <div class="vision">"Trust Through Transparency"</div>
+      
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🚀</div>
+          <div class="feature-title">Enterprise Grade</div>
+          <div class="feature-desc">Built for scale, designed for performance</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-title">Quantum Secure</div>
+          <div class="feature-desc">Military-grade encryption and protection</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🌍</div>
+          <div class="feature-title">Planetary Scale</div>
+          <div class="feature-desc">Deploy anywhere, connect everywhere</div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      <div class="tagline-line">Be Everywhere. Help Everyone. Solve Everything.</div>
+      <div>azora.world</div>
+    </div>
+  </div>
+</body>
+</html>

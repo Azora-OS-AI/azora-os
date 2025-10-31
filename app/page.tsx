@@ -22,6 +22,8 @@ import {
   ShoppingCart,
   CreditCard
 } from 'lucide-react';
+import { Logo } from '@/components/logo';
+import { ServicesShowcase } from '@/components/services-showcase';
 
 export default function Home() {
   const features = [
@@ -83,8 +85,8 @@ export default function Home() {
         <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))]"></div>
         
         <nav className="relative z-10 flex items-center justify-between p-6 lg:px-8">
-          <div className="flex items-center space-x-2">
-            <Sparkles className="w-8 h-8 text-purple-400" />
+          <div className="flex items-center space-x-3">
+            <Logo service="azora-os" style="geometric" size="small" width={40} height={40} priority />
             <span className="text-2xl font-bold text-white">Azora OS</span>
           </div>
           
@@ -214,6 +216,9 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Services Showcase */}
+      <ServicesShowcase />
+
       {/* CTA Section */}
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-8 py-20">
         <motion.div
@@ -245,7 +250,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center space-x-2 mb-4">
-                <Sparkles className="w-6 h-6 text-purple-400" />
+                <Logo service="azora-os" style="geometric" size="icon" width={24} height={24} />
                 <span className="text-xl font-bold text-white">Azora OS</span>
               </div>
               <p className="text-gray-400">

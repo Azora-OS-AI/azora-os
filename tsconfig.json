@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
+    "target": "ES2024",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "jsx": "preserve",
@@ -13,8 +13,6 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
     "allowImportingTsExtensions": true,
     "noImplicitAny": true,
     "noImplicitReturns": true,
@@ -30,14 +28,10 @@
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
     "lib": [
-      "ES2022",
+      "ES2024",
       "DOM",
       "DOM.Iterable",
       "WebWorker.ImportScripts"
-    ],
-    "types": [
-      "node",
-      "jest"
     ],
     "typeRoots": [
       "./node_modules/@types",
@@ -48,13 +42,14 @@
     "baseUrl": ".",
     "paths": {
       "@/*": [
+        "./*",
         "./ui/*",
         "./genome/*",
         "./services/*"
       ],
-      "@/components/*": ["./ui/components/*"],
-      "@/lib/*": ["./ui/lib/*"],
-      "@/hooks/*": ["./ui/hooks/*"],
+      "@/components/*": ["./components/*", "./ui/components/*"],
+      "@/lib/*": ["./lib/*", "./ui/lib/*"],
+      "@/hooks/*": ["./hooks/*", "./ui/hooks/*"],
       "@/types/*": ["./types/*"],
       "@/services/*": ["./services/*"],
       "@/genome/*": ["./genome/*"]

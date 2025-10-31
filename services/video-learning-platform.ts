@@ -8,7 +8,7 @@ See LICENSE file for details.
 
 /**
  * VIDEO LEARNING PLATFORM
- * 
+ *
  * Optimized for African conditions:
  * - Adaptive video quality (240p-1080p)
  * - Offline download capability
@@ -18,6 +18,7 @@ See LICENSE file for details.
  */
 
 import { EventEmitter } from 'events'
+import { log } from '../lib/logger.js'
 import crypto from 'crypto'
 import { supabase, UserDB } from './supabase-client.js'
 
@@ -56,7 +57,7 @@ export class VideoLearningPlatform extends EventEmitter {
   constructor() {
     super()
     this.initializeLessons()
-    console.log('🎥 Video Learning Platform initialized (Supabase-ready)')
+    log.info('Video Learning Platform initialized', { supabaseReady: true })
   }
 
   /**
@@ -121,7 +122,7 @@ export class VideoLearningPlatform extends EventEmitter {
    */
   getLessons(subject?: string, grade?: string): VideoLesson[] {
     let lessons = Array.from(this.lessons.values())
-    
+
     if (subject) {
       lessons = lessons.filter(l => l.subject === subject)
     }
@@ -153,13 +154,14 @@ export class VideoLearningPlatform extends EventEmitter {
     }
 
     const adjustedSize = lesson.fileSize * qualitySizes[quality]
-    
-    console.log(`\n📥 DOWNLOADING VIDEO FOR OFFLINE`)
-    console.log(`   Title: ${lesson.title}`)
-    console.log(`   Quality: ${quality}`)
-    console.log(`   Size: ${adjustedSize.toFixed(1)}MB`)
-    console.log(`   Duration: ${Math.floor(lesson.duration / 60)} minutes`)
-    console.log(`   💡 Watch without internet after download`)
+
+    log.info('Downloading video for offline', {
+      title: lesson.title,
+      quality,
+      sizeMB: adjustedSize.toFixed(1),
+      durationMinutes: Math.floor(lesson.duration / 60),
+      lessonId: lesson.id,
+    })
 
     lesson.downloaded = true
     lesson.quality = quality
@@ -200,9 +202,13 @@ export class VideoLearningPlatform extends EventEmitter {
 
     this.streams.push(stream)
 
-    console.log(`\n▶️  WATCHING: ${lesson.title}`)
-    console.log(`   Quality: Auto-adjusted to ${quality} (${connectionSpeed} connection)`)
-    console.log(`   Earn ${lesson.azrReward} AZR upon completion`)
+    log.info('Watching video lesson', {
+      title: lesson.title,
+      quality,
+      connectionSpeed,
+      azrReward: lesson.azrReward,
+      lessonId: lesson.id,
+    })
 
     this.emit('video-started', stream)
     return stream
@@ -239,7 +245,7 @@ export class VideoLearningPlatform extends EventEmitter {
     try {
       const user = await UserDB.getById(userId)
       await UserDB.updateEarnings(userId, user.total_earned + totalReward)
-      
+
       // Store completion in metadata
       const completedVideos = user.metadata.completed_videos || []
       await UserDB.updateMetadata(userId, {
@@ -247,16 +253,18 @@ export class VideoLearningPlatform extends EventEmitter {
         completed_videos: [...completedVideos, { lessonId, quizScore, reward: totalReward, date: new Date() }]
       })
     } catch (error) {
-      console.warn('⚠️  Database update failed, rewards tracked in-memory')
+      log.warn('Database update failed, rewards tracked in-memory', { lessonId: lesson.id, userId })
     }
 
-    console.log(`\n✅ VIDEO COMPLETED: ${lesson.title}`)
-    console.log(`   Quiz Score: ${quizScore}%`)
-    console.log(`   Base Reward: ${lesson.azrReward} AZR`)
-    if (bonus > 0) {
-      console.log(`   Bonus (High Score): +${bonus} AZR`)
-    }
-    console.log(`   Total Earned: ${totalReward} AZR`)
+    log.info('Video lesson completed', {
+      title: lesson.title,
+      quizScore,
+      baseReward: lesson.azrReward,
+      bonus,
+      totalReward,
+      lessonId: lesson.id,
+      userId,
+    })
 
     this.emit('video-completed', { lesson, quizScore, totalReward })
     return totalReward
@@ -280,7 +288,7 @@ export class VideoLearningPlatform extends EventEmitter {
       completionRate: this.streams.filter(s => s.completed).length / this.streams.length * 100 || 0,
       averageQuizScore: this.streams
         .filter(s => s.quizScore !== undefined)
-        .reduce((sum, s) => sum + (s.quizScore || 0), 0) / 
+        .reduce((sum, s) => sum + (s.quizScore || 0), 0) /
         this.streams.filter(s => s.quizScore !== undefined).length || 0,
       totalDataSaved: Array.from(this.downloadedContent.values())
         .reduce((sum, l) => sum + l.fileSize, 0)

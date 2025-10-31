@@ -8,8 +8,8 @@ See LICENSE file for details.
 
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
-import { FileCode, Save, Play, Download } from 'lucide-react';
+import { Download, FileCode, Play, Save } from 'lucide-react';
+import { useState } from 'react';
 
 interface CodeEditorProps {
   activeFile: string | null;
@@ -30,7 +30,7 @@ function greet(name: string) {
 // - Testing
 // - Documentation
 
-console.log(greet('Developer'));
+// Example code will be shown in editor
 `);
 
   return (
@@ -43,7 +43,7 @@ console.log(greet('Developer'));
             {activeFile || 'welcome.ts'}
           </span>
         </div>
-        
+
         <div className="flex items-center space-x-2">
           <button className="p-2 hover:bg-accent rounded" title="Save">
             <Save className="w-4 h-4" />

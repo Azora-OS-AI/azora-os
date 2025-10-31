@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+coverage/
+
+# Generated files
+*.min.js
+*.bundle.js
+*.tsbuildinfo
+
+# Lock files
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Config files
+*.config.js
+*.config.ts
+tsconfig.json
+
+# Documentation
+*.md
+
+# Data files
+*.json
+*.db
+*.sqlite
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+

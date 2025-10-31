@@ -1,0 +1,58 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="grad-covenant" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0369a1;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#38bdf8;stop-opacity:1" />
+    </linearGradient>
+    <filter id="glow-covenant">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background Circle -->
+  <circle cx="64" cy="64" r="44"
+          fill="url(#grad-covenant)"
+          opacity="0.9"
+          filter="url(#glow-covenant)"/>
+
+  <!-- Neural Network Pattern -->
+  <g opacity="0.3">
+    <circle cx="64" cy="42.666666666666664" r="8" fill="#ffffff"/>
+    <circle cx="42.666666666666664" cy="64" r="8" fill="#ffffff"/>
+    <circle cx="85.33333333333333" cy="64" r="8" fill="#ffffff"/>
+    <circle cx="64" cy="85.33333333333333" r="8" fill="#ffffff"/>
+
+    <line x1="64" y1="42.666666666666664" x2="42.666666666666664" y2="64"
+          stroke="#ffffff" stroke-width="2"/>
+    <line x1="64" y1="42.666666666666664" x2="85.33333333333333" y2="64"
+          stroke="#ffffff" stroke-width="2"/>
+    <line x1="42.666666666666664" y1="64" x2="64" y2="85.33333333333333"
+          stroke="#ffffff" stroke-width="2"/>
+    <line x1="85.33333333333333" y1="64" x2="64" y2="85.33333333333333"
+          stroke="#ffffff" stroke-width="2"/>
+  </g>
+
+  <!-- Icon/Emoji (centered) -->
+  <text x="64" y="76.8"
+        font-size="42.666666666666664"
+        text-anchor="middle"
+        dominant-baseline="middle"
+        font-family="Arial, sans-serif"
+        fill="#ffffff">
+    ⚖️
+  </text>
+
+  <!-- Service Name -->
+  <text x="64" y="106.66666666666667"
+        font-size="10.666666666666666"
+        font-weight="bold"
+        text-anchor="middle"
+        fill="#ffffff"
+        font-family="Inter, system-ui, sans-serif">
+    AZORA COVENANT
+  </text>
+</svg>

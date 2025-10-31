@@ -5,6 +5,7 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 
 import express from 'express';
 import { virtualCardService } from './index';
+import { log } from '../../lib/logger.js';
 
 const app = express();
 app.use(express.json());
@@ -59,7 +60,7 @@ app.post('/api/virtual-cards/:id/limit', (req, res) => {
 
 const port = Number(process.env.CARDS_PORT || 4515);
 app.listen(port, () => {
-  console.log(`Virtual Cards service listening on http://localhost:${port}`);
+  log.info('Virtual Cards service started', { port, url: `http://localhost:${port}` });
 });
 
 

@@ -14,16 +14,52 @@ import cors from 'cors';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import apiRoutes from './api.js'
+import apiRoutes from './routes/api.js';
+import { getEnv } from './lib/env-validation.js';
+import { log } from './lib/logger.js';
+import { getHelmetConfig, getCorsConfig, createRateLimiter, securityHeaders, requestLogger } from './lib/middleware/security.js';
+import swaggerUi from 'swagger-ui-express';
+import { swaggerSpec } from './lib/swagger.config.js';
+
+// Validate environment variables
+try {
+  getEnv();
+} catch (error) {
+  log.error('Environment validation failed:', { error: error instanceof Error ? error.message : String(error) });
+  if (process.env.NODE_ENV === 'production') {
+    process.exit(1);
+  }
+}
 
 // Use var instead of let to avoid redeclaration errors
 var app = express()
-var PORT = process.env.PORT || 3001
+var PORT = getEnv().PORT || 3001
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Security Middleware
+app.use(getHelmetConfig());
+app.use(getCorsConfig());
+app.use(securityHeaders);
+app.use(requestLogger);
+
+// Rate limiting
+app.use('/api', createRateLimiter({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // 100 requests per window
+}));
+
+// Standard Middleware
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// API Documentation
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCss: '.swagger-ui .topbar { display: none }',
+  customSiteTitle: 'Azora OS API Documentation',
+}));
+
+// API Routes
+app.use('/api', apiRoutes);
 
 // Database file path
 const DB_PATH = path.join(__dirname, 'db.json');
@@ -34,7 +70,7 @@ async function readDB() {
     const data = await fs.readFile(DB_PATH, 'utf8');
     return JSON.parse(data);
   } catch (error) {
-    console.error('Error reading DB:', error);
+    log.error('Error reading DB:', { error: error.message, path: DB_PATH });
     return { recommendations: [] };
   }
 }
@@ -44,13 +80,13 @@ async function writeDB(data) {
   try {
     await fs.writeFile(DB_PATH, JSON.stringify(data, null, 2));
   } catch (error) {
-    console.error('Error writing DB:', error);
+    log.error('Error writing DB:', { error: error.message, path: DB_PATH });
   }
 }
 
 // Fake Oracle service: Get weather data
 function fakeOracle(farmId) {
-  console.log(`🛰️ ORACLE: Fetching weather for farm ${farmId}`);
+  log.info('ORACLE: Fetching weather', { farmId });
   return {
     temperature: 25 + Math.random() * 10,
     humidity: 60 + Math.random() * 20,
@@ -61,7 +97,7 @@ function fakeOracle(farmId) {
 
 // Fake Nexus service: Generate recommendation
 function fakeNexus(pestReport, weatherData) {
-  console.log(`🔍 NEXUS: Analyzing pest ${pestReport.pest} with weather conditions`);
+  log.info('NEXUS: Analyzing pest', { pest: pestReport.pest });
 
   // Simple logic based on pest and weather
   let recommendation = '';
@@ -96,7 +132,7 @@ function fakeNexus(pestReport, weatherData) {
 
 // Fake Covenant service: Stamp recommendation
 function fakeCovenant(recommendation) {
-  console.log(`📜 COVENANT: Stamping recommendation with blockchain hash`);
+  log.info('COVENANT: Stamping recommendation with blockchain hash');
   const hash = '0x' + Math.random().toString(16).substr(2, 64);
   return {
     ...recommendation,
@@ -111,10 +147,10 @@ app.post('/api/report-pest', async (req, res) => {
   try {
     const { farmId, pest, description } = req.body;
 
-    console.log(`🐛 PEST REPORT RECEIVED: Farm ${farmId}, Pest: ${pest}`);
+    log.info('PEST REPORT RECEIVED', { farmId, pest });
 
     // Step 1: Log the report (Genome simulation)
-    console.log('📊 GENOME: Logging pest report event');
+    log.info('GENOME: Logging pest report event');
 
     // Step 2: Call Oracle for weather data
     const weatherData = fakeOracle(farmId);
@@ -141,7 +177,7 @@ app.post('/api/report-pest', async (req, res) => {
     db.recommendations.push(newRecommendation);
     await writeDB(db);
 
-    console.log(`✅ RECOMMENDATION GENERATED: ${stampedRecommendation.action}`);
+    log.info('RECOMMENDATION GENERATED', { action: stampedRecommendation.action, recommendationId: newRecommendation.id });
 
     // Return success response
     res.json({
@@ -152,7 +188,7 @@ app.post('/api/report-pest', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error processing pest report:', error);
+    log.error('Error processing pest report:', { error: error instanceof Error ? error.message : String(error) });
     res.status(500).json({
       success: false,
       error: 'Failed to process pest report'
@@ -174,7 +210,7 @@ app.get('/api/recommendations/:farmId', async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching recommendations:', error);
+    log.error('Error fetching recommendations:', { error: error instanceof Error ? error.message : String(error), farmId: req.params.farmId });
     res.status(500).json({
       success: false,
       error: 'Failed to fetch recommendations'
@@ -293,17 +329,29 @@ app.get('/api/health', (req, res) => {
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`
+  log.info('AZORA OS API SERVER STARTED', {
+    port: PORT,
+    environment: process.env.NODE_ENV || 'development',
+    apiUrl: `http://localhost:${PORT}`,
+    healthCheck: `http://localhost:${PORT}/api/health`,
+    apiDocs: `http://localhost:${PORT}/api-docs`,
+  });
+  
+  // Pretty banner for console (development only)
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`
 ╔══════════════════════════════════════════════════════════════╗
 ║          🚀 AZORA OS API SERVER STARTED                      ║
 ╠══════════════════════════════════════════════════════════════╣
 ║  Server: http://localhost:${PORT}                           
 ║  Status: Running                                             
 ║  Health: GET http://localhost:${PORT}/api/health          
+║  API Docs: http://localhost:${PORT}/api-docs               
 ║                                                              ║
 ║  Constitutional AI Governance: ACTIVE                        ║
 ║  Zero-Trust Architecture: ENABLED                            ║
 ║  Compliance Monitoring: OPERATIONAL                          ║
 ╚══════════════════════════════════════════════════════════════╝
-  `)
+    `);
+  }
 });

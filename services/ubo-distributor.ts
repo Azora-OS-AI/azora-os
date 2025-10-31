@@ -8,13 +8,14 @@ See LICENSE file for details.
 
 /**
  * UBO MASS DISTRIBUTOR
- * 
+ *
  * Batch payment system for distributing AZR to millions of students
  * Revolutionary wealth distribution at scale
  */
 
 import { EventEmitter } from 'events'
 import crypto from 'crypto'
+import { log } from '../lib/logger.js'
 
 export interface Student {
   id: string
@@ -61,10 +62,11 @@ export class UBODistributor extends EventEmitter {
     students: Student[],
     amountPerStudent: number = this.PAYMENT_PER_STUDENT
   ): Promise<BatchPayment[]> {
-    console.log(`\n🚀 INITIATING MASS UBO DISTRIBUTION`)
-    console.log(`   Students: ${students.length.toLocaleString()}`)
-    console.log(`   Amount per student: ${amountPerStudent} AZR`)
-    console.log(`   Total to distribute: ${(students.length * amountPerStudent).toLocaleString()} AZR\n`)
+    log.info('INITIATING MASS UBO DISTRIBUTION', {
+      students: students.length,
+      amountPerStudent,
+      totalAmount: students.length * amountPerStudent,
+    })
 
     const batches: BatchPayment[] = []
     const totalBatches = Math.ceil(students.length / this.BATCH_SIZE)
@@ -74,7 +76,11 @@ export class UBODistributor extends EventEmitter {
       const end = Math.min(start + this.BATCH_SIZE, students.length)
       const batch = students.slice(start, end)
 
-      console.log(`📦 Processing Batch ${i + 1}/${totalBatches} (${batch.length} students)...`)
+      log.info('Processing UBO batch', {
+        batch: i + 1,
+        totalBatches,
+        students: batch.length,
+      })
 
       const payment = await this.processBatch(batch, amountPerStudent, i + 1, totalBatches)
       batches.push(payment)
@@ -83,12 +89,19 @@ export class UBODistributor extends EventEmitter {
 
       // Progress update
       const progress = ((i + 1) / totalBatches * 100).toFixed(1)
-      console.log(`   ✅ Batch ${i + 1} complete | Progress: ${progress}%`)
+      log.info('UBO batch complete', {
+        batch: i + 1,
+        progress: `${progress}%`,
+        studentsProcessed: batch.length,
+      })
     }
 
-    console.log(`\n💰 DISTRIBUTION COMPLETE`)
-    console.log(`   Total distributed: ${this.totalDistributed.toLocaleString()} AZR`)
-    console.log(`   Successful payments: ${batches.reduce((sum, b) => sum + b.studentCount, 0).toLocaleString()}`)
+    const successfulPayments = batches.reduce((sum, b) => sum + b.studentCount, 0)
+    log.info('UBO DISTRIBUTION COMPLETE', {
+      totalDistributed: this.totalDistributed,
+      successfulPayments,
+      totalBatches: batches.length,
+    })
 
     return batches
   }
@@ -134,7 +147,7 @@ export class UBODistributor extends EventEmitter {
    */
   private async createTransaction(student: Student, amount: number): Promise<Transaction> {
     const txId = crypto.randomUUID()
-    
+
     // Simulate blockchain confirmation
     const blockchainHash = `0x${crypto.randomBytes(32).toString('hex')}`
 
