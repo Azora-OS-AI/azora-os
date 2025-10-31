@@ -23,6 +23,31 @@
 
 [Learn more about our founders →](./FOUNDERS.md)
 
+## 🎤 Revolutionary IDE Features
+
+### Voice Control
+**World's first fully voice-controlled IDE!**
+- Natural language commands: "Hey Azora, create a login component"
+- Hands-free coding while reviewing
+- Multi-agent responses
+- 20+ voice commands
+
+**Start**: `Ctrl+Shift+V` or say "Hey Azora"
+
+### Continuous Development Mode (Pro)
+**AI develops your app 24/7!**
+- Autonomous bug fixing
+- Background performance optimization  
+- Automatic test generation
+- Security hardening
+- 28 agents working while you sleep
+
+**Start**: `Ctrl+Shift+C`
+
+[→ Complete Voice & Continuous Dev Guide](./azora-ide/VOICE_CONTROL.md)
+
+---
+
 ## Overview
 Azora OS is evolving from African software infrastructure to **Universal Human Infrastructure** - an omnipresent intelligence ecosystem that permeates every aspect of human existence. From education and finance to healthcare, government automation, scientific research, and ambient intelligence in everyday devices, Azora becomes the invisible infrastructure of human civilization.
 
