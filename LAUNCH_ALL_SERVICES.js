@@ -6,18 +6,58 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 MASTER LAUNCHER - Launch ALL Azora OS Services
 */
 
-const { spawn } = require('child_process')
-const path = require('path')
-const fs = require('fs')
+import { spawn } from 'child_process'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Main Azora Services
 const mainServices = [
-  { name: 'Azora Sapiens', port: 4200, dir: './services/azora-sapiens', file: 'sapiens-service.js', desc: 'Education Platform' },
-  { name: 'Azora Forge', port: 12345, dir: './services/azora-forge', file: 'index.js', desc: 'Marketplace' },
-  { name: 'Azora Covenant', port: 4099, dir: './services/azora-covenant', file: 'server.js', desc: 'Blockchain & Contracts' },
-  { name: 'Azora Mint', port: 4300, dir: './services/azora-mint', file: 'src/index.ts', desc: 'Financial Services' },
-  { name: 'Azora Aegis', port: 4000, dir: './services/azora-aegis', file: 'index.js', desc: 'Security & Compliance' },
-  { name: 'Azora Nexus', port: 3006, dir: './services/azora-nexus', file: 'src/index.ts', desc: 'AI Recommendations' },
+  {
+    name: 'Azora Sapiens',
+    port: 4200,
+    dir: './services/azora-sapiens',
+    file: 'sapiens-service.js',
+    desc: 'Education Platform',
+  },
+  {
+    name: 'Azora Forge',
+    port: 12345,
+    dir: './services/azora-forge',
+    file: 'index.js',
+    desc: 'Marketplace',
+  },
+  {
+    name: 'Azora Covenant',
+    port: 4099,
+    dir: './services/azora-covenant',
+    file: 'server.js',
+    desc: 'Blockchain & Contracts',
+  },
+  {
+    name: 'Azora Mint',
+    port: 4300,
+    dir: './services/azora-mint',
+    file: 'src/index.ts',
+    desc: 'Financial Services',
+  },
+  {
+    name: 'Azora Aegis',
+    port: 4000,
+    dir: './services/azora-aegis',
+    file: 'index.js',
+    desc: 'Security & Compliance',
+  },
+  {
+    name: 'Azora Nexus',
+    port: 3006,
+    dir: './services/azora-nexus',
+    file: 'src/index.ts',
+    desc: 'AI Recommendations',
+  },
 ]
 
 // Azora Nexus Sub-Services (21 services)
@@ -45,7 +85,10 @@ const nexusServices = [
   { name: 'subscription', port: 4129, dir: './services/azora-nexus/services/subscription' },
 ]
 
-const allServices = [...mainServices, ...nexusServices.map(s => ({ ...s, file: 'index.js', desc: 'Nexus Service' }))]
+const allServices = [
+  ...mainServices,
+  ...nexusServices.map((s) => ({ ...s, file: 'index.js', desc: 'Nexus Service' })),
+]
 
 const processes = new Map()
 let shutdownRequested = false
@@ -99,13 +142,15 @@ function launchService(service) {
       return
     }
 
-    console.log(`🚀 Launching ${service.name}${service.desc ? ' (' + service.desc + ')' : ''} on port ${service.port}...`)
+    console.log(
+      `🚀 Launching ${service.name}${service.desc ? ' (' + service.desc + ')' : ''} on port ${service.port}...`
+    )
 
     const isTypeScript = actualFile.endsWith('.ts')
     const command = isTypeScript ? 'tsx' : 'node'
     const args = isTypeScript ? [actualFile] : [actualFile]
 
-    const process = spawn(command, args, {
+    const childProcess = spawn(command, args, {
       cwd: servicePath,
       env: {
         ...process.env,
@@ -117,22 +162,28 @@ function launchService(service) {
 
     let hasStarted = false
 
-    process.stdout.on('data', (data) => {
+    childProcess.stdout.on('data', (data) => {
       const output = data.toString()
-      if (output.includes('running on') || output.includes('listening') || output.includes('started')) {
+      if (
+        output.includes('running on') ||
+        output.includes('listening') ||
+        output.includes('started')
+      ) {
         if (!hasStarted) {
           hasStarted = true
           console.log(`✅ ${service.name} started on port ${service.port}`)
-          processes.set(service.name, process)
-          resolve(process)
+          processes.set(service.name, childProcess)
+          resolve(childProcess)
         }
       }
     })
 
-    process.stderr.on('data', (data) => {
+    childProcess.stderr.on('data', (data) => {
       const error = data.toString()
       if (error.includes('EADDRINUSE')) {
-        console.log(`⚠️  Port ${service.port} already in use - ${service.name} may already be running`)
+        console.log(
+          `⚠️  Port ${service.port} already in use - ${service.name} may already be running`
+        )
         resolve(null)
       } else if (!error.includes('Warning') && !error.includes('Deprecation')) {
         // Don't spam with warnings
@@ -142,7 +193,7 @@ function launchService(service) {
       }
     })
 
-    process.on('exit', (code) => {
+    childProcess.on('exit', (code) => {
       if (!shutdownRequested && code !== 0) {
         console.error(`❌ ${service.name} exited with code ${code}`)
       }
@@ -218,7 +269,7 @@ async function launchAllServices() {
   console.log(`   Healthy Services: ${healthyCount}/${allServices.length}`)
   console.log(`   Running Processes: ${processes.size}`)
   console.log('\n💡 Main Service Endpoints:')
-  mainServices.forEach(s => {
+  mainServices.forEach((s) => {
     console.log(`   ${s.name.padEnd(20)} http://localhost:${s.port}/health`)
   })
 
@@ -267,4 +318,3 @@ launchAllServices().catch((error) => {
   console.error('❌ Fatal error:', error)
   process.exit(1)
 })
-
