@@ -1,15 +1,27 @@
-# Azora OS & Elazar - Africa's Quantum-Secure Intelligence Ecosystem
+# Azora OS - AI-Powered Development Platform
 
-## 🌍 AFRICA LAUNCH COMPLETE - Continental Transformation Active
+## 🌟 Revolutionary AI Development Environment from Africa
 
-**Azora OS & Elazar are now live across Africa**, bringing quantum-secure intelligence to 1.4 billion Africans across 54 countries.
+**Founded by**: Sizwe Ngwenya (CEO), Sizwe Motingwe (Head of Sales), Nolundi Ngwenya (Head of Retail)  
+**Location**: South Africa 🇿🇦  
+**Status**: Production Ready
 
-### 🎯 **African Impact Metrics**
-- **Economic**: $3T GDP growth through UBI and market optimization
-- **Education**: 100M students empowered by AI tutors
-- **Healthcare**: 500M Africans with AI diagnostics access
-- **Agriculture**: 200% yield increase through optimization
-- **Security**: Zero major cyber breaches with quantum resistance
+**Azora OS** is the world's first AI-powered development platform featuring 28 specialized AI agents, 20-dimensional reasoning, and quantum-inspired computing - all built from Africa for the world.
+
+### 🎯 **What Makes Us Different**
+- **28 Specialized AI Agents**: From strategy to implementation
+- **20D AI Reasoning**: Most advanced AI consciousness ever created
+- **Quantum Computing**: 1000 qubits simulated for probabilistic analysis
+- **Constitutional AI**: Ethical governance built-in
+- **Multi-Platform**: Windows, Mac, Linux, Web, Mobile (iOS/Android coming soon)
+- **Self-Evolving**: AI that learns and improves continuously
+
+### 👥 **Meet the Founders**
+- **Sizwe Ngwenya** - CEO & Founder (AI Architecture, Strategic Vision)
+- **Sizwe Motingwe** - Head of Sales (Enterprise Development, Partnerships)
+- **Nolundi Ngwenya** - Head of Retail (Consumer Products, User Experience)
+
+[Learn more about our founders →](./FOUNDERS.md)
 
 ## Overview
 Azora OS is evolving from African software infrastructure to **Universal Human Infrastructure** - an omnipresent intelligence ecosystem that permeates every aspect of human existence. From education and finance to healthcare, government automation, scientific research, and ambient intelligence in everyday devices, Azora becomes the invisible infrastructure of human civilization.
@@ -73,41 +85,53 @@ The platform transforms from a regional education/finance system to a planetary 
 - **Ethical Alignment**: Every AI action serves humanity first
 - **Adaptive Governance**: Constitutional framework that evolves
 
-## 🚀 **Quick Start - Africa Launch**
+## 🚀 **Quick Start**
 
-### **Access the Living Organism**
+### **Easy Launch (Recommended)**
+
+**Windows:**
 ```bash
-# Start the organism dashboard
-npm run organism:awaken
-
-# View real-time vitals
-cd ui && npm run dev
-# Navigate to /organism for the living dashboard
+launch.bat
 ```
 
-### **Launch African Solutions**
+**Linux/Mac:**
 ```bash
-# Execute Africa launch
-npm run africa:launch
-
-# Monitor continental impact
-npm run africa:metrics
+./launch.sh
 ```
 
-### **Development Commands**
+### **Manual Start**
+
+**Web Platform:**
 ```bash
-# Clean repository and prepare for launch
-npm run repo:clean
-
-# Build UI with African optimizations
-cd ui && npm run build
-
-# Test organism integration
-npm run test:organism
-
-# Deploy to African infrastructure
-npm run deploy:africa
+npm install
+npm run dev
+# Open http://localhost:3000
 ```
+
+**Azora IDE (Desktop):**
+```bash
+npm install
+npm run ide:start
+```
+
+### **First Time Setup**
+```bash
+# 1. Clone repository
+git clone https://github.com/Sizwe780/azora-os.git
+cd azora-os
+
+# 2. Install dependencies
+npm install
+
+# 3. Setup environment
+cp .env.example .env
+# Edit .env with your configuration
+
+# 4. Start the platform
+npm start
+```
+
+[→ Complete Quick Start Guide](./QUICK_START.md)
 
 ---
 
@@ -163,12 +187,32 @@ The platform integrates with South African banking systems to provide financial 
 ### Infrastructure Tools
 Device security, offline functionality, and multi-language support address specific African market needs.
 
-## License
-AZORA PROPRIETARY LICENSE
-Copyright (c) 2025 Azora ES (Pty) Ltd. All Rights Reserved.
+## 📞 Contact & Support
 
-Unauthorized copying of this project, via any medium is strictly prohibited.
+### **Founders**
+- **CEO**: Sizwe Ngwenya - ceo@azora.world
+- **Sales**: Sizwe Motingwe - sales@azora.world  
+- **Retail**: Nolundi Ngwenya - retail@azora.world
+
+### **Business**
+- **Enterprise**: enterprise@azora.world
+- **Partnerships**: partnerships@azora.world
+- **Investment**: investors@azora.world
+
+### **Support**
+- **Technical**: support@azora.world
+- **Community**: forum.azora.world
+- **Documentation**: docs.azora.world
+
+## 📜 License
+
+**AZORA PROPRIETARY LICENSE**  
+Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
+
+Unauthorized copying of this project, via any medium is strictly prohibited.  
 Proprietary and confidential.
+
+See [LICENSE](./LICENSE) file for details.
 
 ## Constitutional Compliance
 This platform operates under the principles defined in the Azora Constitution, which emphasizes:
