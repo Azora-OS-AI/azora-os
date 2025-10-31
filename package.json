@@ -80,7 +80,20 @@
     "deploy:check": "npm run health:check && npm run lint && npm run test:ci && npm run build:all",
     "monitor:integration": "tsx scripts/continuous-integration-monitor.ts",
     "monitor:start": "npm run monitor:integration",
-    "status:integration": "tsx -e \"import { monitor } from './scripts/continuous-integration-monitor.ts'; console.log(JSON.stringify(monitor.getStatus(), null, 2));\""
+    "status:integration": "tsx -e \"import { monitor } from './scripts/continuous-integration-monitor.ts'; console.log(JSON.stringify(monitor.getStatus(), null, 2));\"",
+    "ide:dev": "cd azora-ide && npm run dev",
+    "ide:build": "cd azora-ide && npm run build",
+    "ide:build:windows": "cd azora-ide && npm run build:windows",
+    "ide:build:mac": "cd azora-ide && npm run build:mac",
+    "ide:build:linux": "cd azora-ide && npm run build:linux",
+    "ide:start": "cd azora-ide && npm start",
+    "ide:installer": "cd azora-ide/windows-setup && powershell -ExecutionPolicy Bypass -File build-installer.ps1",
+    "ide:portable": "cd azora-ide/windows-setup && powershell -ExecutionPolicy Bypass -File build-portable.ps1",
+    "repo:scan": "tsx scripts/repository-scanner.ts",
+    "repo:clean:unused": "tsx scripts/clean-unused-files.ts",
+    "repo:clean:deps": "tsx scripts/clean-unused-dependencies.ts",
+    "repo:optimize": "tsx scripts/optimize-repository.ts",
+    "upgrade:all": "tsx scripts/execute-all-upgrades.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
