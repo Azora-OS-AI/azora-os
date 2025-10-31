@@ -188,11 +188,3 @@ test-*.cjs
 tmp/
 temp/
 *.tmp
-
-.vercel
-<<<<<<< HEAD
-=======
->>>>>>> clean-branch
-
-.vercel
->>>>>>> a568f078 (Clean package.json and complete Azora OS deployment preparation)

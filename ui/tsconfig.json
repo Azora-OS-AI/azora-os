@@ -31,19 +31,11 @@
   },
   "include": [
     "**/*.ts",
-<<<<<<< HEAD
-    "**/*.tsx"
-=======
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
->>>>>>> 943bf08e (Fix merge conflicts and project errors)
   ],
   "exclude": [
     "node_modules"
   ]
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> 943bf08e (Fix merge conflicts and project errors)

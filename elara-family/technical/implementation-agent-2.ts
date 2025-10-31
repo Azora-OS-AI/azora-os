@@ -280,7 +280,7 @@ export class ImplementationAgent2 extends BaseAgent {
     logger.info('Modernizing legacy system');
 
     const legacySystem = parameters.system || 'legacy_application';
-    const modernizationStrategy = parameters.strategy || 'incremental_modernization';
+    const strategyPreference = parameters.strategy || 'incremental_modernization';
     const targetArchitecture = parameters.target || 'microservices';
 
     const legacyAnalysis = await this.analyzeLegacySystem(legacySystem);
@@ -292,6 +292,7 @@ export class ImplementationAgent2 extends BaseAgent {
 
     const report: LegacyModernizationReport = {
       legacySystem: legacySystem,
+      strategyPreference: strategyPreference,
       modernizationStrategy: modernizationStrategy,
       targetArchitecture: targetArchitecture,
       legacyAnalysis: legacyAnalysis,
