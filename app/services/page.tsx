@@ -230,7 +230,7 @@ export default function ServicesPage() {
             >
               {/* Gradient overlay */}
               <div className={`absolute inset-0 bg-gradient-to-br ${service.gradient} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity`} />
-              
+
               {/* Logo */}
               <div className="relative w-full h-24 mb-6">
                 <Image
@@ -240,12 +240,12 @@ export default function ServicesPage() {
                   className="object-contain"
                 />
               </div>
-              
+
               {/* Content */}
               <div className="relative">
                 <p className="text-sm text-slate-400 mb-3">{service.tagline}</p>
                 <p className="text-slate-300 mb-4">{service.description}</p>
-                
+
                 {/* Features */}
                 <div className="space-y-2">
                   {service.features.map((feature) => (
@@ -255,7 +255,7 @@ export default function ServicesPage() {
                     </div>
                   ))}
                 </div>
-                
+
                 {/* CTA */}
                 <div className="mt-6 flex items-center text-purple-400 group-hover:text-purple-300">
                   <span className="text-sm font-semibold">Learn more</span>
@@ -275,7 +275,7 @@ export default function ServicesPage() {
           <h2 className="text-4xl font-bold text-white mb-4">The Elara AI Family</h2>
           <p className="text-xl text-slate-300">Divine feminine intelligence powering every aspect of Azora OS</p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
           {elaraFamily.map((elara) => (
             <div
@@ -284,7 +284,7 @@ export default function ServicesPage() {
             >
               {/* Gradient overlay */}
               <div className={`absolute inset-0 bg-gradient-to-br ${elara.gradient} opacity-10 rounded-2xl`} />
-              
+
               {/* Logo */}
               <div className="relative w-full h-20 mb-4">
                 <Image
@@ -294,7 +294,7 @@ export default function ServicesPage() {
                   className="object-contain"
                 />
               </div>
-              
+
               {/* Content */}
               <div className="relative">
                 <p className="text-xs text-slate-400 mb-2">{elara.tagline}</p>
