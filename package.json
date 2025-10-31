@@ -23,6 +23,7 @@
     "elara:supreme": "tsx run-azora-supreme.ts",
     "elara:test": "tsx genome/test-elara-supreme.ts",
     "elara:deity": "tsx genome/test-elara.ts",
+    "elara:bio": "tsx genome/test-biological-intelligence.ts",
     "health:check": "tsx system-health-check.ts",
     "deploy:check": "npm run health:check && npm run lint && npm run test:ci && npm run build:all",
     "build:all": "npm run build && npx tsc --noEmit",
