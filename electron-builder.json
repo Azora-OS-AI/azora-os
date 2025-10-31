@@ -1,0 +1,187 @@
+{
+  "appId": "com.azora.os",
+  "productName": "Azora OS",
+  "copyright": "Copyright © 2025 Azora ES (Pty) Ltd",
+  "directories": {
+    "buildResources": "build-resources",
+    "output": "dist-installers"
+  },
+  "files": [
+    "out/**/*",
+    "electron-main.js",
+    "electron-preload.js",
+    "package.json"
+  ],
+  "extraResources": [
+    {
+      "from": "services",
+      "to": "services",
+      "filter": ["**/*.js", "**/*.ts", "**/*.json"]
+    }
+  ],
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64", "ia32"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      },
+      {
+        "target": "msi",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "build-resources/icon.ico",
+    "publisherName": "Azora ES (Pty) Ltd",
+    "verifyUpdateCodeSignature": false,
+    "certificateFile": null,
+    "certificatePassword": null
+  },
+  "nsis": {
+    "oneClick": false,
+    "perMachine": true,
+    "allowElevation": true,
+    "allowToChangeInstallationDirectory": true,
+    "installerIcon": "build-resources/icon.ico",
+    "uninstallerIcon": "build-resources/icon.ico",
+    "installerHeaderIcon": "build-resources/icon.ico",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Azora OS",
+    "license": "LICENSE"
+  },
+  "msi": {
+    "oneClick": false,
+    "perMachine": true,
+    "runAfterFinish": true,
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "Azora OS"
+  },
+  "portable": {
+    "artifactName": "AzoraOS-Portable-${version}.exe"
+  },
+  "mac": {
+    "target": [
+      {
+        "target": "dmg",
+        "arch": ["x64", "arm64", "universal"]
+      },
+      {
+        "target": "pkg",
+        "arch": ["x64", "arm64", "universal"]
+      },
+      {
+        "target": "zip",
+        "arch": ["x64", "arm64", "universal"]
+      }
+    ],
+    "icon": "build-resources/icon.icns",
+    "category": "public.app-category.education",
+    "darkModeSupport": true,
+    "hardenedRuntime": true,
+    "gatekeeperAssess": false,
+    "entitlements": "build-resources/entitlements.mac.plist",
+    "entitlementsInherit": "build-resources/entitlements.mac.plist"
+  },
+  "dmg": {
+    "contents": [
+      {
+        "x": 130,
+        "y": 220
+      },
+      {
+        "x": 410,
+        "y": 220,
+        "type": "link",
+        "path": "/Applications"
+      }
+    ],
+    "title": "Azora OS Installer",
+    "icon": "build-resources/icon.icns",
+    "background": "build-resources/dmg-background.png",
+    "window": {
+      "width": 540,
+      "height": 380
+    }
+  },
+  "pkg": {
+    "license": "LICENSE",
+    "installLocation": "/Applications",
+    "allowAnywhere": true,
+    "allowCurrentUserHome": true,
+    "allowRootDirectory": false
+  },
+  "linux": {
+    "target": [
+      {
+        "target": "AppImage",
+        "arch": ["x64", "arm64"]
+      },
+      {
+        "target": "deb",
+        "arch": ["x64", "arm64", "armv7l"]
+      },
+      {
+        "target": "rpm",
+        "arch": ["x64", "arm64"]
+      },
+      {
+        "target": "snap",
+        "arch": ["x64"]
+      },
+      {
+        "target": "tar.gz",
+        "arch": ["x64", "arm64"]
+      }
+    ],
+    "icon": "build-resources/icons",
+    "category": "Education",
+    "maintainer": "Azora ES (Pty) Ltd <hello@azora.world>",
+    "vendor": "Azora ES (Pty) Ltd",
+    "synopsis": "Azora OS - Universal Intelligence Platform",
+    "description": "Complete education, finance, and intelligence ecosystem built for Africa and the world.",
+    "desktop": {
+      "Name": "Azora OS",
+      "GenericName": "Intelligence Platform",
+      "Comment": "Universal Intelligence Ecosystem",
+      "Categories": "Education;Finance;Development;",
+      "Keywords": "education;finance;ai;blockchain;",
+      "StartupNotify": "true",
+      "Terminal": "false"
+    }
+  },
+  "deb": {
+    "depends": ["gconf2", "gconf-service", "libnotify4", "libappindicator1", "libxtst6", "libnss3"],
+    "recommends": ["libgnome-keyring-dev"],
+    "priority": "optional",
+    "afterInstall": "build-resources/linux-after-install.sh",
+    "afterRemove": "build-resources/linux-after-remove.sh"
+  },
+  "rpm": {
+    "depends": ["libXScrnSaver", "libappindicator", "libnotify"],
+    "fpm": ["--rpm-rpmbuild-define", "_build_id_links none"]
+  },
+  "snap": {
+    "confinement": "classic",
+    "grade": "stable",
+    "summary": "Universal Intelligence Platform",
+    "description": "Complete education, finance, and intelligence ecosystem built for Africa and the world."
+  },
+  "appImage": {
+    "license": "LICENSE",
+    "category": "Education"
+  },
+  "publish": {
+    "provider": "github",
+    "owner": "Sizwe780",
+    "repo": "azora-os",
+    "releaseType": "release",
+    "publishAutoUpdate": true
+  },
+  "afterSign": "build-resources/notarize.js",
+  "afterPack": "build-resources/after-pack.js"
+}

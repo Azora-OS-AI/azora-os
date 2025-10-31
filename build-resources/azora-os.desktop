@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Azora OS
+Comment=Universal Intelligence Platform
+Exec=/opt/AzoraOS/azora-os
+Icon=/opt/AzoraOS/azora-os.png
+Terminal=false
+Categories=Education;Finance;Development;Utility;
+Keywords=ai;education;finance;blockchain;
+StartupNotify=true
+StartupWMClass=azora-os

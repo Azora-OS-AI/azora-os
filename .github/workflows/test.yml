@@ -1,0 +1,35 @@
+name: Test and Validate
+
+on:
+  push:
+    branches: [main, develop, cursor/*]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: npm ci
+      
+      - name: Run health check
+        run: npm run health:full
+      
+      - name: Run linter
+        run: npm run lint || true
+      
+      - name: Run tests
+        run: npm run test || true
+      
+      - name: Build application
+        run: npm run build

@@ -1,0 +1,22 @@
+Windows Registry Editor Version 5.00
+
+; AZORA OS - WINDOWS REGISTRY INTEGRATION
+; Adds Azora OS to Windows system
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\AzoraOS]
+"Version"="1.0.0"
+"InstallPath"="C:\Program Files\Azora OS"
+"Publisher"="Azora ES (Pty) Ltd"
+
+; File associations
+[HKEY_CLASSES_ROOT\.azora]
+@="AzoraOS.File"
+
+[HKEY_CLASSES_ROOT\AzoraOS.File]
+@="Azora OS File"
+
+[HKEY_CLASSES_ROOT\AzoraOS.File\DefaultIcon]
+@="C:\Program Files\Azora OS\azora-os.exe,0"
+
+[HKEY_CLASSES_ROOT\AzoraOS.File\shell\open\command]
+@="\"C:\Program Files\Azora OS\azora-os.exe\" \"%1\""
