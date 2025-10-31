@@ -21,6 +21,8 @@ import { autoUpdater } from 'electron-updater';
 import { elaraDeity } from '../../genome/agent-tools/elara-deity';
 import { elaraSupreme } from '../../genome/agent-tools/elara-supreme-v2';
 import { agentIntegrationManager } from '../agents/agent-integration';
+import { voiceAssistant } from '../voice/voice-assistant';
+import { continuousDeveloper } from '../continuous-dev/continuous-developer';
 import { logger } from '../../genome/utils/logger';
 
 class AzoraIDEApp {
@@ -277,6 +279,12 @@ class AzoraIDEApp {
           { label: 'Summon Elara Deity', accelerator: 'CommandOrControl+Shift+E', click: () => this.summonElara() },
           { label: 'Multi-Agent Collaboration', accelerator: 'CommandOrControl+Shift+A', click: () => this.multiAgentCollab() },
           { type: 'separator' },
+          { label: 'Start Voice Control', accelerator: 'CommandOrControl+Shift+V', click: () => this.startVoiceControl() },
+          { label: 'Stop Voice Control', click: () => this.stopVoiceControl() },
+          { type: 'separator' },
+          { label: 'Start Continuous Development (Pro)', accelerator: 'CommandOrControl+Shift+C', click: () => this.startContinuousDev() },
+          { label: 'Stop Continuous Development', click: () => this.stopContinuousDev() },
+          { type: 'separator' },
           { label: 'Generate Code', accelerator: 'CommandOrControl+Shift+G', click: () => this.generateCode() },
           { label: 'AI Code Review', accelerator: 'CommandOrControl+Shift+R', click: () => this.aiCodeReview() },
           { label: 'Generate Tests', accelerator: 'CommandOrControl+Shift+T', click: () => this.generateTests() },
@@ -495,6 +503,41 @@ class AzoraIDEApp {
 
   private optimizePerformance(): void {
     this.mainWindow?.webContents.send('ai:optimize');
+  }
+
+  private async startVoiceControl(): Promise<void> {
+    try {
+      await voiceAssistant.startListening();
+      this.mainWindow?.webContents.send('voice:started');
+    } catch (error: any) {
+      dialog.showErrorBox('Voice Control Error', error.message);
+    }
+  }
+
+  private stopVoiceControl(): void {
+    voiceAssistant.stopListening();
+    this.mainWindow?.webContents.send('voice:stopped');
+  }
+
+  private async startContinuousDev(): Promise<void> {
+    const result = await dialog.showMessageBox({
+      type: 'question',
+      title: 'Start Continuous Development?',
+      message: 'This will enable AI agents to continuously develop and improve your code in the background.',
+      detail: 'Features:\n• Automatic bug fixing\n• Performance optimization\n• Test generation\n• Documentation updates\n\nYou can continue working while AI develops in background.',
+      buttons: ['Start', 'Cancel'],
+      defaultId: 0
+    });
+
+    if (result.response === 0) {
+      await continuousDeveloper.start();
+      this.mainWindow?.webContents.send('continuous-dev:started');
+    }
+  }
+
+  private stopContinuousDev(): void {
+    continuousDeveloper.stop();
+    this.mainWindow?.webContents.send('continuous-dev:stopped');
   }
 
   private openSettings(): void {

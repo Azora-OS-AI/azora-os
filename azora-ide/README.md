@@ -73,9 +73,43 @@
 - **Implementation Agent Beta** - System Integration
   - System integration, deployment automation, production deployment
 
+## 🎤 Revolutionary New Features
+
+### 1. **Voice Control** 🎙️
+**Just speak to your IDE!**
+- "Hey Azora, create a React component"
+- "Fix the bug in authentication"
+- "Start continuous development mode"
+- Natural language programming
+- Hands-free coding
+
+**Start**: `Ctrl+Shift+V` or say "Hey Azora"
+
+[→ Complete Voice Control Guide](./VOICE_CONTROL.md)
+
+### 2. **Continuous Development Mode (Pro)** 🚀
+**AI develops your app while you sleep!**
+- Autonomous bug fixing
+- Automatic performance optimization
+- Test generation (95%+ coverage)
+- Security hardening
+- Documentation updates
+
+**Features**:
+- 28 agents working in background
+- 5-minute development cycles
+- Automatic code improvements
+- Real-time notifications
+
+**Start**: `Ctrl+Shift+C` or voice: "Start continuous development"
+
+[→ Continuous Development Guide](./VOICE_CONTROL.md#-continuous-development-mode-pro)
+
+---
+
 ## Features Beyond Cursor
 
-### 1. **Multi-Agent Collaboration**
+### 3. **Multi-Agent Collaboration**
 Instead of just one AI, get insights from 28 specialized agents:
 ```typescript
 // Request multi-agent collaboration
