@@ -14,6 +14,26 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// Default environment overrides for local launch
+if (!process.env.OPENAI_API_KEY) {
+  process.env.OPENAI_API_KEY = 'mock-openai-key'
+}
+if (!process.env.MINT_MOCK_MODE) {
+  process.env.MINT_MOCK_MODE = 'true'
+}
+if (!process.env.MINT_USE_PRISMA) {
+  process.env.MINT_USE_PRISMA = 'false'
+}
+if (!process.env.MINT_ENABLE_BACKGROUND_JOBS) {
+  process.env.MINT_ENABLE_BACKGROUND_JOBS = 'false'
+}
+if (!process.env.NEXUS_MOCK_MODE) {
+  process.env.NEXUS_MOCK_MODE = 'true'
+}
+if (!process.env.NEXUS_ALLOW_OFFLINE) {
+  process.env.NEXUS_ALLOW_OFFLINE = 'true'
+}
+
 // Main Azora Services
 const mainServices = [
   {
@@ -34,7 +54,7 @@ const mainServices = [
     name: 'Azora Covenant',
     port: 4099,
     dir: './services/azora-covenant',
-    file: 'server.js',
+    file: 'index.js',
     desc: 'Blockchain & Contracts',
   },
   {
@@ -48,7 +68,7 @@ const mainServices = [
     name: 'Azora Aegis',
     port: 4000,
     dir: './services/azora-aegis',
-    file: 'index.js',
+    file: 'src/index.ts',
     desc: 'Security & Compliance',
   },
   {
@@ -286,9 +306,14 @@ async function launchAllServices() {
     shutdownRequested = true
     console.log('\n\n🛑 Shutting down all services...')
     processes.forEach((proc, name) => {
-      if (proc && !proc.killed) {
+      if (proc && typeof proc.kill === 'function' && !proc.killed) {
         console.log(`   Stopping ${name}...`)
-        proc.kill('SIGTERM')
+        try {
+          proc.kill('SIGTERM')
+        } catch (error) {
+          const errMessage = error instanceof Error ? error.message : String(error)
+          console.warn(`   Unable to stop ${name}: ${errMessage}`)
+        }
       }
     })
     setTimeout(() => {
@@ -300,9 +325,14 @@ async function launchAllServices() {
   process.on('SIGTERM', () => {
     shutdownRequested = true
     console.log('\n🛑 Shutting down all services...')
-    processes.forEach((proc) => {
-      if (proc && !proc.killed) {
-        proc.kill('SIGTERM')
+    processes.forEach((proc, name) => {
+      if (proc && typeof proc.kill === 'function' && !proc.killed) {
+        try {
+          proc.kill('SIGTERM')
+        } catch (error) {
+          const errMessage = error instanceof Error ? error.message : String(error)
+          console.warn(`Unable to stop ${name}: ${errMessage}`)
+        }
       }
     })
     setTimeout(() => {
