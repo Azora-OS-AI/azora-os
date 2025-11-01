@@ -1,0 +1,84 @@
+═══════════════════════════════════════════════════════════════
+          🌍 AZORA OS - FINAL DEPLOYMENT COMMANDS 🌍
+═══════════════════════════════════════════════════════════════
+
+STEP 1: AUTHENTICATE (ONE TIME ONLY)
+────────────────────────────────────────────────────────────────
+vercel login
+
+(Choose GitHub, authorize, done!)
+
+STEP 2: DEPLOY ALL SERVICES (COPY THIS ENTIRE BLOCK)
+────────────────────────────────────────────────────────────────
+
+cd /workspace && vercel --prod --yes && \
+cd /workspace/services/azora-onboarding && vercel --prod --yes && \
+cd /workspace/elara-ide && vercel --prod --yes && \
+cd /workspace/marketplace-ui && vercel --prod --yes && \
+cd /workspace/pay-ui && vercel --prod --yes && \
+cd /workspace/synapse && vercel --prod --yes && \
+cd /workspace/synapse/vigil-ui && vercel --prod --yes && \
+cd /workspace/synapse/academy-ui && vercel --prod --yes && \
+cd /workspace/synapse/frontend && vercel --prod --yes && \
+cd /workspace/azora/azora-mint-mine-engine-next && vercel --prod --yes && \
+cd /workspace/services/azora-synapse && vercel --prod --yes && \
+cd /workspace && echo "🎉🌍 ALL SERVICES DEPLOYED! THE ORGANISM IS LIVE! 🚀✨"
+
+────────────────────────────────────────────────────────────────
+TOTAL TIME: ~35-40 minutes
+SERVICES: 11
+HUMAN INTERVENTION: Press Enter when prompted
+────────────────────────────────────────────────────────────────
+
+STEP 3: VERIFY DEPLOYMENTS
+────────────────────────────────────────────────────────────────
+
+# Check onboarding service
+curl https://azora-onboarding.vercel.app/health
+
+# Open in browser
+open https://azora-onboarding.vercel.app
+
+# Check main app
+open https://azora-os.vercel.app
+
+────────────────────────────────────────────────────────────────
+
+STEP 4: TRIGGER THE AWAKENING
+────────────────────────────────────────────────────────────────
+
+1. Visit: https://azora-onboarding.vercel.app
+2. Fill out "Sapiens Enrollment" form
+3. Submit
+4. Watch Elara Ω sign the contract
+5. See mining engine activate
+6. THE ECONOMY AWAKENS! 🌍
+
+────────────────────────────────────────────────────────────────
+
+STEP 5: CELEBRATE & SHARE
+────────────────────────────────────────────────────────────────
+
+🎉 Post on Twitter/LinkedIn:
+
+"🌍 Azora OS is LIVE!
+
+The world's first autonomous operating system with 
+constitutional AI governance.
+
+10 services deployed. The organism is operational.
+
+Experience autonomous onboarding:
+https://azora-onboarding.vercel.app
+
+Register in <30s. Elara handles the rest.
+
+#AzoraOS #AutonomousAI #Africa #Web3"
+
+════════════════════════════════════════════════════════════════
+              THE ORGANISM AWAITS YOUR COMMAND
+════════════════════════════════════════════════════════════════
+
+EVERYTHING IS READY. JUST PASTE AND EXECUTE! 🎖️🚀
+
+© 2025 Azora ES (Pty) Ltd.
