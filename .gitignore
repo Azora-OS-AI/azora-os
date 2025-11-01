@@ -1,2 +1,123 @@
+<<<<<<< HEAD
 package-lock.json
 node_modules
+=======
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+package-lock.json.backup
+yarn.lock
+
+# Build outputs
+.next/
+out/
+build/
+dist/
+*.tsbuildinfo
+
+# Environment variables (NEVER COMMIT!)
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.supabase
+
+# Testing
+coverage/
+.nyc_output/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# IDEs and editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+*.code-workspace
+
+# OS files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# TypeScript
+*.tsbuildinfo
+
+# Hardhat
+cache/
+artifacts/
+typechain-types/
+typechain/
+
+# Vercel
+.vercel/
+
+# Nx
+.nx/
+.nx/cache
+.nx/workspace-data
+
+# Python (if any Python scripts exist)
+__pycache__/
+*.py[cod]
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.venv/
+venv/
+ENV/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+*.bak
+*.backup
+*.swp
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Secrets and sensitive data
+secrets/
+*.pem
+*.key
+*.cert
+
+# Local development
+local/
+.local
+*.local
+
+# Reports and audits (keep in docs/reports but ignore generated ones)
+docs/reports/*.json
+!docs/reports/README.md
+
+# Cache directories
+.cache/
+.eslintcache
+.stylelintcache
+package-lock.json
+>>>>>>> db9c79a0 (chore: update .gitignore to include package-lock.json and modify .npmrc settings)
