@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-package-lock.json
-node_modules
-=======
 # Dependencies
 node_modules/
 .pnp
 .pnp.js
-package-lock.json.backup
+package-lock.json
 yarn.lock
 
 # Build outputs
@@ -119,5 +115,3 @@ docs/reports/*.json
 .cache/
 .eslintcache
 .stylelintcache
-package-lock.json
->>>>>>> db9c79a0 (chore: update .gitignore to include package-lock.json and modify .npmrc settings)
