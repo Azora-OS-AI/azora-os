@@ -48,7 +48,7 @@ const mainServices = [
     name: 'Azora Aegis',
     port: 4000,
     dir: './services/azora-aegis',
-    file: 'index.js',
+    file: 'citadel.js',
     desc: 'Security & Compliance',
   },
   {
@@ -147,8 +147,8 @@ function launchService(service) {
     )
 
     const isTypeScript = actualFile.endsWith('.ts')
-    const command = isTypeScript ? 'tsx' : 'node'
-    const args = isTypeScript ? [actualFile] : [actualFile]
+    const command = isTypeScript ? 'npx' : 'node'
+    const args = isTypeScript ? ['tsx', actualFile] : [actualFile]
 
     const childProcess = spawn(command, args, {
       cwd: servicePath,
