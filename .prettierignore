@@ -1,0 +1,60 @@
+# Dependencies
+node_modules
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build outputs
+.next
+dist
+build
+out
+*.tsbuildinfo
+
+# Generated files
+coverage
+.nyc_output
+*.log
+
+# Cache
+.cache
+.eslintcache
+.nx
+.nx/cache
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE
+.vscode
+.idea
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Minified files
+*.min.js
+*.min.css
+
+# Archives
+*.zip
+*.tar
+*.gz
+
+# Documentation build
+docs/build
+docs/.vuepress/dist
+
+# Temporary files
+tmp
+temp
+*.tmp
+*.bak

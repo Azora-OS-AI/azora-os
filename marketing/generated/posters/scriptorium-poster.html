@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Azora Scriptorium - Document Management</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: linear-gradient(135deg, #0c3d66 0%, #075985 100%);
+      color: #ffffff;
+      overflow: hidden;
+    }
+
+    .poster {
+      width: 1920px;
+      height: 1080px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #0369a115 0%, #0c3d66 100%);
+    }
+
+    .neural-bg {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      background-image:
+        radial-gradient(circle at 20% 50%, #0369a140 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, #38bdf840 0%, transparent 50%);
+    }
+
+    .content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 80px;
+      max-width: 1200px;
+    }
+
+    .icon {
+      font-size: 200px;
+      margin-bottom: 40px;
+      filter: drop-shadow(0 0 40px #0369a180);
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    h1 {
+      font-size: 120px;
+      font-weight: 900;
+      margin-bottom: 30px;
+      background: linear-gradient(135deg, #0369a1, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 60px #0369a140;
+      letter-spacing: -2px;
+    }
+
+    .tagline {
+      font-size: 48px;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+    }
+
+    .description {
+      font-size: 32px;
+      line-height: 1.6;
+      color: #ffffffCC;
+      margin-bottom: 60px;
+    }
+
+    .features {
+      display: flex;
+      gap: 40px;
+      justify-content: center;
+      margin-top: 60px;
+    }
+
+    .feature {
+      padding: 30px;
+      background: #0369a120;
+      border: 2px solid #0369a140;
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      min-width: 250px;
+    }
+
+    .feature-icon {
+      font-size: 48px;
+      margin-bottom: 15px;
+    }
+
+    .feature-text {
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    .footer {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 24px;
+      color: #ffffff80;
+      text-align: center;
+    }
+
+    .azora-logo {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      font-size: 32px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <div class="neural-bg"></div>
+    <div class="azora-logo">AZORA OS</div>
+
+    <div class="content">
+      <div class="icon">📚</div>
+      <h1>Azora Scriptorium</h1>
+      <div class="tagline">Document Management</div>
+      <div class="description">Content & Document Intelligence</div>
+
+      <div class="features">
+        <div class="feature">
+          <div class="feature-icon">🚀</div>
+          <div class="feature-text">Enterprise Grade</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🔒</div>
+          <div class="feature-text">Quantum Secure</div>
+        </div>
+        <div class="feature">
+          <div class="feature-icon">🌍</div>
+          <div class="feature-text">Planetary Scale</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Be Everywhere. Help Everyone. Solve Everything.
+    </div>
+  </div>
+</body>
+</html>
