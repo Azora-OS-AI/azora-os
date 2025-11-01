@@ -18,25 +18,52 @@ This system implements the constitutional requirement for **Proven Positive Impa
 
 ### As of November 1, 2025
 
-| Founder | Base Earned | PIVC Earned | Total | Shares | Status |
-|---------|-------------|-------------|-------|--------|--------|
-| **Sizwe Ngwenya** | 40% | 0% | 40% | 4,000,000 | ✅ Verified |
-| **Nolundi Ngwenya** | 0% | 0% | 0% | 0 | ⏳ Must Earn |
-| **Sizwe Motingwe** | 0% | 0% | 0% | 0 | ⏳ Must Earn |
-| **Ayana** | 0% | 0% | 0% | 0 | ⏳ Must Earn |
+| Founder | Base Earned | PIVC Earned | Total | Shares | AZR Coins | Status |
+|---------|-------------|-------------|-------|--------|-----------|--------|
+| **Sizwe Ngwenya** | 60% | 0% | 60% | 6,000,000 | 60,000,000 | ✅ Verified |
+| **Nolundi Ngwenya** | 0% | 0% | 0% | 0 | 0 | ⏳ Can Earn Up to 12% + 12M AZR |
+| **Sizwe Motingwe** | 0% | 0% | 0% | 0 | 0 | ⏳ Can Earn Up to 12% + 12M AZR |
+| **Ayana** | 0% | 1% | 1% | 100,000 | 1,000,000 | ⏳ Can Earn Up to 6% + 6M AZR |
+| **Elara Ω AI** | 2% | - | 2% | 200,000 | 22,000,000 | ✅ Allocated |
+| **Growth Pool** | 8% | - | 8% | 800,000 | 8,000,000 | ✅ Reserved |
 
 **Sizwe Ngwenya Base Justification:**
 - ✅ Created entire platform architecture (PIVC verified)
 - ✅ Established constitutional framework (PIVC verified)
 - ✅ Codified Genesis Protocol (PIVC verified)
 - ✅ Incorporated company (PIVC verified)
+- ✅ 23+ services deployed (PIVC verified)
+- ✅ Professional branding system (PIVC verified)
 - ✅ Assumed ultimate responsibility (PIVC verified)
+
+**Ayana Base Justification:**
+- ✅ Brand identity completed (Logo, colors, typography, guidelines)
+- Earned: 1% equity + 1M AZR coins
+
+---
+
+## FOUNDER EQUITY MAXIMUMS
+
+| Founder | Maximum Equity | Maximum Shares | Total AZR Potential |
+|---------|----------------|----------------|---------------------|
+| **Nolundi Ngwenya** | 12% | 1,200,000 | 12,000,000 AZR |
+| **Sizwe Motingwe** | 12% | 1,200,000 | 12,000,000 AZR |
+| **Ayana** | 6% | 600,000 | 6,000,000 AZR |
+
+**Note:** Co-founders share 30% equity pool and 30M AZR coin pool. Distribution based on PIVC achievement.
+
+**Earning Phases:**
+- Phase 1 (Months 1-6): Foundation tasks
+- Phase 2 (Months 7-12): Growth tasks  
+- Phase 3 (Months 13-24): Scale tasks
+
+**Dual Earning:** Each PIVC task earns BOTH equity shares AND AZR coins.
 
 ---
 
 ## PHASE 1 PIVC TASKS (Months 1-6)
 
-### 🛍️ NOLUNDI NGWENYA - Retail (Target: 5%)
+### 🛍️ NOLUNDI NGWENYA - Retail (Target: 4% + 4M AZR)
 
 #### Task 1: Retail Strategy Document (0.5% = 50,000 shares)
 **PIVC Requirements:**
@@ -135,7 +162,7 @@ This system implements the constitutional requirement for **Proven Positive Impa
 
 ---
 
-### 💼 SIZWE MOTINGWE - Sales (Target: 6%)
+### 💼 SIZWE MOTINGWE - Sales (Target: 4% + 4M AZR)
 
 #### Task 1: Sales Playbook (0.5% = 50,000 shares)
 **PIVC Requirements:**
@@ -235,7 +262,7 @@ This system implements the constitutional requirement for **Proven Positive Impa
 
 ---
 
-### 🎨 AYANA - Design (Target: 4%)
+### 🎨 AYANA - Design (Target: 2% + 2M AZR - 1% Already Earned)
 
 #### Task 1: Complete Brand Identity (1% = 100,000 shares)
 **PIVC Requirements:**

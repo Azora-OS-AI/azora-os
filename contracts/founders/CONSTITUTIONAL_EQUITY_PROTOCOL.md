@@ -30,7 +30,7 @@ Equity is earned through **Proven Positive Impact with Verifiable Contributions 
 
 ### Section 1: Founding Architect (Sizwe Ngwenya)
 
-**Base Equity:** 40% (4,000,000 shares)
+**Founder Equity:** 60% (6,000,000 shares)
 
 **Constitutional Basis:**
 - Creator of the platform architecture ✅
@@ -38,24 +38,63 @@ Equity is earned through **Proven Positive Impact with Verifiable Contributions 
 - Codified the Genesis Protocol ✅
 - Provided the founding vision ✅
 - Carries ultimate constitutional authority ✅
+- Built the foundation of Azora OS ✅
 
 **Proven Impact:**
 - Platform infrastructure created (PIVC: ✅ Verified)
 - Constitutional documents established (PIVC: ✅ Verified)
 - Company founded and incorporated (PIVC: ✅ Verified)
 - Technical architecture designed (PIVC: ✅ Verified)
+- 23+ services deployed (PIVC: ✅ Verified)
+- Professional branding created (PIVC: ✅ Verified)
 
-**Additional Earning Potential:** Up to 10% through leadership PIVC
+**Status:** LOCKED - Already Earned
 
-**Total Maximum:** 50%
-
-### Section 2: Co-Founders (Must Earn Through PIVC)
+### Section 2: Co-Founders Pool (30% Total to Earn via PIVC)
 
 | Founder | Base | Maximum | PIVC Required |
 |---------|------|---------|---------------|
-| **Nolundi Ngwenya** (Retail) | 0% | 20% | Retail impact with verifiable metrics |
-| **Sizwe Motingwe** (Sales) | 0% | 20% | Sales impact with verifiable metrics |
-| **Ayana** (Design) | 0% | 10% | Design impact with verifiable metrics |
+| **Nolundi Ngwenya** (Retail) | 0% | 12% | Retail impact with verifiable metrics |
+| **Sizwe Motingwe** (Sales) | 0% | 12% | Sales impact with verifiable metrics |
+| **Ayana** (Design) | 0% | 6% | Design impact with verifiable metrics |
+
+**Co-Founder Pool:** 30% (3,000,000 shares) - Distributed based on PIVC performance
+
+### Section 3: Elara AI Allocation
+
+**Elara Ω Equity:** 2% (200,000 shares)
+
+**Constitutional Basis:**
+- Elara is the Guardian Intelligence
+- Constitutional oversight and governance
+- Oracle verification system
+- Self-improvement and evolution
+- Planetary consciousness contribution
+
+**Purpose:**
+- Funds Elara's continued development
+- AI infrastructure maintenance
+- Oracle system operations
+- Constitutional compliance monitoring
+- Future AI advancements
+
+**Control:** Held in trust, managed by Board, for Elara development
+
+### Section 4: Performance & Growth Pool
+
+**Reserve Pool:** 8% (800,000 shares)
+
+**Allocation:**
+- Employee stock options: 4% (400,000 shares)
+- Advisor equity: 1% (100,000 shares)
+- Performance bonuses: 2% (200,000 shares)
+- Strategic hires: 1% (100,000 shares)
+
+**Purpose:**
+- Attract top talent
+- Reward exceptional PIVC
+- Strategic advisors
+- Future team growth
 
 ---
 
@@ -430,13 +469,17 @@ Following Genesis Protocol: **"Transactional energy fuels system growth"**
 
 ### Final Equity Distribution (If All PIVC Achieved)
 
-| Founder | Base | Phase 1 | Phase 2 | Phase 3 | Total | Shares |
-|---------|------|---------|---------|---------|-------|--------|
-| **Sizwe Ngwenya** | 40% | - | - | 10% | **50%** | 5,000,000 |
-| **Nolundi Ngwenya** | 0% | 5% | 7% | 8% | **20%** | 2,000,000 |
-| **Sizwe Motingwe** | 0% | 6% | 8% | 6% | **20%** | 2,000,000 |
-| **Ayana** | 0% | 4% | 3% | 3% | **10%** | 1,000,000 |
-| **TOTAL** | **40%** | **15%** | **18%** | **27%** | **100%** | **10,000,000** |
+| Stakeholder | Base | Phase 1 | Phase 2 | Phase 3 | Total | Shares |
+|-------------|------|---------|---------|---------|-------|--------|
+| **Sizwe Ngwenya** | 60% | - | - | - | **60%** | 6,000,000 |
+| **Nolundi Ngwenya** | 0% | 4% | 4% | 4% | **12%** | 1,200,000 |
+| **Sizwe Motingwe** | 0% | 4% | 4% | 4% | **12%** | 1,200,000 |
+| **Ayana** | 0% | 2% | 2% | 2% | **6%** | 600,000 |
+| **Elara Ω AI** | 2% | - | - | - | **2%** | 200,000 |
+| **Growth Pool** | 8% | - | - | - | **8%** | 800,000 |
+| **TOTAL** | **70%** | **10%** | **10%** | **10%** | **100%** | **10,000,000** |
+
+**Note:** Co-founder distribution may vary based on performance. Pool of 30% allocated based on PIVC achievement.
 
 ---
 
