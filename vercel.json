@@ -1,20 +1,32 @@
 {
-  "framework": "nextjs",
-  "buildCommand": "npm run build",
-  "installCommand": "npm install",
-  "env": {
-    "NODE_ENV": "production",
-    "AZORA_DEPLOYMENT_PLATFORM": "vercel"
-  },
-  "regions": ["iad1"],
-  "rewrites": [
+  "version": 2,
+  "name": "azora-onboarding",
+  "builds": [
     {
-      "source": "/api/(.*)",
-      "destination": "/api/production-server.ts"
+      "src": "services/azora-onboarding/server.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/health",
+      "dest": "services/azora-onboarding/server.ts"
     },
     {
-      "source": "/services/(.*)",
-      "destination": "/api/services.ts"
+      "src": "/status",
+      "dest": "services/azora-onboarding/server.ts"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "services/azora-onboarding/server.ts"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "services/azora-onboarding/server.ts"
     }
-  ]
+  ],
+  "env": {
+    "ONBOARDING_PORT": "5500",
+    "NODE_ENV": "production"
+  }
 }

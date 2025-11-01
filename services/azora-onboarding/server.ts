@@ -29,6 +29,7 @@ const PORT = process.env.ONBOARDING_PORT || 5500;
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use(express.static('public')); // Serve static files
 
 // Request logging
 app.use((req, res, next) => {
@@ -401,9 +402,9 @@ app.get('/api/events', (req: Request, res: Response) => {
 });
 
 /**
- * Documentation
+ * API Documentation (when accessing /api)
  */
-app.get('/', (req: Request, res: Response) => {
+app.get('/api', (req: Request, res: Response) => {
   res.send(`
     <!DOCTYPE html>
     <html>
