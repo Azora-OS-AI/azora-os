@@ -169,8 +169,9 @@ export default [
       },
     },
     rules: {
-      'no-unused-vars': 'off', // Temporarily disabled for commit
-      'no-useless-escape': 'off', // Temporarily disabled for commit
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-useless-escape': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
   {
@@ -199,8 +200,9 @@ export default [
       },
     },
     rules: {
-      'no-unused-vars': 'off', // Temporarily disabled for commit
-      'no-undef': 'off',
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
+      'no-undef': 'warn',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
     },
   },
   {
@@ -272,9 +274,11 @@ export default [
       ],
       'react/react-in-jsx-scope': 'off',
       'react/prop-types': 'off',
-      '@typescript-eslint/no-unused-vars': 'off', // Temporarily disabled for commit
-      '@typescript-eslint/no-explicit-any': 'off', // Temporarily disabled for commit
-      '@typescript-eslint/no-namespace': 'off', // Temporarily disabled for commit
+      '@typescript-eslint/no-unused-vars': ['warn', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-namespace': 'error',
+      '@typescript-eslint/prefer-const': 'error',
+      '@typescript-eslint/no-unused-expressions': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
       'no-undef': 'off',
@@ -315,7 +319,7 @@ export default [
     },
     rules: {
       'no-undef': 'off',
-      'no-unused-vars': 'off', // Temporarily disabled for commit
+      'no-unused-vars': ['warn', { argsIgnorePattern: '^_' }],
     },
   },
 ]

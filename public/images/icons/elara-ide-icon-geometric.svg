@@ -1,0 +1,81 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <!-- Outer Glow -->
+    <radialGradient id="outerGrad-elara-ide" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#7B2CBF;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#1A1A1A;stop-opacity:0.8"/>
+    </radialGradient>
+    
+    <!-- Symbol Gradient -->
+    <linearGradient id="symbolGrad-elara-ide" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00F5FF;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#7B2CBF;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#00F5FF;stop-opacity:0.8"/>
+    </linearGradient>
+    
+    <!-- Premium Glow Filter -->
+    <filter id="premiumGlow-elara-ide" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feOffset in="blur" dx="0" dy="0" result="offsetBlur"/>
+      <feFlood flood-color="#00F5FF" flood-opacity="0.5"/>
+      <feComposite in2="offsetBlur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Inner Shadow -->
+    <filter id="innerShadow-elara-ide">
+      <feOffset dx="0" dy="2"/>
+      <feGaussianBlur stdDeviation="3" result="offset-blur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.3"/>
+      <feComposite in2="offset-blur" operator="in"/>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle with Premium Gradient -->
+  <circle cx="64" cy="64" r="39" 
+          fill="url(#outerGrad-elara-ide)" 
+          filter="url(#innerShadow-elara-ide)"/>
+  
+  <!-- Inner Border Ring -->
+  <circle cx="64" cy="64" r="34" 
+          fill="none" 
+          stroke="#00F5FF" 
+          stroke-width="2" 
+          opacity="0.3"/>
+  
+  <!-- Quantum Pattern Overlay -->
+  <g opacity="0.15">
+    <circle cx="64" cy="4" r="4" fill="#00F5FF"/>
+    <circle cx="14" cy="34" r="4" fill="#00F5FF"/>
+    <circle cx="114" cy="34" r="4" fill="#00F5FF"/>
+    <circle cx="14" cy="94" r="4" fill="#00F5FF"/>
+    <circle cx="114" cy="94" r="4" fill="#00F5FF"/>
+    <circle cx="64" cy="124" r="4" fill="#00F5FF"/>
+    
+    <line x1="64" y1="4" x2="14" y2="34" stroke="#00F5FF" stroke-width="1"/>
+    <line x1="64" y1="4" x2="114" y2="34" stroke="#00F5FF" stroke-width="1"/>
+    <line x1="14" y1="34" x2="14" y2="94" stroke="#00F5FF" stroke-width="1"/>
+    <line x1="114" y1="34" x2="114" y2="94" stroke="#00F5FF" stroke-width="1"/>
+    <line x1="64" y1="124" x2="14" y2="94" stroke="#00F5FF" stroke-width="1"/>
+    <line x1="64" y1="124" x2="114" y2="94" stroke="#00F5FF" stroke-width="1"/>
+  </g>
+  
+  <!-- Central Symbol -->
+  <g filter="url(#premiumGlow-elara-ide)">
+    <path d="M 64 -6 L 104 54 L 84 54 L 94 134 L 54 74 L 74 74 Z" fill="url(#symbolGrad-elara-ide)" opacity="0.9"/>
+  </g>
+  
+  <!-- Service Name -->
+  <text x="64" y="88" 
+        font-size="9.142857142857142" 
+        font-weight="700"
+        text-anchor="middle" 
+        fill="#F5F5F5"
+        font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        letter-spacing="2">
+    ELARA IDE
+  </text>
+</svg>

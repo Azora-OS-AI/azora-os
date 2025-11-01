@@ -1,0 +1,81 @@
+<svg width="128" height="128" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <defs>
+    <!-- Outer Glow -->
+    <radialGradient id="outerGrad-forge" cx="50%" cy="50%">
+      <stop offset="0%" style="stop-color:#FF6B35;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#1A1A1A;stop-opacity:0.8"/>
+    </radialGradient>
+    
+    <!-- Symbol Gradient -->
+    <linearGradient id="symbolGrad-forge" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1"/>
+      <stop offset="50%" style="stop-color:#FF6B35;stop-opacity:1"/>
+      <stop offset="100%" style="stop-color:#FFD700;stop-opacity:0.8"/>
+    </linearGradient>
+    
+    <!-- Premium Glow Filter -->
+    <filter id="premiumGlow-forge" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feOffset in="blur" dx="0" dy="0" result="offsetBlur"/>
+      <feFlood flood-color="#FFD700" flood-opacity="0.5"/>
+      <feComposite in2="offsetBlur" operator="in"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <!-- Inner Shadow -->
+    <filter id="innerShadow-forge">
+      <feOffset dx="0" dy="2"/>
+      <feGaussianBlur stdDeviation="3" result="offset-blur"/>
+      <feFlood flood-color="#000000" flood-opacity="0.3"/>
+      <feComposite in2="offset-blur" operator="in"/>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle with Premium Gradient -->
+  <circle cx="64" cy="64" r="39" 
+          fill="url(#outerGrad-forge)" 
+          filter="url(#innerShadow-forge)"/>
+  
+  <!-- Inner Border Ring -->
+  <circle cx="64" cy="64" r="34" 
+          fill="none" 
+          stroke="#FFD700" 
+          stroke-width="2" 
+          opacity="0.3"/>
+  
+  <!-- Quantum Pattern Overlay -->
+  <g opacity="0.15">
+    <circle cx="64" cy="4" r="4" fill="#FFD700"/>
+    <circle cx="14" cy="34" r="4" fill="#FFD700"/>
+    <circle cx="114" cy="34" r="4" fill="#FFD700"/>
+    <circle cx="14" cy="94" r="4" fill="#FFD700"/>
+    <circle cx="114" cy="94" r="4" fill="#FFD700"/>
+    <circle cx="64" cy="124" r="4" fill="#FFD700"/>
+    
+    <line x1="64" y1="4" x2="14" y2="34" stroke="#FFD700" stroke-width="1"/>
+    <line x1="64" y1="4" x2="114" y2="34" stroke="#FFD700" stroke-width="1"/>
+    <line x1="14" y1="34" x2="14" y2="94" stroke="#FFD700" stroke-width="1"/>
+    <line x1="114" y1="34" x2="114" y2="94" stroke="#FFD700" stroke-width="1"/>
+    <line x1="64" y1="124" x2="14" y2="94" stroke="#FFD700" stroke-width="1"/>
+    <line x1="64" y1="124" x2="114" y2="94" stroke="#FFD700" stroke-width="1"/>
+  </g>
+  
+  <!-- Central Symbol -->
+  <g filter="url(#premiumGlow-forge)">
+    <path d="M 64 124 Q 34 44 44 14 Q 14 24 24 84 Q 64 54 104 84 Q 114 24 84 14 Q 94 44 64 124 Z" fill="url(#symbolGrad-forge)" opacity="0.9"/>
+  </g>
+  
+  <!-- Service Name -->
+  <text x="64" y="88" 
+        font-size="9.142857142857142" 
+        font-weight="700"
+        text-anchor="middle" 
+        fill="#F5F5F5"
+        font-family="Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif"
+        letter-spacing="2">
+    AZORA FORGE
+  </text>
+</svg>

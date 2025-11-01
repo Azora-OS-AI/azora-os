@@ -1,94 +1,10 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ESNext",
-    "moduleResolution": "bundler",
-    "jsx": "preserve",
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "downlevelIteration": true,
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
+    "target": "ES2020",
+    "module": "commonjs",
     "strict": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "allowImportingTsExtensions": true,
-    "noImplicitAny": true,
-    "noImplicitReturns": true,
-    "noImplicitThis": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "strictBindCallApply": true,
-    "strictPropertyInitialization": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noUncheckedIndexedAccess": true,
-    "exactOptionalPropertyTypes": true,
-    "lib": [
-      "ES2022",
-      "DOM",
-      "DOM.Iterable",
-      "WebWorker.ImportScripts"
-    ],
-    "types": [
-      "node",
-      "jest"
-    ],
-    "typeRoots": [
-      "./node_modules/@types",
-      "./types"
-    ],
-    "allowJs": true,
-    "checkJs": false,
-    "baseUrl": ".",
-    "paths": {
-      "@/*": [
-        "./ui/*",
-        "./genome/*",
-        "./services/*"
-      ],
-      "@/components/*": ["./ui/components/*"],
-      "@/lib/*": ["./ui/lib/*"],
-      "@/hooks/*": ["./ui/hooks/*"],
-      "@/types/*": ["./types/*"],
-      "@/services/*": ["./services/*"],
-      "@/genome/*": ["./genome/*"]
-    },
-    "incremental": true,
-    "tsBuildInfoFile": ".tsbuildinfo",
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "useDefineForClassFields": true,
-    "verbatimModuleSyntax": true
-  },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    "types/**/*.d.ts"
-  ],
-  "exclude": [
-    "node_modules",
-    "dist",
-    "build",
-    "out",
-    ".next",
-    "coverage",
-    "**/*.min.js",
-    "**/*.bundle.js"
-  ],
-  "ts-node": {
-    "esm": true,
-    "experimentalSpecifierResolution": "node"
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   }
 }
