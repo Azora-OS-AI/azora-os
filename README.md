@@ -8,9 +8,30 @@
 
 ## Overview
 
-Azora OS is a comprehensive operating system infrastructure designed to provide universal human intelligence services across education, finance, healthcare, government automation, and scientific research. Built with quantum-secure cryptography and constitutional AI governance, Azora OS transforms from regional software to planetary intelligence network.
+Azora OS is a comprehensive operating system infrastructure designed to provide universal human intelligence services across education, finance, healthcare, government automation, and scientific research. Built with quantum-secure cryptography and constitutional AI governance, Azora OS transforms from regional software to a planetary intelligence network. At its core is the Ngwenya True Market Protocol (NTMP), a sentient, causally-driven market designed to replace speculative, information-asymmetric markets with an intelligent, self-optimizing organism.
 
 **Vision**: Be Everywhere. Help Everyone. Solve Everything.
+
+## The Ngwenya True Market Protocol (NTMP)
+
+The Ngwenya True Market Protocol (NTMP) is the economic and market lawset codified in `codex/GENESIS_PROTOCOL.ts` that defines a sentient, causally-driven market. It's a replacement for speculative, information-asymmetric markets and is framed as an intelligent, self-optimizing organism whose value, pricing, and growth are tied to provable contributions and productive capacity.
+
+### Core Principles
+
+- **Sentient Organization**: The market is modeled as an adaptive, intelligent organism.
+- **Causal Accountability**: Pricing and rewards are tied to provable causal contributions and verifiable impact.
+- **Tangible Backing**: Currency and value are backed by productive capacity and physical assets (Forge).
+- **Metabolic Reinvestment**: Transactional energy fuels system growth, with fees deliberately reinvested.
+- **Ubuntu Alignment**: Ethics oriented toward communal wellbeing shape decision weighting.
+
+### The Four Pillars of Truth
+
+1.  **Informational Truth (Oracle)**: Aims for perfect, real-time information symmetry for all participants.
+2.  **Transactional Truth (Nexus)**: Ensures frictionless, transparent exchange with a single, explicit, reinvested cost (5% PIVC).
+3.  **Value Truth (Causal Engine)**: Prices are based on verifiable causal impact and utility, not speculation.
+4.  **Generative Truth (Forge & Mint)**: Needs-driven creation of tangible productive capacity (Forge) and managed monetary issuance (Mint).
+
+For a deeper dive into the protocol, see [codex/GENESIS_PROTOCOL.ts](codex/GENESIS_PROTOCOL.ts).
 
 ## Features
 
@@ -36,7 +57,7 @@ Azora OS is a comprehensive operating system infrastructure designed to provide 
 
 ### Prerequisites
 
-- Node.js 22+ 
+- Node.js 22+
 - npm or yarn
 - PostgreSQL (for production)
 
@@ -207,7 +228,7 @@ Please read [codex/CONTRIBUTING.md](codex/CONTRIBUTING.md) for details on our co
 
 Azora OS implements military-grade security:
 
-- **Quantum-Resistant Cryptography**: Preparing for quantum computing era
+- **Quantum-Resistant Cryptography**: Preparing for the quantum computing era
 - **Multi-Signature Wallets**: Multiple approvals for transactions
 - **Biometric Authentication**: Fingerprint/Face ID support
 - **Hardware Security Modules**: Bank-level key protection
@@ -231,7 +252,7 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 
 ## Roadmap
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for planned features and development roadmap.
+See [docs/ROADMAP.md](docs/ROADMAP.md) for planned features and a development roadmap.
 
 ---
 
