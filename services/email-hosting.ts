@@ -10,26 +10,45 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
  */
 
 import nodemailer from 'nodemailer';
-import { createTransport } from 'nodemailer';
-import { existsSync, writeFileSync, readFileSync } from 'fs';
+import { createTransport, Transporter } from 'nodemailer';
+import { existsSync, readFileSync } from 'fs';
 import { join } from 'path';
 
+interface EmailConfigAuth {
+  user: string;
+  pass: string;
+}
+
+interface EmailConfig {
+  service: string;
+  host: string;
+  port: number;
+  secure: boolean;
+  auth: EmailConfigAuth;
+}
+
+interface EmailOptions {
+  to: string;
+  subject: string;
+  text: string;
+  html: string;
+}
+
 class EmailHostingService {
+  private config: EmailConfig;
+  private transporter: Transporter;
+
   constructor() {
     this.config = this.loadConfig();
     this.transporter = this.createTransporter();
   }
 
-  /**
-   * Load email configuration
-   */
-  loadConfig() {
+  loadConfig(): EmailConfig {
     const configPath = join(process.cwd(), 'config', 'email-config.json');
     if (existsSync(configPath)) {
       return JSON.parse(readFileSync(configPath, 'utf8'));
     }
-    
-    // Default configuration for Zoho Mail
+
     return {
       service: 'Zoho',
       host: 'smtp.zoho.com',
@@ -37,102 +56,81 @@ class EmailHostingService {
       secure: false,
       auth: {
         user: process.env.EMAIL_USER || 'admin@azora.africa',
-        pass: process.env.EMAIL_PASS || ''
-      }
+        pass: process.env.EMAIL_PASS || '',
+      },
     };
   }
 
-  /**
-   * Create email transporter
-   */
-  createTransporter() {
+  createTransporter(): Transporter {
     return createTransport({
       host: this.config.host,
       port: this.config.port,
       secure: this.config.secure,
       auth: {
         user: this.config.auth.user,
-        pass: this.config.auth.pass
-      }
+        pass: this.config.auth.pass,
+      },
     });
   }
 
-  /**
-   * Send email
-   */
-  async sendEmail(options) {
+  async sendEmail(options: EmailOptions): Promise<{ success: boolean; messageId?: string; error?: string }> {
     try {
       const mailOptions = {
         from: this.config.auth.user,
         to: options.to,
         subject: options.subject,
         text: options.text,
-        html: options.html
+        html: options.html,
       };
 
       const info = await this.transporter.sendMail(mailOptions);
       console.log('Email sent successfully:', info.messageId);
       return { success: true, messageId: info.messageId };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Email sending failed:', error);
       return { success: false, error: error.message };
     }
   }
 
-  /**
-   * Verify email configuration
-   */
-  async verifyConfiguration() {
+  async verifyConfiguration(): Promise<{ success: boolean; error?: string }> {
     try {
       await this.transporter.verify();
       console.log('Email configuration verified successfully');
       return { success: true };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Email configuration verification failed:', error);
       return { success: false, error: error.message };
     }
   }
 
-  /**
-   * Create email account
-   */
-  async createAccount(username, password) {
-    // This would integrate with Zoho Mail or similar service API
+  async createAccount(username: string, password?: string): Promise<{ success: boolean; email: string; instructions: string; }> {
     console.log(`Creating email account: ${username}@azora.africa`);
-    
     // In a real implementation, this would call the email provider's API
     return {
       success: true,
       email: `${username}@azora.africa`,
-      instructions: 'Account created. Please configure your email client with the following settings.'
+      instructions: 'Account created. Please configure your email client with the following settings.',
     };
   }
 
-  /**
-   * Get email client configuration
-   */
-  getEmailClientConfig() {
+  getEmailClientConfig(): any {
     return {
       incoming: {
         server: 'imap.zoho.com',
         port: 993,
-        encryption: 'SSL/TLS'
+        encryption: 'SSL/TLS',
       },
       outgoing: {
         server: 'smtp.zoho.com',
         port: 587,
-        encryption: 'STARTTLS'
+        encryption: 'STARTTLS',
       },
       username: 'your-email@azora.africa',
-      password: 'your-password'
+      password: 'your-password',
     };
   }
 }
 
-// Create singleton instance
 const emailHostingService = new EmailHostingService();
-
-// Verify configuration on startup
 emailHostingService.verifyConfiguration();
-
 export default emailHostingService;
