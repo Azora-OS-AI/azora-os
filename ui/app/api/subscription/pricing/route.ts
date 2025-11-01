@@ -10,7 +10,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import path from 'path';
 
 // Import pricing config
-const pricingConfigPath = path.join(process.cwd(), 'ui', 'lib', 'services', 'pricingConfig.js');
+const pricingConfigPath = path.join(process.cwd(), 'lib', 'services', 'pricingConfig.js');
 const pricingConfig = require(pricingConfigPath);
 
 export async function GET(request: NextRequest) {
@@ -28,5 +28,3 @@ export async function GET(request: NextRequest) {
     );
   }
 }
-
-

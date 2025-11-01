@@ -1,5 +1,5 @@
 {
-  "name": "compliance-service",
+  "name": "compliance",
   "version": "3.0.0",
   "description": "Advanced Compliance Service with GDPR, HIPAA, CCPA engines, automated reporting, and privacy-preserving AI",
   "main": "dist/index.js",

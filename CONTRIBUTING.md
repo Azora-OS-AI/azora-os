@@ -1,4 +1,4 @@
-# Contributing to Azora OS
+# Contributing to Azora-OS
 
 Thank you for your interest in contributing to Azora OS! This document provides guidelines and instructions for contributing.
 

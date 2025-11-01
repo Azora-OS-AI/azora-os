@@ -1,5 +1,6 @@
+
 {
-  "name": "azora-ui-portal",
+  "name": "azora-ui-portal-compliance",
   "version": "1.0.0",
   "description": "Azora OS - Sovereign Operating System UI Portal",
   "main": "index.js",

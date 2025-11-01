@@ -144,10 +144,17 @@ function Install-AzoraOS {
     $sourcePath = $PSScriptRoot.Replace("\installers", "")
     
     $itemsToCopy = @(
-        "app", "public", "services", "components", "lib",
-        "package.json", "package-lock.json", "next.config.ts",
-        "tailwind.config.js", "tsconfig.json", "BRANDING-GUIDE.md"
-    )
+    "ui/app", 
+    "ui/public", 
+    "ui/components", 
+    "ui/lib",
+    "ui/package.json", 
+    "ui/package-lock.json", 
+    "ui/next.config.ts",
+    "ui/tailwind.config.js", 
+    "ui/tsconfig.json", 
+    "BRANDING-GUIDE.md"
+)
     
     foreach ($item in $itemsToCopy) {
         $source = Join-Path $sourcePath $item
@@ -320,4 +327,3 @@ if ($Uninstall) {
 } else {
     Install-AzoraOS
 }
-
