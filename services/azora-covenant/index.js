@@ -22,7 +22,7 @@ import crypto from 'crypto';
 const app = express();
 app.use(express.json({ limit: '50mb' }));
 
-const PORT = 3009;
+const PORT = process.env.PORT || 3009;
 
 // ============================================================================
 // CRYPTOGRAPHIC CONSTANTS

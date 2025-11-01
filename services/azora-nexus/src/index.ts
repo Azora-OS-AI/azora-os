@@ -24,8 +24,91 @@ import analysisRoutes from '@/routes/analysis';
 import { logger } from '@/utils/logger';
 import { startMetricsServer } from '@/utils/metrics';
 
-// Import new agent components
-import { azoraNexusAgent } from '@genome/agent-tools';
+type AzoraNexusAgentContract = {
+  initialize: () => Promise<void>;
+  getStatus: () => any;
+  processUserInput: (message: string, userId?: string, sessionId?: string, context?: any) => Promise<any>;
+  executeCapability: (capability: string, parameters: any, userId?: string, sessionId?: string) => Promise<any>;
+  start: () => Promise<void>;
+};
+
+const createMockAgent = (): AzoraNexusAgentContract => {
+  const statusSnapshot = {
+    agentState: {
+      status: 'mock-mode'
+    },
+    metrics: {
+      tasksCompleted: 0
+    },
+    activeUsers: 0,
+    totalProfiles: 0
+  };
+
+  return {
+    async initialize() {
+      logger.warn('Initialized mock Azora Nexus agent (agent tools unavailable)');
+    },
+    getStatus() {
+      return {
+        ...statusSnapshot,
+        timestamp: new Date().toISOString()
+      };
+    },
+    async processUserInput(message: string, userId?: string) {
+      return {
+        message,
+        userId,
+        mode: 'mock',
+        response: 'Azora Nexus agent tools are not available in this environment.'
+      };
+    },
+    async executeCapability(capability: string, parameters: any, userId?: string, sessionId?: string) {
+      return {
+        capability,
+        parameters,
+        userId,
+        sessionId,
+        mode: 'mock'
+      };
+    },
+    async start() {
+      logger.warn('Mock Azora Nexus agent started (no external tools)');
+    }
+  };
+};
+
+let azoraNexusAgent: AzoraNexusAgentContract = createMockAgent();
+
+const loadAzoraNexusAgent = async (): Promise<AzoraNexusAgentContract> => {
+  try {
+    const agentModule: any = await import('@genome/agent-tools');
+    if (agentModule?.azoraNexusAgent) {
+      return agentModule.azoraNexusAgent;
+    }
+    if (agentModule?.default?.azoraNexusAgent) {
+      return agentModule.default.azoraNexusAgent;
+    }
+    logger.warn('Loaded @genome/agent-tools but azoraNexusAgent export was missing. Using mock agent.');
+  } catch (error) {
+    logger.warn('Failed to load @genome/agent-tools - falling back to mock agent', {
+      error: (error as Error).message,
+    });
+  }
+
+  return createMockAgent();
+};
+
+const agentReadyPromise = loadAzoraNexusAgent()
+  .then(async (agent) => {
+    azoraNexusAgent = agent;
+    await azoraNexusAgent.initialize();
+    logger.info('Azora Nexus agent initialized');
+    await azoraNexusAgent.start();
+    logger.info('Azora Nexus agent started');
+  })
+  .catch((error) => {
+    logger.error('Failed to initialize Azora Nexus Agent', { error: (error as Error).message });
+  });
 
 const app = express();
 const PORT = process.env.PORT || 3006;
@@ -36,10 +119,8 @@ connectDB();
 // Initialize agent tools and systems
 // initializeTools();
 
-// Initialize the Azora Nexus Agent
-azoraNexusAgent.initialize().catch(error => {
-  logger.error('Failed to initialize Azora Nexus Agent', { error: error.message });
-});
+// Wait for agent initialization (non-blocking)
+agentReadyPromise.catch(() => undefined);
 
 // Security middleware
 app.use(helmet({
@@ -98,6 +179,7 @@ app.get('/health', (req, res) => {
 // Agent-specific endpoints
 app.post('/api/agent/interact', authMiddleware, async (req, res) => {
   try {
+    await agentReadyPromise.catch(() => undefined);
     const { message, userId, context } = req.body;
 
     // Process user input through the agent
@@ -117,12 +199,15 @@ app.post('/api/agent/interact', authMiddleware, async (req, res) => {
 });
 
 app.get('/api/agent/status', authMiddleware, (req, res) => {
+  // Ensure latest agent status is available
+  agentReadyPromise.catch(() => undefined);
   const status = azoraNexusAgent.getStatus();
   res.json(status);
 });
 
 app.post('/api/agent/task', authMiddleware, async (req, res) => {
   try {
+    await agentReadyPromise.catch(() => undefined);
     const { capability, parameters, userId, sessionId } = req.body;
 
     // Execute capability directly

@@ -39,6 +39,10 @@ import { authenticateToken } from './middleware/auth.js';
 const PORT = process.env.PORT || 3005;
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/azora_mint';
 const REDIS_URL = process.env.REDIS_URL || 'redis://localhost:6379';
+const MINT_MOCK_MODE = (process.env.MINT_MOCK_MODE ?? 'true').toLowerCase() !== 'false';
+const ENABLE_BACKGROUND_JOBS = (process.env.MINT_ENABLE_BACKGROUND_JOBS ?? (MINT_MOCK_MODE ? 'false' : 'true')).toLowerCase() === 'true';
+
+let redisClient: ReturnType<typeof createRedisClient> | null = null;
 
 // Initialize Express app
 const app = express();
@@ -206,14 +210,18 @@ app.use((req, res) => {
 // Initialize services and start server
 async function startServer() {
   try {
-    // Connect to MongoDB
-    await mongoose.connect(MONGODB_URI);
-    logger.info('Connected to MongoDB');
+    if (!MINT_MOCK_MODE) {
+      // Connect to MongoDB
+      await mongoose.connect(MONGODB_URI);
+      logger.info('Connected to MongoDB');
 
-    // Connect to Redis
-    const redisClient = createRedisClient({ url: REDIS_URL });
-    await redisClient.connect();
-    logger.info('Connected to Redis');
+      // Connect to Redis
+      redisClient = createRedisClient({ url: REDIS_URL });
+      await redisClient.connect();
+      logger.info('Connected to Redis');
+    } else {
+      logger.warn('MINT_MOCK_MODE enabled - skipping MongoDB and Redis connections');
+    }
 
     // Initialize services
     const creditService = new CreditService();
@@ -221,14 +229,13 @@ async function startServer() {
     const defiService = new DefiService();
     const liquidityService = new LiquidityService();
 
-    // Start autonomous collection cron job
-    creditService.startAutonomousCollection();
-
-    // Start staking reward distribution
-    stakingService.startRewardDistribution();
-
-    // Start DeFi yield distribution
-    defiService.startYieldDistribution();
+    if (!MINT_MOCK_MODE && ENABLE_BACKGROUND_JOBS) {
+      creditService.startAutonomousCollection();
+      stakingService.startRewardDistribution();
+      defiService.startYieldDistribution();
+    } else {
+      logger.info('Skipping background jobs (mock mode active)');
+    }
 
     // Start server
     app.listen(PORT, () => {
@@ -238,8 +245,8 @@ async function startServer() {
 ==========================================
 Port: ${PORT}
 Status: Online
-MongoDB: Connected
-Redis: Connected
+MongoDB: ${MINT_MOCK_MODE ? 'Mocked' : 'Connected'}
+Redis: ${MINT_MOCK_MODE ? 'Mocked' : 'Connected'}
 
 Features:
   ✅ AI-driven credit scoring (5 factors)
@@ -255,20 +262,34 @@ Features:
 
   } catch (error) {
     logger.error('Failed to start server', { error: (error as Error).message });
-    process.exit(1);
+    if (!MINT_MOCK_MODE) {
+      process.exit(1);
+    } else {
+      logger.warn('Continuing in mock mode despite startup error');
+    }
   }
 }
 
 // Graceful shutdown
 process.on('SIGTERM', async () => {
   logger.info('SIGTERM received, shutting down gracefully');
-  await mongoose.connection.close();
+  if (!MINT_MOCK_MODE) {
+    await mongoose.connection.close().catch(() => undefined);
+    if (redisClient) {
+      await redisClient.disconnect().catch(() => undefined);
+    }
+  }
   process.exit(0);
 });
 
 process.on('SIGINT', async () => {
   logger.info('SIGINT received, shutting down gracefully');
-  await mongoose.connection.close();
+  if (!MINT_MOCK_MODE) {
+    await mongoose.connection.close().catch(() => undefined);
+    if (redisClient) {
+      await redisClient.disconnect().catch(() => undefined);
+    }
+  }
   process.exit(0);
 });
 

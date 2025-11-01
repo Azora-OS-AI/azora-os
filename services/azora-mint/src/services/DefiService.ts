@@ -57,6 +57,11 @@ export class DefiService {
    */
   private async initializeDefaultPools() {
     try {
+      if (mongoose.connection.readyState !== 1) {
+        console.warn('Skipping default DeFi pool initialization - MongoDB not connected');
+        return;
+      }
+
       const existingPools = await DefiPool.countDocuments();
       if (existingPools === 0) {
         const defaultPools = [

@@ -13,6 +13,26 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+// Default environment overrides for resilient launch
+if (!process.env.OPENAI_API_KEY) {
+  process.env.OPENAI_API_KEY = 'mock-openai-key'
+}
+if (!process.env.MINT_MOCK_MODE) {
+  process.env.MINT_MOCK_MODE = 'true'
+}
+if (!process.env.MINT_USE_PRISMA) {
+  process.env.MINT_USE_PRISMA = 'false'
+}
+if (!process.env.MINT_ENABLE_BACKGROUND_JOBS) {
+  process.env.MINT_ENABLE_BACKGROUND_JOBS = 'false'
+}
+if (!process.env.NEXUS_MOCK_MODE) {
+  process.env.NEXUS_MOCK_MODE = 'true'
+}
+if (!process.env.NEXUS_ALLOW_OFFLINE) {
+  process.env.NEXUS_ALLOW_OFFLINE = 'true'
+}
+
 // All services with their configurations
 const services = [
   // Main Services
