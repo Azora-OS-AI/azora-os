@@ -2,11 +2,10 @@
   "name": "crypto-ledger-security",
   "version": "1.0.0",
   "description": "Advanced cryptographic security service with quantum-resistant encryption and blockchain ledger",
-  "main": "index.js",
-  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js",
+    "start": "node server.js",
+    "dev": "node server.js",
     "test": "echo \"No tests specified\""
   },
   "keywords": [
