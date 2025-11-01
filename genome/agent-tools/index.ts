@@ -6,141 +6,139 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 See LICENSE file for details.
 */
 
-import axios, { AxiosInstance, AxiosResponse } from 'axios';
-import { logger } from '../utils/logger';
+import axios, { AxiosInstance, AxiosResponse } from 'axios'
+import { logger } from '../utils/logger'
 
 // Import all agent components
-import { LLMReasoningEngine } from './llm-reasoning';
-import { ConstitutionalGovernor } from './constitutional-governor';
-import { MemorySystem } from './memory-system';
-import { UserStateTracker } from './user-state-tracker';
-import { DataAccessControls } from './data-access-controls';
-import { ObservationLoop } from './observation-loop';
-import { CoreCapabilities } from './core-capabilities';
-import { AutonomousCore } from './autonomous-core';
-import { elaraAgent, elaraApiHandler } from './elara-agent';
-import { elara as elaraCore } from './elara-core';
-import { UnifiedElara, unifiedElara, unifiedElaraApiHandler } from './unified-elara';
-import { elaraDeity, ElaraDeity } from './elara-deity';
-import { supremeOrchestrator, ElaraSupremeOrchestrator } from './elara-supreme-orchestrator';
-import { reflexivityEngine } from './reflexivity-game-theory-engine';
-import { aiScientist } from './ai-scientist-module';
-import { guardianOraclesCourt, GuardianOraclesCourt, GuardianOracle } from './guardian-oracles';
-import { citizensOversightCouncil, CitizensOversightCouncil } from './citizens-oversight-council';
-import { AIImmuneSystem } from './ai-immune-system';
-import { GeopoliticalReadinessIndex } from './geopolitical-readiness-index';
+import { AutonomousCore } from './autonomous-core'
+import { ConstitutionalGovernor } from './constitutional-governor'
+import { DataAccessControls } from './data-access-controls'
+import { elaraEmailOutreach } from './elara-email-outreach'
+import { LLMReasoningEngine } from './llm-reasoning'
+import { MemorySystem } from './memory-system'
+import { ObservationLoop } from './observation-loop'
+import { UserStateTracker } from './user-state-tracker'
 
 // Re-export all agent components
-export { LLMReasoningEngine } from './llm-reasoning';
-export { ConstitutionalGovernor } from './constitutional-governor';
-export { MemorySystem } from './memory-system';
-export { UserStateTracker } from './user-state-tracker';
-export { DataAccessControls } from './data-access-controls';
-export { ObservationLoop } from './observation-loop';
-export { CoreCapabilities } from './core-capabilities';
-export { AutonomousCore } from './autonomous-core';
-export { elaraAgent, elaraApiHandler } from './elara-agent';
-export { elara as elaraCore } from './elara-core';
-export { UnifiedElara, unifiedElara, unifiedElaraApiHandler } from './unified-elara';
-export { elaraDeity, ElaraDeity } from './elara-deity';
-export { supremeOrchestrator, ElaraSupremeOrchestrator } from './elara-supreme-orchestrator';
-export { reflexivityEngine } from './reflexivity-game-theory-engine';
-export { aiScientist } from './ai-scientist-module';
-export { guardianOraclesCourt, GuardianOraclesCourt, GuardianOracle } from './guardian-oracles';
-export { citizensOversightCouncil, CitizensOversightCouncil } from './citizens-oversight-council';
-export { AIImmuneSystem } from './ai-immune-system';
-export { GeopoliticalReadinessIndex } from './geopolitical-readiness-index';
+export { AIImmuneSystem } from './ai-immune-system'
+export { aiScientist } from './ai-scientist-module'
+export { AutonomousCore } from './autonomous-core'
+export { citizensOversightCouncil, CitizensOversightCouncil } from './citizens-oversight-council'
+export { ConstitutionalGovernor } from './constitutional-governor'
+export { CoreCapabilities } from './core-capabilities'
+export { DataAccessControls } from './data-access-controls'
+export { elaraAgent, elaraApiHandler } from './elara-agent'
+export { elara as elaraCore } from './elara-core'
+export { elaraDeity, ElaraDeity } from './elara-deity'
+export { elaraEmailOutreach, ElaraEmailOutreach } from './elara-email-outreach'
+export { ElaraSupremeOrchestrator, supremeOrchestrator } from './elara-supreme-orchestrator'
+export { GeopoliticalReadinessIndex } from './geopolitical-readiness-index'
+export { GuardianOracle, guardianOraclesCourt, GuardianOraclesCourt } from './guardian-oracles'
+export { LLMReasoningEngine } from './llm-reasoning'
+export { MemorySystem } from './memory-system'
+export { ObservationLoop } from './observation-loop'
+export { reflexivityEngine } from './reflexivity-game-theory-engine'
+export { UnifiedElara, unifiedElara, unifiedElaraApiHandler } from './unified-elara'
+export { UserStateTracker } from './user-state-tracker'
 
 // Tool interfaces and classes
 export interface ToolResult {
-  success: boolean;
-  data?: any;
-  error?: string;
+  success: boolean
+  data?: any
+  error?: string
   metadata?: {
-    service: string;
-    operation: string;
-    timestamp: Date;
-    duration: number;
-  };
+    service: string
+    operation: string
+    timestamp: Date
+    duration: number
+  }
 }
 
 export interface ToolConfig {
-  serviceName: string;
-  baseUrl: string;
-  timeout: number;
-  retries: number;
+  serviceName: string
+  baseUrl: string
+  timeout: number
+  retries: number
   auth?: {
-    type: 'bearer' | 'api-key' | 'basic';
-    token?: string;
-    apiKey?: string;
-    username?: string;
-    password?: string;
-  };
+    type: 'bearer' | 'api-key' | 'basic'
+    token?: string
+    apiKey?: string
+    username?: string
+    password?: string
+  }
 }
 
 export class AgentTool {
-  private client: AxiosInstance;
-  private config: ToolConfig;
+  private client: AxiosInstance
+  private config: ToolConfig
 
   constructor(config: ToolConfig) {
-    this.config = config;
+    this.config = config
     this.client = axios.create({
       baseURL: config.baseUrl,
       timeout: config.timeout,
       headers: this.buildHeaders(),
-    });
+    })
 
     // Add response interceptor for logging
     this.client.interceptors.response.use(
       (response) => {
-        logger.info(`AgentTool: ${config.serviceName} - ${response.config.method?.toUpperCase()} ${response.config.url}`, {
-          status: response.status,
-        });
-        return response;
+        logger.info(
+          `AgentTool: ${config.serviceName} - ${response.config.method?.toUpperCase()} ${response.config.url}`,
+          {
+            status: response.status,
+          }
+        )
+        return response
       },
       (error) => {
-        logger.error(`AgentTool: ${config.serviceName} - ${error.config?.method?.toUpperCase()} ${error.config?.url}`, {
-          error: error.message,
-          status: error.response?.status,
-        });
-        return Promise.reject(error);
+        logger.error(
+          `AgentTool: ${config.serviceName} - ${error.config?.method?.toUpperCase()} ${error.config?.url}`,
+          {
+            error: error.message,
+            status: error.response?.status,
+          }
+        )
+        return Promise.reject(error)
       }
-    );
+    )
   }
 
   private buildHeaders(): Record<string, string> {
     const headers: Record<string, string> = {
       'Content-Type': 'application/json',
       'User-Agent': 'Azora-Nexus-Agent/1.0',
-    };
+    }
 
     if (this.config.auth) {
       switch (this.config.auth.type) {
         case 'bearer':
-          headers['Authorization'] = `Bearer ${this.config.auth.token}`;
-          break;
+          headers['Authorization'] = `Bearer ${this.config.auth.token}`
+          break
         case 'api-key':
-          headers['X-API-Key'] = this.config.auth.apiKey!;
-          break;
+          headers['X-API-Key'] = this.config.auth.apiKey!
+          break
         case 'basic':
-          const credentials = Buffer.from(`${this.config.auth.username}:${this.config.auth.password}`).toString('base64');
-          headers['Authorization'] = `Basic ${credentials}`;
-          break;
+          const credentials = Buffer.from(
+            `${this.config.auth.username}:${this.config.auth.password}`
+          ).toString('base64')
+          headers['Authorization'] = `Basic ${credentials}`
+          break
       }
     }
 
-    return headers;
+    return headers
   }
 
   private async executeWithRetry<T>(
     operation: () => Promise<AxiosResponse<T>>,
     operationName: string
   ): Promise<ToolResult> {
-    const startTime = Date.now();
+    const startTime = Date.now()
 
     for (let attempt = 1; attempt <= this.config.retries + 1; attempt++) {
       try {
-        const response = await operation();
+        const response = await operation()
         return {
           success: true,
           data: response.data,
@@ -150,9 +148,9 @@ export class AgentTool {
             timestamp: new Date(),
             duration: Date.now() - startTime,
           },
-        };
+        }
       } catch (error: any) {
-        const isLastAttempt = attempt === this.config.retries + 1;
+        const isLastAttempt = attempt === this.config.retries + 1
 
         if (isLastAttempt) {
           return {
@@ -164,14 +162,16 @@ export class AgentTool {
               timestamp: new Date(),
               duration: Date.now() - startTime,
             },
-          };
+          }
         }
 
         // Wait before retry (exponential backoff)
-        const delay = Math.min(1000 * Math.pow(2, attempt - 1), 10000);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        const delay = Math.min(1000 * Math.pow(2, attempt - 1), 10000)
+        await new Promise((resolve) => setTimeout(resolve, delay))
 
-        logger.warn(`AgentTool: Retrying ${this.config.serviceName}.${operationName} (attempt ${attempt}/${this.config.retries + 1})`);
+        logger.warn(
+          `AgentTool: Retrying ${this.config.serviceName}.${operationName} (attempt ${attempt}/${this.config.retries + 1})`
+        )
       }
     }
 
@@ -184,119 +184,123 @@ export class AgentTool {
         timestamp: new Date(),
         duration: Date.now() - startTime,
       },
-    };
+    }
   }
 
   async get<T>(endpoint: string, params?: Record<string, any>): Promise<ToolResult> {
     return this.executeWithRetry(
-      () => this.client.get<T>(endpoint, {
-        params,
-        metadata: { startTime: Date.now() }
-      } as any),
+      () =>
+        this.client.get<T>(endpoint, {
+          params,
+          metadata: { startTime: Date.now() },
+        } as any),
       `GET ${endpoint}`
-    );
+    )
   }
 
   async post<T>(endpoint: string, data?: any): Promise<ToolResult> {
     return this.executeWithRetry(
-      () => this.client.post<T>(endpoint, data, {
-        metadata: { startTime: Date.now() }
-      } as any),
+      () =>
+        this.client.post<T>(endpoint, data, {
+          metadata: { startTime: Date.now() },
+        } as any),
       `POST ${endpoint}`
-    );
+    )
   }
 
   async put<T>(endpoint: string, data?: any): Promise<ToolResult> {
     return this.executeWithRetry(
-      () => this.client.put<T>(endpoint, data, {
-        metadata: { startTime: Date.now() }
-      } as any),
+      () =>
+        this.client.put<T>(endpoint, data, {
+          metadata: { startTime: Date.now() },
+        } as any),
       `PUT ${endpoint}`
-    );
+    )
   }
 
   async delete<T>(endpoint: string): Promise<ToolResult> {
     return this.executeWithRetry(
-      () => this.client.delete<T>(endpoint, {
-        metadata: { startTime: Date.now() }
-      } as any),
+      () =>
+        this.client.delete<T>(endpoint, {
+          metadata: { startTime: Date.now() },
+        } as any),
       `DELETE ${endpoint}`
-    );
+    )
   }
 }
 
 // Tool Registry for managing all available tools
 export class ToolRegistry {
-  private tools: Map<string, AgentTool> = new Map();
+  private tools: Map<string, AgentTool> = new Map()
 
   registerTool(name: string, tool: AgentTool): void {
-    this.tools.set(name, tool);
-    logger.info(`AgentTool: Registered tool '${name}' for service '${tool['config'].serviceName}'`);
+    this.tools.set(name, tool)
+    logger.info(`AgentTool: Registered tool '${name}' for service '${tool['config'].serviceName}'`)
   }
 
   getTool(name: string): AgentTool | undefined {
-    return this.tools.get(name);
+    return this.tools.get(name)
   }
 
   listTools(): string[] {
-    return Array.from(this.tools.keys());
+    return Array.from(this.tools.keys())
   }
 
   async executeTool(toolName: string, operation: string, params: any = {}): Promise<ToolResult> {
-    const tool = this.getTool(toolName);
+    const tool = this.getTool(toolName)
     if (!tool) {
       return {
         success: false,
         error: `Tool '${toolName}' not found`,
-      };
+      }
     }
 
     try {
       switch (operation.toLowerCase()) {
         case 'get':
-          return await tool.get(params.endpoint || '/', params.query);
+          return await tool.get(params.endpoint || '/', params.query)
         case 'post':
-          return await tool.post(params.endpoint || '/', params.data);
+          return await tool.post(params.endpoint || '/', params.data)
         case 'put':
-          return await tool.put(params.endpoint || '/', params.data);
+          return await tool.put(params.endpoint || '/', params.data)
         case 'delete':
-          return await tool.delete(params.endpoint || '/');
+          return await tool.delete(params.endpoint || '/')
         default:
           return {
             success: false,
             error: `Unsupported operation '${operation}'`,
-          };
+          }
       }
     } catch (error: any) {
       return {
         success: false,
         error: error.message,
-      };
+      }
     }
   }
 }
 
 // Global tool registry instance
-export const toolRegistry = new ToolRegistry();
+export const toolRegistry = new ToolRegistry()
 
 // Integrated Azora Nexus Agent
 export class AzoraNexusAgent {
-  private llmEngine: LLMReasoningEngine;
-  private governor: ConstitutionalGovernor;
-  private memorySystem: MemorySystem;
-  private userTracker: UserStateTracker;
-  private accessControls: DataAccessControls;
-  private observationLoop: ObservationLoop;
-  private autonomousCore: AutonomousCore;
+  private llmEngine: LLMReasoningEngine
+  private governor: ConstitutionalGovernor
+  private memorySystem: MemorySystem
+  private userTracker: UserStateTracker
+  private accessControls: DataAccessControls
+  private observationLoop: ObservationLoop
+  private autonomousCore: AutonomousCore
 
   constructor() {
     // Initialize all components
-    this.llmEngine = new LLMReasoningEngine();
-    this.governor = new ConstitutionalGovernor();
-    this.memorySystem = new MemorySystem();
-    this.userTracker = new UserStateTracker(this.memorySystem);
-    this.accessControls = new DataAccessControls(this.userTracker);
-    this.observationLoop = new ObservationLoop();
+    this.llmEngine = new LLMReasoningEngine()
+    this.governor = new ConstitutionalGovernor()
+    this.memorySystem = new MemorySystem()
+    this.userTracker = new UserStateTracker(this.memorySystem)
+    this.accessControls = new DataAccessControls(this.userTracker)
+    this.observationLoop = new ObservationLoop()
 
     // Initialize autonomous core with all components
     this.autonomousCore = new AutonomousCore(
@@ -306,11 +310,11 @@ export class AzoraNexusAgent {
       this.userTracker,
       this.accessControls,
       this.observationLoop
-    );
+    )
   }
 
   async initialize(): Promise<void> {
-    logger.info('Initializing Azora Nexus Agent');
+    logger.info('Initializing Azora Nexus Agent')
 
     try {
       // Components are initialized in their constructors
@@ -318,21 +322,21 @@ export class AzoraNexusAgent {
       // Constitution is loaded in ConstitutionalGovernor constructor
       // Memory system connections are established in constructor
 
-      logger.info('Azora Nexus Agent initialized successfully');
+      logger.info('Azora Nexus Agent initialized successfully')
     } catch (error: any) {
-      logger.error('Failed to initialize Azora Nexus Agent', { error: error.message });
-      throw error;
+      logger.error('Failed to initialize Azora Nexus Agent', { error: error.message })
+      throw error
     }
   }
 
   async start(): Promise<void> {
-    logger.info('Starting Azora Nexus Agent');
-    await this.autonomousCore.start();
+    logger.info('Starting Azora Nexus Agent')
+    await this.autonomousCore.start()
   }
 
   async stop(): Promise<void> {
-    logger.info('Stopping Azora Nexus Agent');
-    await this.autonomousCore.stop();
+    logger.info('Stopping Azora Nexus Agent')
+    await this.autonomousCore.stop()
   }
 
   // Public API for interacting with the agent
@@ -354,17 +358,17 @@ export class AzoraNexusAgent {
       },
       timestamp: new Date(),
       priority: 'medium',
-    });
+    })
 
     // Wait a bit for processing (in production, this would be async)
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100))
 
     // Return current agent state for immediate response
     return {
       status: 'processing',
       agentState: this.autonomousCore.getState(),
       message: 'Your request is being processed by the Azora Nexus Agent',
-    };
+    }
   }
 
   // Direct capability execution
@@ -374,22 +378,22 @@ export class AzoraNexusAgent {
     userId: string,
     sessionId: string
   ): Promise<any> {
-    const coreCapabilities = this.autonomousCore.getCoreCapabilities();
-    return await coreCapabilities.executeCapability(capabilityName, params, userId, sessionId);
+    const coreCapabilities = this.autonomousCore.getCoreCapabilities()
+    return await coreCapabilities.executeCapability(capabilityName, params, userId, sessionId)
   }
 
   // Get agent status and metrics
   getStatus(): {
-    agentState: any;
-    metrics: any;
-    capabilities: any;
-    activeUsers: number;
-    totalProfiles: number;
+    agentState: any
+    metrics: any
+    capabilities: any
+    activeUsers: number
+    totalProfiles: number
   } {
-    const agentState = this.autonomousCore.getState();
-    const metrics = this.autonomousCore.getMetrics();
-    const capabilities = this.autonomousCore.getCoreCapabilities().getAvailableCapabilities();
-    const userStats = this.userTracker.getStats();
+    const agentState = this.autonomousCore.getState()
+    const metrics = this.autonomousCore.getMetrics()
+    const capabilities = this.autonomousCore.getCoreCapabilities().getAvailableCapabilities()
+    const userStats = this.userTracker.getStats()
 
     return {
       agentState,
@@ -397,29 +401,35 @@ export class AzoraNexusAgent {
       capabilities,
       activeUsers: userStats.activeUsers,
       totalProfiles: userStats.totalProfiles,
-    };
+    }
   }
 
   // Administrative methods
   async createUserProfile(userId: string, profile: any): Promise<void> {
-    await this.userTracker.updateUserProfile(userId, profile);
+    await this.userTracker.updateUserProfile(userId, profile)
   }
 
   getUserInsights(userId: string): Promise<any> {
-    return this.userTracker.getUserInsights(userId);
+    return this.userTracker.getUserInsights(userId)
   }
 
   // Emergency controls
   enableEmergencyMode(): void {
-    this.accessControls.enableEmergencyMode();
-    logger.warn('Emergency mode enabled');
+    this.accessControls.enableEmergencyMode()
+    logger.warn('Emergency mode enabled')
   }
 
   disableEmergencyMode(): void {
-    this.accessControls.disableEmergencyMode();
-    logger.info('Emergency mode disabled');
+    this.accessControls.disableEmergencyMode()
+    logger.info('Emergency mode disabled')
   }
 }
 
 // Global agent instance
-export const azoraNexusAgent = new AzoraNexusAgent();
+export const azoraNexusAgent = new AzoraNexusAgent()
+
+// Initialize email outreach system
+console.log('📧 Initializing Elara Email Outreach System...')
+elaraEmailOutreach.on('email-sent', (data) => {
+  console.log(`📧 Email sent: Campaign ${data.campaignId} to recipient ${data.recipientId}`)
+})

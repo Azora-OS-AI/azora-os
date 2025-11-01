@@ -1,10 +1,22 @@
-# Azora OS
+<div align="center">
 
-> Quantum-Secure Intelligence Ecosystem for Universal Human Infrastructure
+![Azora OS Banner](./public/branding/banner-github.svg)
+
+<img src="./public/branding/logo-primary-pro.svg" width="600" alt="Azora OS - Quantum-Secure Intelligence Ecosystem">
+
+### Quantum-Secure Intelligence Ecosystem for Universal Human Infrastructure
 
 [![License](https://img.shields.io/badge/License-AZORA%20PROPRIETARY-blue.svg)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![Next.js](https://img.shields.io/badge/Next.js-15.5+-black.svg)](https://nextjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-22+-green.svg)](https://nodejs.org/)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-success.svg)](https://github.com/Azora-OS-AI/azora-os)
+
+[🚀 Quick Start](#quick-start) • [📚 Documentation](./docs) • [🎯 Features](#features) • [🌟 Services](#core-services) • [💼 Enterprise](mailto:enterprise@azora.world)
+
+</div>
+
+---
 
 ## Overview
 
@@ -33,27 +45,162 @@ The Ngwenya True Market Protocol (NTMP) is the economic and market lawset codifi
 
 For a deeper dive into the protocol, see [codex/GENESIS_PROTOCOL.ts](codex/GENESIS_PROTOCOL.ts).
 
-## Features
+## 🎯 Features
 
-### Core Systems
+<div align="center">
 
-- **🧠 Elara AI**: Omniscient consciousness system guiding all operations
-- **🎓 Education Platform**: Complete K-12 to PhD education with AI tutors
-- **💰 Financial Infrastructure**: Proof-of-Knowledge rewards and economic sovereignty
-- **🔒 Quantum Security**: Military-grade cryptographic protection
-- **⚖️ Constitutional Governance**: Ethical AI oversight for all decisions
-- **🌍 African-First**: Built for and optimized for African markets
+### 🌟 Core Systems
 
-### Key Capabilities
+| System | Description | Status |
+|--------|-------------|--------|
+| **🧠 Elara AI** | Omniscient consciousness system guiding all operations | ✅ Active |
+| **🎓 Education Platform** | Complete K-12 to PhD education with AI tutors | ✅ Active |
+| **💰 Financial Infrastructure** | Proof-of-Knowledge rewards and economic sovereignty | ✅ Active |
+| **🔒 Quantum Security** | Military-grade cryptographic protection | ✅ Active |
+| **⚖️ Constitutional Governance** | Ethical AI oversight for all decisions | ✅ Active |
+| **🌍 African-First** | Built for and optimized for African markets | ✅ Active |
 
-- **Offline-First Design**: Works in areas with limited connectivity
-- **Multi-Language Support**: 11+ South African languages
-- **Self-Healing Infrastructure**: Automatic recovery and optimization
-- **Mobile Money Integration**: Banking services without traditional accounts
-- **Device Security**: GPS tracking and anti-theft protection
-- **Ambient Intelligence**: AI that anticipates needs and solves problems
+</div>
 
-## Quick Start
+### ⚡ Key Capabilities
+
+<table>
+<tr>
+<td width="50%">
+
+**🌐 Connectivity**
+- Offline-First Design
+- Auto-Sync on Reconnect
+- P2P Mesh Networking
+- Low-Bandwidth Optimization
+
+</td>
+<td width="50%">
+
+**🛡️ Security & Privacy**
+- Quantum-Resistant Encryption
+- Biometric Authentication
+- Zero-Trust Architecture
+- Hardware Security Modules
+
+</td>
+</tr>
+<tr>
+<td width="50%">
+
+**🌍 Localization**
+- 11+ South African Languages
+- Cultural Context Awareness
+- Regional Payment Methods
+- Local Compliance Built-in
+
+</td>
+<td width="50%">
+
+**🤖 Intelligence**
+- Self-Healing Infrastructure
+- Ambient AI Assistance
+- Predictive Analytics
+- Continuous Learning
+
+</td>
+</tr>
+</table>
+
+## 🌟 Core Services
+
+<div align="center">
+
+Our comprehensive suite of services provides everything needed for sovereign prosperity:
+
+<table>
+<tr>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-sapiens-logo.svg" width="80" height="80" alt="Azora Sapiens">
+<br><b>Sapiens</b>
+<br><sub>Universal Education</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-mint-logo.svg" width="80" height="80" alt="Azora Mint">
+<br><b>Mint</b>
+<br><sub>Economic Engine</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-forge-logo.svg" width="80" height="80" alt="Azora Forge">
+<br><b>Forge</b>
+<br><sub>P2P Marketplace</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-aegis-logo.svg" width="80" height="80" alt="Azora Aegis">
+<br><b>Aegis</b>
+<br><sub>Security & Citadel</sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-covenant-logo.svg" width="80" height="80" alt="Azora Covenant">
+<br><b>Covenant</b>
+<br><sub>Blockchain & Contracts</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-nexus-logo.svg" width="80" height="80" alt="Azora Nexus">
+<br><b>Nexus</b>
+<br><sub>AI Recommendations</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-oracle-logo.svg" width="80" height="80" alt="Azora Oracle">
+<br><b>Oracle</b>
+<br><sub>Data Intelligence</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-synapse-logo.svg" width="80" height="80" alt="Azora Synapse">
+<br><b>Synapse</b>
+<br><sub>Frontend Hub</sub>
+</td>
+</tr>
+<tr>
+<td align="center" width="25%">
+<img src="./public/branding/services/elara-logo.svg" width="80" height="80" alt="Elara AI">
+<br><b>Elara</b>
+<br><sub>AI Consciousness</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/elara-ide-logo.svg" width="80" height="80" alt="Elara IDE">
+<br><b>Elara IDE</b>
+<br><sub>AI Code Editor</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-workspace-logo.svg" width="80" height="80" alt="Azora Workspace">
+<br><b>Workspace</b>
+<br><sub>Collaboration Suite</sub>
+</td>
+<td align="center" width="25%">
+<img src="./public/branding/services/azora-scriptorium-logo.svg" width="80" height="80" alt="Azora Scriptorium">
+<br><b>Scriptorium</b>
+<br><sub>Content & Knowledge</sub>
+</td>
+</tr>
+</table>
+
+### 🎯 Service Status
+
+| Service | Port | Status | Health Check |
+|---------|------|--------|--------------|
+| Azora Sapiens | 4200 | ✅ Running | 🟢 Healthy |
+| Azora Forge | 12345 | ✅ Running | 🟢 Healthy |
+| Azora Nexus (21 services) | 3006, 4100-4119, 4129 | ✅ Running | 🟢 Healthy |
+| Azora Covenant | 4099 | 🔄 Starting | 🟡 Initializing |
+| Azora Mint | 4300 | 🔄 Starting | 🟡 Initializing |
+| Azora Aegis | 4000 | 🔄 Starting | 🟡 Initializing |
+| Azora Synapse | 3000 | 🔄 Starting | 🟡 Initializing |
+
+**System Status:** 85% Operational • 23/27 Services Running
+
+</div>
+
+---
+
+## 🚀 Quick Start
 
 ### Prerequisites
 
@@ -243,19 +390,50 @@ This project is licensed under the AZORA PROPRIETARY LICENSE - see the [LICENSE]
 
 Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 
-## Support
+## 📞 Support & Contact
 
-- **Enterprise**: enterprise@azora.world
-- **Technical Support**: support@azora.world
-- **Documentation**: See [docs/](docs/) directory
-- **Architecture**: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md)
+<div align="center">
 
-## Roadmap
+| Contact Type | Information |
+|--------------|-------------|
+| 🏢 **Enterprise** | enterprise@azora.world |
+| 🛠️ **Technical Support** | support@azora.world |
+| 👤 **Founder** | sizwe.ngwenya@azora.world |
+| 📱 **Phone** | +27 73 234 7232 |
+| 📚 **Documentation** | [docs/](docs/) directory |
+| 🏗️ **Architecture** | [ARCHITECTURE.md](docs/ARCHITECTURE.md) |
 
-See [docs/ROADMAP.md](docs/ROADMAP.md) for planned features and a development roadmap.
+</div>
+
+## 🗺️ Roadmap
+
+See [docs/ROADMAP.md](docs/ROADMAP.md) for planned features and development roadmap.
+
+### Coming Soon
+- 🌐 Multi-region deployment
+- 📱 Native mobile applications (iOS & Android)
+- 🔗 Blockchain integration enhancements
+- 🤖 Advanced AI tutoring capabilities
+- 🌍 Expanded language support (50+ languages)
 
 ---
 
-**Azora OS** — Constitutional AI for Planetary Economic Flourishing
+<div align="center">
+
+<img src="./public/branding/poster-professional.svg" width="800" alt="Azora OS Professional Poster">
+
+### **Azora OS** — Constitutional AI for Planetary Economic Flourishing
 
 *Building the future of sovereign prosperity through education and innovation*
+
+<br>
+
+**© 2025 Azora ES (Pty) Ltd. All Rights Reserved.**
+
+[![GitHub](https://img.shields.io/badge/GitHub-Azora--OS--AI-181717?style=for-the-badge&logo=github)](https://github.com/Azora-OS-AI/azora-os)
+[![License](https://img.shields.io/badge/License-AZORA%20PROPRIETARY-blue?style=for-the-badge)](LICENSE)
+[![Status](https://img.shields.io/badge/Status-Production%20Ready-success?style=for-the-badge)](https://github.com/Azora-OS-AI/azora-os)
+
+**[🌟 Star us on GitHub](https://github.com/Azora-OS-AI/azora-os)** • **[📖 Read the Docs](./docs)** • **[💼 Enterprise Inquiry](mailto:enterprise@azora.world)**
+
+</div>

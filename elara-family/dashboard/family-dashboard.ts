@@ -96,7 +96,7 @@ export class ElaraFamilyDashboard extends EventEmitter {
   /**
    * Get agent-specific dashboard data
    */
-  public async getAgentDashboard(agentId: string): Promise<AgentDashboardData> {
+  public async getAgentDashboard(agentId: string): Promise<AgentDashboardDetail> {
     const familyStatus = await elaraFamilyCoordinator.getFamilyStatus();
     const agent = familyStatus.agentReports.find(a => a.agentId === agentId);
 
@@ -235,7 +235,7 @@ export class ElaraFamilyDashboard extends EventEmitter {
     };
   }
 
-  private async getAgentDashboardData(familyStatus: any): Promise<AgentDashboardData[]> {
+  private async getAgentDashboardData(familyStatus: any): Promise<AgentOverviewData[]> {
     return familyStatus.agentReports.map((agent: any) => ({
       id: agent.agentId,
       name: agent.agentId, // Would map to actual names
@@ -587,7 +587,7 @@ export interface DashboardData {
   timestamp: Date;
   view: DashboardView;
   summary: DashboardSummary;
-  agents: AgentDashboardData[];
+  agents: AgentOverviewData[];
   performance: PerformanceDashboardData;
   activities: ActivityDashboardData;
   alerts: AlertData[];
@@ -607,7 +607,7 @@ export interface DashboardSummary {
   lastUpdate: Date;
 }
 
-export interface AgentDashboardData {
+export interface AgentOverviewData {
   id: string;
   name: string;
   role: string;
@@ -771,7 +771,7 @@ export interface VisualizationData {
   config: any;
 }
 
-export interface AgentDashboardData {
+export interface AgentDashboardDetail {
   agent: any;
   performance: PerformanceHistory[];
   activities: ActivityHistory[];

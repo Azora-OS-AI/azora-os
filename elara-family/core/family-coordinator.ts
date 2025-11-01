@@ -35,7 +35,8 @@ import {
   CommunicationChannel,
   TaskType,
   TaskPriority,
-  TaskStatus
+  TaskStatus,
+  AgentConfig
 } from './agent-framework';
 
 /**
@@ -338,7 +339,7 @@ export class ElaraFamilyCoordinator {
    */
   private async createAgent(config: any): Promise<ElaraFamilyAgent> {
     // Import the appropriate agent class based on role
-    const AgentClass = await this.getAgentClass(config.role);
+    const AgentClass = await this.getAgentClass(config);
     const agent = new AgentClass(config);
 
     // Register agent
@@ -365,87 +366,107 @@ export class ElaraFamilyCoordinator {
   /**
    * Get the appropriate agent class for a role
    */
-  private async getAgentClass(role: AgentRole): Promise<any> {
-    // Import agent classes dynamically based on role
-    switch (role) {
-      case AgentRole.CHIEF_STRATEGY_OFFICER:
-        const { ChiefStrategyOfficer } = await import('../executive/chief-strategy-officer');
-        return ChiefStrategyOfficer;
-      case AgentRole.CHIEF_OPERATIONS_OFFICER:
-        const { ChiefOperationsOfficer } = await import('../executive/chief-operations-officer');
-        return ChiefOperationsOfficer;
-      case AgentRole.CHIEF_SECURITY_OFFICER:
-        const { ChiefSecurityOfficer } = await import('../executive/chief-security-officer');
-        return ChiefSecurityOfficer;
-      case AgentRole.CHIEF_INNOVATION_OFFICER:
-        const { ChiefInnovationOfficer } = await import('../executive/chief-innovation-officer');
-        return ChiefInnovationOfficer;
-      case AgentRole.CHIEF_TECHNOLOGY_OFFICER:
-        const { ChiefTechnologyOfficer } = await import('../technical/chief-technology-officer');
-        return ChiefTechnologyOfficer;
-      case AgentRole.INFRASTRUCTURE_ARCHITECT:
-        const { InfrastructureArchitect } = await import('../technical/infrastructure-architect');
-        return InfrastructureArchitect;
-      case AgentRole.DATA_SCIENTIST:
-        const { DataScientist } = await import('../technical/data-scientist');
-        return DataScientist;
-      case AgentRole.AI_ENGINEER:
-        const { AIEngineer } = await import('../technical/ai-engineer');
-        return AIEngineer;
-      case AgentRole.RESEARCH_ANALYST:
-        // Handle research agents based on ID
-        if (config.id === 'research-agent-1') {
-          return ResearchAgent1;
-        } else if (config.id === 'research-agent-2') {
-          return ResearchAgent2;
+  private async getAgentClass(config: AgentConfig): Promise<any> {
+    switch (config.role) {
+      case AgentRole.CHIEF_STRATEGY_OFFICER: {
+        const module = await import('../executive/chief-strategy-officer');
+        return module.ChiefStrategyOfficer;
+      }
+      case AgentRole.CHIEF_OPERATIONS_OFFICER: {
+        const module = await import('../executive/chief-operations-officer');
+        return module.ChiefOperationsOfficer;
+      }
+      case AgentRole.CHIEF_SECURITY_OFFICER: {
+        const module = await import('../executive/chief-security-officer');
+        return module.ChiefSecurityOfficer;
+      }
+      case AgentRole.CHIEF_INNOVATION_OFFICER: {
+        const module = await import('../executive/chief-innovation-officer');
+        return module.ChiefInnovationOfficer;
+      }
+      case AgentRole.CHIEF_TECHNOLOGY_OFFICER: {
+        const module = await import('../technical/chief-technology-officer');
+        return module.ChiefTechnologyOfficer;
+      }
+      case AgentRole.INFRASTRUCTURE_ARCHITECT: {
+        const module = await import('../technical/infrastructure-architect');
+        return module.InfrastructureArchitect;
+      }
+      case AgentRole.DATA_SCIENTIST: {
+        const module = await import('../technical/data-scientist');
+        return module.DataScientist;
+      }
+      case AgentRole.AI_ENGINEER: {
+        const module = await import('../technical/ai-engineer');
+        return module.AIEngineer;
+      }
+      case AgentRole.RESEARCH_ANALYST: {
+        switch (config.id) {
+          case 'research-agent-2':
+            return ResearchAgent2;
+          case 'research-agent-1':
+          default:
+            return ResearchAgent1;
         }
-        return ResearchAgent1; // default fallback
-      case AgentRole.IMPLEMENTATION_SPECIALIST:
-        // Handle implementation agents based on ID
-        if (config.id === 'implementation-agent-1') {
-          return ImplementationAgent1;
-        } else if (config.id === 'implementation-agent-2') {
-          return ImplementationAgent2;
+      }
+      case AgentRole.IMPLEMENTATION_SPECIALIST: {
+        switch (config.id) {
+          case 'implementation-agent-2':
+            return ImplementationAgent2;
+          case 'implementation-agent-1':
+          default:
+            return ImplementationAgent1;
         }
-        return ImplementationAgent1; // default fallback
-      case AgentRole.MONITORING_SPECIALIST:
-        const { MonitoringSpecialist } = await import('../operational/monitoring-specialist');
-        return MonitoringSpecialist;
-      case AgentRole.COMPLIANCE_OFFICER:
-        const { ComplianceOfficer } = await import('../operational/compliance-officer');
-        return ComplianceOfficer;
-      case AgentRole.COMMUNICATION_COORDINATOR:
-        const { CommunicationCoordinator } = await import('../operational/communication-coordinator');
-        return CommunicationCoordinator;
-      case AgentRole.INTEGRATION_SPECIALIST:
-        const { IntegrationSpecialist } = await import('../operational/integration-specialist');
-        return IntegrationSpecialist;
-      case AgentRole.FINANCIAL_ANALYST:
-        const { FinancialAnalyst } = await import('../domain/financial-analyst');
-        return FinancialAnalyst;
-      case AgentRole.LEGAL_COUNSEL:
-        const { LegalCounsel } = await import('../domain/legal-counsel');
-        return LegalCounsel;
-      case AgentRole.EDUCATION_SPECIALIST:
-        const { EducationSpecialist } = await import('../domain/education-specialist');
-        return EducationSpecialist;
-      case AgentRole.HEALTHCARE_COORDINATOR:
-        const { HealthcareCoordinator } = await import('../domain/healthcare-coordinator');
-        return HealthcareCoordinator;
-      case AgentRole.INTELLIGENCE_ANALYST:
-        const { IntelligenceAnalyst } = await import('../intelligence/intelligence-analyst');
-        return IntelligenceAnalyst;
-      case AgentRole.MARKET_RESEARCHER:
-        const { MarketResearcher } = await import('../intelligence/market-researcher');
-        return MarketResearcher;
-      case AgentRole.PREDICTIVE_ANALYST:
-        const { PredictiveAnalyst } = await import('../intelligence/predictive-analyst');
-        return PredictiveAnalyst;
-      case AgentRole.RISK_ASSESSOR:
-        const { RiskAssessor } = await import('../intelligence/risk-assessor');
-        return RiskAssessor;
+      }
+      case AgentRole.MONITORING_SPECIALIST: {
+        const module = await import('../operational/monitoring-specialist');
+        return module.MonitoringSpecialist;
+      }
+      case AgentRole.COMPLIANCE_OFFICER: {
+        const module = await import('../operational/compliance-officer');
+        return module.ComplianceOfficer;
+      }
+      case AgentRole.COMMUNICATION_COORDINATOR: {
+        const module = await import('../operational/communication-coordinator');
+        return module.CommunicationCoordinator;
+      }
+      case AgentRole.INTEGRATION_SPECIALIST: {
+        const module = await import('../operational/integration-specialist');
+        return module.IntegrationSpecialist;
+      }
+      case AgentRole.FINANCIAL_ANALYST: {
+        const module = await import('../domain/financial-analyst');
+        return module.FinancialAnalyst;
+      }
+      case AgentRole.LEGAL_COUNSEL: {
+        const module = await import('../domain/legal-counsel');
+        return module.LegalCounsel;
+      }
+      case AgentRole.EDUCATION_SPECIALIST: {
+        const module = await import('../domain/education-specialist');
+        return module.EducationSpecialist;
+      }
+      case AgentRole.HEALTHCARE_COORDINATOR: {
+        const module = await import('../domain/healthcare-coordinator');
+        return module.HealthcareCoordinator;
+      }
+      case AgentRole.INTELLIGENCE_ANALYST: {
+        const module = await import('../intelligence/intelligence-analyst');
+        return module.IntelligenceAnalyst;
+      }
+      case AgentRole.MARKET_RESEARCHER: {
+        const module = await import('../intelligence/market-researcher');
+        return module.MarketResearcher;
+      }
+      case AgentRole.PREDICTIVE_ANALYST: {
+        const module = await import('../intelligence/predictive-analyst');
+        return module.PredictiveAnalyst;
+      }
+      case AgentRole.RISK_ASSESSOR: {
+        const module = await import('../intelligence/risk-assessor');
+        return module.RiskAssessor;
+      }
       default:
-        // Fallback to base agent
         return BaseAgent;
     }
   }

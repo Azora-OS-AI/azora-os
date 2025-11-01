@@ -5,9 +5,13 @@ Copyright © 2025 Azora ES (Pty) Ltd. All Rights Reserved.
 RESILIENT SERVICE LAUNCHER - Starts all services without requiring DBs/APIs
 */
 
-const { spawn } = require('child_process')
-const path = require('path')
-const fs = require('fs')
+import { spawn } from 'child_process'
+import path from 'path'
+import fs from 'fs'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = path.dirname(__filename)
 
 // Default environment overrides for resilient launch
 if (!process.env.OPENAI_API_KEY) {
